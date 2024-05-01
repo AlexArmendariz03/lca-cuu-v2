@@ -1,10 +1,15 @@
 "use client"
 import React, { useEffect } from "react";
-import { initTWE } from "tw-elements";
+import { Carousel, initTWE } from "tw-elements";
 
 export default function HomePage() {
+
   useEffect(() => {
-    initTWE({ Carousel }, { allowReinits: true });
+    const init = async () => {
+      const { Carousel, initTWE } = await import("tw-elements");
+      initTWE({ Carousel });
+    };
+    init();
   }, []);
 
   return (
