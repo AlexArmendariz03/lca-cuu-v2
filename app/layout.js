@@ -16,9 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
-      <Head>
-        <script src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js" />
-      </Head>
+        <Script src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js" />
     </html>
   );
 }
