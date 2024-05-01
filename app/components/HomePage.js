@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect } from "react";
-import { Carousel, initTWE } from "tw-elements";
+import { initTWE } from "tw-elements";
 
 export default function HomePage() {
   useEffect(() => {
