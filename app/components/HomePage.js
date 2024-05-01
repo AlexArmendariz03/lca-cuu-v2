@@ -5,11 +5,7 @@ import { Carousel, initTWE } from "tw-elements";
 export default function HomePage() {
 
   useEffect(() => {
-    const init = async () => {
-      const { Carousel, initTWE } = await import("tw-elements");
-      initTWE({ Carousel });
-    };
-    init();
+      initTWE({ Carousel },{ allowReinits: true });
   }, []);
 
   return (
