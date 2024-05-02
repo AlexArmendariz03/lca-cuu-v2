@@ -4,6 +4,7 @@ import Navigation from "@/app/components/Navigation";
 import { useEffect } from "react";
 import AOS from "aos"
 import "aos/dist/aos.css"
+import Invitation from "@/app/components/Invitation";
 
 export default function Home() {
   useEffect(() => {
@@ -16,6 +17,7 @@ export default function Home() {
     <div>
       <Navigation />
       <HomePage />
+      <Invitation />
     </div>
   );
 }
