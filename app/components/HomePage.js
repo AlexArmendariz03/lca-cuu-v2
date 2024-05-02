@@ -20,7 +20,7 @@ export default function HomePage() {
     <div
       data-aos="zoom-in"
       id="carouselExampleCaptions"
-      className="relative w-full mx-auto flex justify-center items-center m-2 md:w-screen md:mt-2 md:overflow-hidden"
+      className="relative w-full mx-auto flex justify-center items-center m-2  md:mt-2 md:overflow-hidden"
       data-twe-carousel-init
       data-twe-ride="carousel">
       <div className="absolute bottom-0 left-0 right-0 z-[2] mx-[15%] mb-4 flex list-none justify-center p-0" data-twe-carousel-indicators>
@@ -55,7 +55,7 @@ export default function HomePage() {
           data-twe-carousel-item
           style={{ backfaceVisibility: "hidden" }}>
           <img
-            src="/servicios.jpg"
+            src="/partyhouse.webp"
             className="block w-full h-full object-cover"
             alt="..."/>
         </div>
@@ -79,7 +79,7 @@ export default function HomePage() {
           data-twe-carousel-item
           style={{ backfaceVisibility: "hidden" }}>
           <img
-            src="/Marioniños.jpg"
+            src="/avivaHumber.webp"
             className="block w-full h-full object-cover"
             alt="..."/>
           <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block">
