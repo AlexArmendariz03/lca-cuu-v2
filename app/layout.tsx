@@ -1,20 +1,18 @@
 import { Inter } from "next/font/google";
+import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "@/app/components/Navigation";
-import Script from "next/script";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "La Casa del Alfarero Chihuahua",
   description: "Iglesia de compañerismo Cristiano",
   icons: "/logoBlanco.ico"
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body className={inter.className}>{children}</body>
     </html>
   );

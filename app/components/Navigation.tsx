@@ -27,38 +27,16 @@ export default function Navigation() {
 
       <NavbarContent className="hidden sm:flex gap-4 justify-center">
         <NavbarItem>
-          <Link href="#" className="text-white">
+          <Link href="#inicio" className="text-white">
             Inicio
           </Link>
         </NavbarItem>
 
-        <Dropdown>
-          <NavbarItem>
-            <DropdownTrigger>
-              <Button
-                disableRipple
-                className="p-0 hover:bg-transparent text-white"
-                radius="sm"
-                variant="light"
-              >
-                Quienes Somos
-              </Button>
-            </DropdownTrigger>
-          </NavbarItem>
-          <DropdownMenu
-            aria-label="Quienes Somos"
-            className="w-[340px]"
-            itemClasses={{
-              base: "gap-4",
-            }}
-          >
-            <DropdownItem description="Nuestra Historia" />
-            <DropdownItem description="Lo que creemos" />
-            <DropdownItem description="Nuestra Vision" />
-            <DropdownItem description="Pastores y Equipo" />
-            <DropdownItem description="Lideres" />
-          </DropdownMenu>
-        </Dropdown>
+        <NavbarItem>
+          <Link href="#quienes-somos" className="text-white">
+            Quiénes Somos
+          </Link>
+        </NavbarItem>
 
         <Dropdown>
           <NavbarItem>
@@ -80,21 +58,21 @@ export default function Navigation() {
               base: "gap-4",
             }}
           >
-            <DropdownItem description="Conciertos" />
-            <DropdownItem description="Jóvenes" />
-            <DropdownItem description="Nuevos Conversos" />
-            <DropdownItem description="Ministerios de Barrio" />
+            <DropdownItem description="Conciertos y adoración" />
+            <DropdownItem description="Jóvenes y adolescentes" />
+            <DropdownItem description="Nuevos conversos" />
+            <DropdownItem description="Ministerios de barrio" />
           </DropdownMenu>
         </Dropdown>
 
         <NavbarItem>
-          <Link href="#" className="text-white">
-            Galeria
+          <Link href="#eventos" className="text-white">
+            Eventos
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#" className="text-white">
-            Eventos
+          <Link href="#contacto" className="text-white">
+            Contacto
           </Link>
         </NavbarItem>
       </NavbarContent>

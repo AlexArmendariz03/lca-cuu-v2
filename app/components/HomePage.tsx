@@ -20,9 +20,16 @@ export default function HomePage() {
     <div
       data-aos="zoom-in"
       id="carouselExampleCaptions"
+      data-section="inicio"
       className="relative w-full mx-auto flex justify-center items-center m-2  md:mt-2 md:overflow-hidden"
       data-twe-carousel-init
       data-twe-ride="carousel">
+      <div className="absolute top-8 left-1/2 z-10 w-[90%] -translate-x-1/2 rounded-xl bg-black/45 p-4 text-center text-white backdrop-blur-sm md:top-12 md:max-w-2xl">
+        <h1 className="text-xl font-bold md:text-3xl">La Casa del Alfarero Chihuahua</h1>
+        <p className="mt-2 text-sm md:text-base">
+          Un lugar para crecer en fe, familia y propósito.
+        </p>
+      </div>
       <div className="absolute bottom-0 left-0 right-0 z-[2] mx-[15%] mb-4 flex list-none justify-center p-0" data-twe-carousel-indicators>
         <button
           type="button"
