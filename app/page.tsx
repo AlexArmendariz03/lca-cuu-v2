@@ -14,10 +14,12 @@ export default function Home() {
     })
   }, [])
   return (
-    <div>
+    <main>
       <Navigation />
-      <HomePage />
+      <section id="inicio">
+        <HomePage />
+      </section>
       <Invitation />
-    </div>
+    </main>
   );
 }
