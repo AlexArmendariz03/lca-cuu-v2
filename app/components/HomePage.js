@@ -166,45 +166,33 @@ export default function HomePage() {
       </section>
 
       <section id="conocenos" className="relative z-20 -mt-16 px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/95 p-5 shadow-2xl shadow-blue-950/10 backdrop-blur-xl">
-          <div className="mb-5 flex flex-col gap-2 px-1 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-black uppercase tracking-[0.24em] text-red-600">Horarios</p>
-              <h2 className="mt-1 text-2xl font-black text-blue-950">Reuniones de la semana</h2>
-            </div>
-            <p className="text-sm font-semibold text-slate-500">Todos son bienvenidos</p>
-          </div>
-          <div className="grid items-stretch gap-4 lg:grid-cols-3">
-            <div className="flex min-h-[250px] flex-col rounded-[1.5rem] bg-gradient-to-br from-blue-950 to-blue-900 p-6 text-white">
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-red-300">Domingo</p>
-              <h3 className="mt-3 text-2xl font-black">Servicios dominicales</h3>
-              <div className="mt-5 grid flex-1 gap-3">
-                {[
-                  ["9:45 AM", "Escuela dominical"],
-                  ["11:00 AM", "Servicio matutino"],
-                  ["6:00 PM", "Servicio de milagros"],
-                ].map(([time, name]) => (
-                  <div key={time} className="flex items-center justify-between gap-4 rounded-2xl bg-white/10 px-4 py-3 ring-1 ring-white/10">
-                    <p className="text-xl font-black text-white">{time}</p>
-                    <p className="text-right text-sm font-semibold text-blue-100">{name}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {[
-              ["Miércoles", "Reunión entre semana", "7:00 PM"],
-              ["Sábado", "Conciertos", "7:00 PM"],
-            ].map(([label, title, detail]) => (
-              <div key={`${label}-${title}`} className="flex min-h-[250px] flex-col rounded-[1.5rem] bg-gradient-to-br from-blue-950 to-blue-900 p-6 text-white">
-                <p className="text-sm font-bold uppercase tracking-[0.22em] text-red-300">{label}</p>
-                <h3 className="mt-3 text-2xl font-black">{title}</h3>
-                <div className="mt-auto pt-10">
-                  <p className="text-5xl font-black tracking-tight text-white">{detail}</p>
-                  <p className="mt-3 text-sm font-semibold text-blue-100">Te esperamos en casa</p>
+        <div className="mx-auto grid max-w-7xl gap-4 rounded-[2rem] border border-white/70 bg-white/90 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl md:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-[1.5rem] bg-gradient-to-br from-blue-950 to-blue-900 p-6 text-white lg:col-span-2">
+            <p className="text-sm font-bold uppercase tracking-[0.22em] text-red-300">Domingo</p>
+            <h3 className="mt-3 text-2xl font-black">Servicios dominicales</h3>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              {[
+                ["9:45 AM", "Escuela dominical"],
+                ["11:00 AM", "Servicio matutino"],
+                ["6:00 PM", "Servicio de milagros"],
+              ].map(([time, name]) => (
+                <div key={time} className="rounded-2xl bg-white/10 p-4 ring-1 ring-white/10">
+                  <p className="text-xl font-black text-white">{time}</p>
+                  <p className="mt-1 text-sm text-blue-100">{name}</p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+          {[
+            ["Miércoles", "Reunión entre semana", "7:00 PM"],
+            ["Sábado", "Conciertos", "7:00 PM"],
+          ].map(([label, title, detail]) => (
+            <div key={`${label}-${title}`} className="rounded-[1.5rem] bg-gradient-to-br from-blue-950 to-blue-900 p-6 text-white">
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-red-300">{label}</p>
+              <h3 className="mt-3 text-2xl font-black">{title}</h3>
+              <p className="mt-2 text-blue-100">{detail}</p>
+            </div>
+          ))}
         </div>
       </section>
 
