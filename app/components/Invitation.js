@@ -21,11 +21,24 @@ export default function Invitation() {
           </p>
         </div>
         <div className="rounded-[2rem] border border-white/15 bg-white/10 p-6 shadow-2xl shadow-blue-950/30 backdrop-blur-xl" data-aos="fade-left">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="rounded-3xl bg-white p-6 text-blue-950 lg:col-span-2">
+              <p className="text-sm font-black uppercase tracking-[0.22em] text-red-600">Domingo</p>
+              <h3 className="mt-3 text-3xl font-black">Servicios dominicales</h3>
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                {[
+                  ["9:45 AM", "Escuela dominical"],
+                  ["11:00 AM", "Servicio matutino"],
+                  ["6:00 PM", "Servicio de milagros"],
+                ].map(([time, name]) => (
+                  <div key={time} className="rounded-2xl bg-blue-50 p-4">
+                    <p className="text-2xl font-black text-blue-950">{time}</p>
+                    <p className="mt-1 text-sm text-slate-600">{name}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
             {[
-              ["Domingo", "9:45 AM", "Escuela dominical"],
-              ["Domingo", "11:00 AM", "Servicio matutino"],
-              ["Domingo", "6:00 PM", "Servicio de milagros"],
               ["Miércoles", "7:00 PM", "Reunión entre semana"],
               ["Sábado", "7:00 PM", "Conciertos"],
             ].map(([day, time, name]) => (

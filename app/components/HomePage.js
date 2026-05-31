@@ -166,14 +166,26 @@ export default function HomePage() {
       </section>
 
       <section id="conocenos" className="relative z-20 -mt-16 px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-4 rounded-[2rem] border border-white/70 bg-white/90 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-7xl gap-4 rounded-[2rem] border border-white/70 bg-white/90 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl md:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-[1.5rem] bg-gradient-to-br from-blue-950 to-blue-900 p-6 text-white lg:col-span-2">
+            <p className="text-sm font-bold uppercase tracking-[0.22em] text-red-300">Domingo</p>
+            <h3 className="mt-3 text-2xl font-black">Servicios dominicales</h3>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              {[
+                ["9:45 AM", "Escuela dominical"],
+                ["11:00 AM", "Servicio matutino"],
+                ["6:00 PM", "Servicio de milagros"],
+              ].map(([time, name]) => (
+                <div key={time} className="rounded-2xl bg-white/10 p-4 ring-1 ring-white/10">
+                  <p className="text-xl font-black text-white">{time}</p>
+                  <p className="mt-1 text-sm text-blue-100">{name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           {[
-            ["Domingo", "Escuela dominical", "9:45 AM"],
-            ["Domingo", "Servicio matutino", "11:00 AM"],
-            ["Domingo", "Servicio de milagros", "6:00 PM"],
             ["Miércoles", "Reunión entre semana", "7:00 PM"],
             ["Sábado", "Conciertos", "7:00 PM"],
-            ["Ubicación", "Chihuahua, Chih.", "Te esperamos"],
           ].map(([label, title, detail]) => (
             <div key={`${label}-${title}`} className="rounded-[1.5rem] bg-gradient-to-br from-blue-950 to-blue-900 p-6 text-white">
               <p className="text-sm font-bold uppercase tracking-[0.22em] text-red-300">{label}</p>
