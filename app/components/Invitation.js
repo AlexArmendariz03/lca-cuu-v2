@@ -21,19 +21,23 @@ export default function Invitation() {
           </p>
         </div>
         <div className="rounded-[2rem] border border-white/15 bg-white/10 p-6 shadow-2xl shadow-blue-950/30 backdrop-blur-xl" data-aos="fade-left">
-          <div className="grid gap-4 lg:grid-cols-2">
-            <div className="rounded-3xl bg-white p-6 text-blue-950 lg:col-span-2">
+          <div className="mb-5">
+            <p className="text-sm font-black uppercase tracking-[0.22em] text-red-300">Horarios de servicios</p>
+            <h3 className="mt-2 text-2xl font-black">Elige la reunión ideal para tu familia</h3>
+          </div>
+          <div className="grid items-stretch gap-4 lg:grid-cols-3">
+            <div className="flex min-h-[260px] flex-col rounded-3xl bg-white p-6 text-blue-950">
               <p className="text-sm font-black uppercase tracking-[0.22em] text-red-600">Domingo</p>
-              <h3 className="mt-3 text-3xl font-black">Servicios dominicales</h3>
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <h4 className="mt-3 text-2xl font-black">Servicios dominicales</h4>
+              <div className="mt-5 grid flex-1 gap-3">
                 {[
                   ["9:45 AM", "Escuela dominical"],
                   ["11:00 AM", "Servicio matutino"],
                   ["6:00 PM", "Servicio de milagros"],
                 ].map(([time, name]) => (
-                  <div key={time} className="rounded-2xl bg-blue-50 p-4">
-                    <p className="text-2xl font-black text-blue-950">{time}</p>
-                    <p className="mt-1 text-sm text-slate-600">{name}</p>
+                  <div key={time} className="flex items-center justify-between gap-4 rounded-2xl bg-blue-50 px-4 py-3">
+                    <p className="text-xl font-black text-blue-950">{time}</p>
+                    <p className="text-right text-sm font-semibold text-slate-600">{name}</p>
                   </div>
                 ))}
               </div>
@@ -42,10 +46,13 @@ export default function Invitation() {
               ["Miércoles", "7:00 PM", "Reunión entre semana"],
               ["Sábado", "7:00 PM", "Conciertos"],
             ].map(([day, time, name]) => (
-              <div key={`${day}-${time}-${name}`} className="rounded-3xl bg-white p-6 text-blue-950">
+              <div key={`${day}-${time}-${name}`} className="flex min-h-[260px] flex-col rounded-3xl bg-white p-6 text-blue-950">
                 <p className="text-sm font-black uppercase tracking-[0.22em] text-red-600">{day}</p>
-                <h3 className="mt-3 text-3xl font-black">{time}</h3>
-                <p className="mt-2 text-slate-600">{name}</p>
+                <h4 className="mt-3 text-2xl font-black">{name}</h4>
+                <div className="mt-auto pt-10">
+                  <p className="text-5xl font-black tracking-tight text-blue-950">{time}</p>
+                  <p className="mt-3 text-sm font-semibold text-slate-500">Te esperamos en casa</p>
+                </div>
               </div>
             ))}
           </div>
