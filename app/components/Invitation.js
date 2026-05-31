@@ -22,16 +22,19 @@ export default function Invitation() {
         </div>
         <div className="rounded-[2rem] border border-white/15 bg-white/10 p-6 shadow-2xl shadow-blue-950/30 backdrop-blur-xl" data-aos="fade-left">
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-3xl bg-white p-6 text-blue-950">
-              <p className="text-sm font-black uppercase tracking-[0.22em] text-red-600">Domingo</p>
-              <h3 className="mt-3 text-3xl font-black">11:00 AM</h3>
-              <p className="mt-2 text-slate-600">Servicio familiar</p>
-            </div>
-            <div className="rounded-3xl bg-white p-6 text-blue-950">
-              <p className="text-sm font-black uppercase tracking-[0.22em] text-red-600">Miércoles</p>
-              <h3 className="mt-3 text-3xl font-black">7:00 PM</h3>
-              <p className="mt-2 text-slate-600">Reunión entre semana</p>
-            </div>
+            {[
+              ["Domingo", "9:45 AM", "Escuela dominical"],
+              ["Domingo", "11:00 AM", "Servicio matutino"],
+              ["Domingo", "6:00 PM", "Servicio de milagros"],
+              ["Miércoles", "7:00 PM", "Reunión entre semana"],
+              ["Sábado", "7:00 PM", "Conciertos"],
+            ].map(([day, time, name]) => (
+              <div key={`${day}-${time}-${name}`} className="rounded-3xl bg-white p-6 text-blue-950">
+                <p className="text-sm font-black uppercase tracking-[0.22em] text-red-600">{day}</p>
+                <h3 className="mt-3 text-3xl font-black">{time}</h3>
+                <p className="mt-2 text-slate-600">{name}</p>
+              </div>
+            ))}
           </div>
           <a
             href="https://www.youtube.com/@LaCasadelAlfareroChihuahuaChih"

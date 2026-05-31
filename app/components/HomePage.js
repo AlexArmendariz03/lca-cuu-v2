@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const slides = [
   {
@@ -52,17 +52,23 @@ const gallery = [
 ];
 
 export default function HomePage() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
   useEffect(() => {
-    const init = async () => {
-      const { Carousel, initTWE } = await import("tw-elements");
-      initTWE({
-        Carousel,
-        autoplay: true,
-        interval: 5000,
-      });
-    };
-    init();
+    const timer = window.setInterval(() => {
+      setActiveSlide((currentSlide) => (currentSlide + 1) % slides.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
   }, []);
+
+  const goToPreviousSlide = () => {
+    setActiveSlide((currentSlide) => (currentSlide - 1 + slides.length) % slides.length);
+  };
+
+  const goToNextSlide = () => {
+    setActiveSlide((currentSlide) => (currentSlide + 1) % slides.length);
+  };
 
   return (
     <main className="overflow-hidden bg-slate-50 text-slate-950">
@@ -71,25 +77,15 @@ export default function HomePage() {
         id="inicio"
         className="relative isolate min-h-[720px] w-full overflow-hidden bg-blue-950"
       >
-        <div
-          id="carouselExampleCaptions"
-          className="absolute inset-0"
-          data-twe-carousel-init
-          data-twe-ride="carousel"
-        >
-          <div
-            className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 list-none justify-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md"
-            data-twe-carousel-indicators
-          >
+        <div id="carouselExampleCaptions" className="absolute inset-0">
+          <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 list-none justify-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md">
             {slides.map((slide, index) => (
               <button
                 key={slide.image}
                 type="button"
-                data-twe-target="#carouselExampleCaptions"
-                data-twe-slide-to={index}
-                data-twe-carousel-active={index === 0 ? true : undefined}
-                className="h-2.5 w-8 rounded-full bg-white/75 transition-all duration-300 hover:w-12 hover:bg-white"
-                aria-current={index === 0 ? "true" : undefined}
+                onClick={() => setActiveSlide(index)}
+                className={`h-2.5 rounded-full transition-all duration-300 hover:w-12 hover:bg-white ${activeSlide === index ? "w-12 bg-white" : "w-8 bg-white/75"}`}
+                aria-current={activeSlide === index ? "true" : undefined}
                 aria-label={`Slide ${index + 1}`}
               />
             ))}
@@ -99,12 +95,10 @@ export default function HomePage() {
             {slides.map((slide, index) => (
               <div
                 key={slide.image}
-                className={`relative float-left -mr-[100%] h-full w-full transition-transform duration-[900ms] ease-in-out motion-reduce:transition-none ${
-                  index === 0 ? "" : "hidden"
+                className={`absolute inset-0 h-full w-full transition-opacity duration-[900ms] ease-in-out motion-reduce:transition-none ${
+                  activeSlide === index ? "opacity-100" : "opacity-0"
                 }`}
-                data-twe-carousel-active={index === 0 ? true : undefined}
-                data-twe-carousel-item
-                style={{ backfaceVisibility: "hidden" }}
+                aria-hidden={activeSlide !== index}
               >
                 <Image
                   src={slide.image}
@@ -123,8 +117,7 @@ export default function HomePage() {
           <button
             className="absolute bottom-0 left-0 top-0 z-20 hidden w-20 items-center justify-center text-white/70 transition hover:bg-white/10 hover:text-white md:flex"
             type="button"
-            data-twe-target="#carouselExampleCaptions"
-            data-twe-slide="prev"
+            onClick={goToPreviousSlide}
             aria-label="Anterior"
           >
             <span className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 backdrop-blur-md">
@@ -137,8 +130,7 @@ export default function HomePage() {
           <button
             className="absolute bottom-0 right-0 top-0 z-20 hidden w-20 items-center justify-center text-white/70 transition hover:bg-white/10 hover:text-white md:flex"
             type="button"
-            data-twe-target="#carouselExampleCaptions"
-            data-twe-slide="next"
+            onClick={goToNextSlide}
             aria-label="Siguiente"
           >
             <span className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 backdrop-blur-md">
@@ -174,13 +166,16 @@ export default function HomePage() {
       </section>
 
       <section id="conocenos" className="relative z-20 -mt-16 px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-4 rounded-[2rem] border border-white/70 bg-white/90 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl md:grid-cols-3">
+        <div className="mx-auto grid max-w-7xl gap-4 rounded-[2rem] border border-white/70 bg-white/90 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl sm:grid-cols-2 lg:grid-cols-3">
           {[
-            ["Domingo", "Servicio familiar", "11:00 AM"],
+            ["Domingo", "Escuela dominical", "9:45 AM"],
+            ["Domingo", "Servicio matutino", "11:00 AM"],
+            ["Domingo", "Servicio de milagros", "6:00 PM"],
             ["Miércoles", "Reunión entre semana", "7:00 PM"],
+            ["Sábado", "Conciertos", "7:00 PM"],
             ["Ubicación", "Chihuahua, Chih.", "Te esperamos"],
           ].map(([label, title, detail]) => (
-            <div key={label} className="rounded-[1.5rem] bg-gradient-to-br from-blue-950 to-blue-900 p-6 text-white">
+            <div key={`${label}-${title}`} className="rounded-[1.5rem] bg-gradient-to-br from-blue-950 to-blue-900 p-6 text-white">
               <p className="text-sm font-bold uppercase tracking-[0.22em] text-red-300">{label}</p>
               <h3 className="mt-3 text-2xl font-black">{title}</h3>
               <p className="mt-2 text-blue-100">{detail}</p>
@@ -194,7 +189,7 @@ export default function HomePage() {
           <div data-aos="fade-right">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Nuestra casa</p>
             <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
-              Una iglesia cálida, moderna y centrada en Jesús.
+              Una iglesia donde Jesucristo está cambiando vidas.
             </h2>
             <p className="mt-6 text-lg text-slate-600">
               Conservamos lo esencial: una comunidad cercana, adoración sincera y enseñanza bíblica. Renovamos la experiencia para que desde la primera visita se sienta claro, amigable y memorable.
