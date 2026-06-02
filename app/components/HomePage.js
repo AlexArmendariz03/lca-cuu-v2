@@ -165,7 +165,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="conocenos" className="relative z-20 -mt-16 px-6 lg:px-8">
+      <section id="servicios" className="relative z-20 -mt-16 px-6 lg:px-8">
         <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/95 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl">
           <div className="grid overflow-hidden rounded-[1.6rem] bg-white ring-1 ring-blue-100 lg:grid-cols-[0.85fr_1.45fr]">
             <div className="relative isolate overflow-hidden bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 p-7 text-white">
@@ -201,7 +201,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="px-6 py-24 lg:px-8">
+      <section id="conocenos" className="px-6 py-24 lg:px-8">
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div data-aos="fade-right">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Nuestra casa</p>

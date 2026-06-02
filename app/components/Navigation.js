@@ -24,6 +24,7 @@ const menuItems = [
   { label: "Ministerios", href: "#ministerios" },
   { label: "Galería", href: "#galeria" },
   { label: "Servicios", href: "#servicios" },
+  { label: "Contacto", href: "#contacto" },
 ];
 
 export default function Navigation() {
@@ -98,6 +99,11 @@ export default function Navigation() {
         <NavbarItem>
           <Link href="#servicios" className="font-semibold text-white/90 transition hover:text-white">
             Servicios
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link href="#contacto" className="font-semibold text-white/90 transition hover:text-white">
+            Contacto
           </Link>
         </NavbarItem>
       </NavbarContent>
