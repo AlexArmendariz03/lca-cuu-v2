@@ -166,29 +166,34 @@ export default function HomePage() {
       </section>
 
       <section id="conocenos" className="relative z-20 -mt-16 px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/95 p-5 shadow-2xl shadow-blue-950/10 backdrop-blur-xl">
-          <div className="rounded-[1.6rem] bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 p-6 text-white">
-            <div className="flex flex-col gap-3 border-b border-white/10 pb-5 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-sm font-black uppercase tracking-[0.26em] text-red-300">Horarios</p>
-                <h2 className="mt-2 text-3xl font-black tracking-tight">Todos nuestros servicios</h2>
-              </div>
-              <p className="max-w-sm text-sm font-semibold text-blue-100 md:text-right">
-                Un solo lugar para ver cada reunión de la semana. Ven con tu familia, tenemos un espacio para ti.
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/95 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl">
+          <div className="grid overflow-hidden rounded-[1.6rem] bg-white ring-1 ring-blue-100 lg:grid-cols-[0.85fr_1.45fr]">
+            <div className="relative isolate overflow-hidden bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 p-7 text-white">
+              <div className="absolute -right-16 -top-16 -z-10 h-44 w-44 rounded-full bg-red-600/30 blur-3xl" />
+              <p className="text-sm font-black uppercase tracking-[0.26em] text-red-300">Horarios</p>
+              <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Reuniones de la semana</h2>
+              <p className="mt-4 text-sm font-semibold leading-6 text-blue-100">
+                Todo en un solo lugar, ordenado por día para que encuentres rápido la reunión ideal para tu familia.
               </p>
             </div>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="divide-y divide-blue-100 p-3 sm:p-5">
               {[
-                ["Domingo", "9:45 AM", "Escuela dominical"],
-                ["Domingo", "11:00 AM", "Servicio matutino"],
-                ["Domingo", "6:00 PM", "Servicio de milagros"],
-                ["Miércoles", "7:00 PM", "Reunión entre semana"],
-                ["Sábado", "7:00 PM", "Conciertos"],
-              ].map(([day, time, name]) => (
-                <div key={`${day}-${time}-${name}`} className="rounded-2xl bg-white/10 p-4 ring-1 ring-white/10 transition hover:-translate-y-1 hover:bg-white/15">
-                  <p className="inline-flex rounded-full bg-red-600/90 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-white">{day}</p>
-                  <p className="mt-4 text-2xl font-black leading-none text-white">{time}</p>
-                  <p className="mt-2 text-sm font-semibold text-blue-100">{name}</p>
+                ["Domingo", [["9:45 AM", "Escuela dominical"], ["11:00 AM", "Servicio matutino"], ["6:00 PM", "Servicio de milagros"]]],
+                ["Miércoles", [["7:00 PM", "Reunión entre semana"]]],
+                ["Sábado", [["7:00 PM", "Conciertos"]]],
+              ].map(([day, services]) => (
+                <div key={day} className="grid gap-4 py-5 first:pt-2 last:pb-2 md:grid-cols-[160px_1fr] md:items-center">
+                  <div>
+                    <p className="inline-flex rounded-full bg-red-600 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-red-950/20">{day}</p>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    {services.map(([time, name]) => (
+                      <div key={`${day}-${time}`} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-blue-100">
+                        <p className="text-2xl font-black leading-none text-blue-950">{time}</p>
+                        <p className="mt-2 text-sm font-semibold text-slate-600">{name}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>

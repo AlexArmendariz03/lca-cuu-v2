@@ -20,27 +20,29 @@ export default function Invitation() {
             Aparta un momento para adorar, recibir palabra y conectar con una familia espiritual. Tenemos un lugar preparado para ti.
           </p>
         </div>
-        <div className="rounded-[2rem] border border-white/15 bg-white/10 p-6 shadow-2xl shadow-blue-950/30 backdrop-blur-xl" data-aos="fade-left">
-          <div className="rounded-3xl bg-white p-6 text-blue-950">
-            <div className="flex flex-col gap-2 border-b border-blue-100 pb-5 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-sm font-black uppercase tracking-[0.22em] text-red-600">Horarios de servicios</p>
-                <h3 className="mt-2 text-3xl font-black">Toda la semana en un solo lugar</h3>
-              </div>
-              <p className="text-sm font-semibold text-slate-500 sm:text-right">Te esperamos en casa</p>
+        <div className="rounded-[2rem] border border-white/15 bg-white/10 p-5 shadow-2xl shadow-blue-950/30 backdrop-blur-xl" data-aos="fade-left">
+          <div className="overflow-hidden rounded-3xl bg-white text-blue-950">
+            <div className="bg-gradient-to-r from-blue-950 to-blue-900 p-6 text-white">
+              <p className="text-sm font-black uppercase tracking-[0.22em] text-red-300">Horarios de servicios</p>
+              <h3 className="mt-2 text-3xl font-black">Toda la semana en un solo card</h3>
+              <p className="mt-3 text-sm font-semibold text-blue-100">Ordenado por día, claro y fácil de leer.</p>
             </div>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="divide-y divide-blue-100 p-4">
               {[
-                ["Domingo", "9:45 AM", "Escuela dominical"],
-                ["Domingo", "11:00 AM", "Servicio matutino"],
-                ["Domingo", "6:00 PM", "Servicio de milagros"],
-                ["Miércoles", "7:00 PM", "Reunión entre semana"],
-                ["Sábado", "7:00 PM", "Conciertos"],
-              ].map(([day, time, name]) => (
-                <div key={`${day}-${time}-${name}`} className="rounded-2xl bg-blue-50 p-4 ring-1 ring-blue-100">
-                  <p className="inline-flex rounded-full bg-red-600 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-white">{day}</p>
-                  <p className="mt-4 text-2xl font-black leading-none text-blue-950">{time}</p>
-                  <p className="mt-2 text-sm font-semibold text-slate-600">{name}</p>
+                ["Domingo", [["9:45 AM", "Escuela dominical"], ["11:00 AM", "Servicio matutino"], ["6:00 PM", "Servicio de milagros"]]],
+                ["Miércoles", [["7:00 PM", "Reunión entre semana"]]],
+                ["Sábado", [["7:00 PM", "Conciertos"]]],
+              ].map(([day, services]) => (
+                <div key={day} className="grid gap-4 py-4 first:pt-0 last:pb-0 md:grid-cols-[140px_1fr] md:items-center">
+                  <p className="inline-flex w-fit rounded-full bg-red-600 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white">{day}</p>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    {services.map(([time, name]) => (
+                      <div key={`${day}-${time}`} className="rounded-2xl bg-blue-50 p-4 ring-1 ring-blue-100">
+                        <p className="text-2xl font-black leading-none text-blue-950">{time}</p>
+                        <p className="mt-2 text-sm font-semibold text-slate-600">{name}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
