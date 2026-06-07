@@ -51,6 +51,14 @@ const gallery = [
   { src: "/Marioniños.jpg", alt: "Ministerio de niños", label: "Niños" },
 ];
 
+const scheduleItems = [
+  { day: "Domingo", time: "9:45 AM", name: "Escuela dominical" },
+  { day: "Domingo", time: "11:00 AM", name: "Servicio matutino" },
+  { day: "Domingo", time: "6:00 PM", name: "Servicio de milagros" },
+  { day: "Miércoles", time: "7:00 PM", name: "Reunión entre semana" },
+  { day: "Sábado", time: "7:00 PM", name: "Conciertos" },
+];
+
 export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
 
@@ -167,35 +175,43 @@ export default function HomePage() {
 
       <section id="servicios" className="relative z-20 -mt-16 px-6 lg:px-8">
         <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/95 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl">
-          <div className="grid overflow-hidden rounded-[1.6rem] bg-white ring-1 ring-blue-100 lg:grid-cols-[0.85fr_1.45fr]">
-            <div className="relative isolate overflow-hidden bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 p-7 text-white">
-              <div className="absolute -right-16 -top-16 -z-10 h-44 w-44 rounded-full bg-red-600/30 blur-3xl" />
-              <p className="text-sm font-black uppercase tracking-[0.26em] text-red-300">Horarios</p>
-              <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Reuniones de la semana</h2>
-              <p className="mt-4 text-sm font-semibold leading-6 text-blue-100">
-                Todo en un solo lugar, ordenado por día para que encuentres rápido la reunión ideal para tu familia.
+          <div className="relative isolate overflow-hidden rounded-[1.6rem] bg-white ring-1 ring-blue-100">
+            <div className="absolute -right-20 -top-20 -z-10 h-56 w-56 rounded-full bg-red-600/10 blur-3xl" />
+            <div className="absolute -bottom-24 left-12 -z-10 h-64 w-64 rounded-full bg-blue-900/10 blur-3xl" />
+
+            <div className="grid gap-6 bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 p-7 text-white lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:p-8">
+              <div>
+                <p className="text-sm font-black uppercase tracking-[0.26em] text-red-300">Horarios</p>
+                <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Reuniones de la semana</h2>
+              </div>
+              <p className="max-w-2xl text-sm font-semibold leading-6 text-blue-100 lg:ml-auto lg:text-right">
+                Un bloque claro y horizontal para comparar días, horas y reuniones de un vistazo antes de visitarnos.
               </p>
             </div>
-            <div className="divide-y divide-blue-100 p-3 sm:p-5">
-              {[
-                ["Domingo", [["9:45 AM", "Escuela dominical"], ["11:00 AM", "Servicio matutino"], ["6:00 PM", "Servicio de milagros"]]],
-                ["Miércoles", [["7:00 PM", "Reunión entre semana"]]],
-                ["Sábado", [["7:00 PM", "Conciertos"]]],
-              ].map(([day, services]) => (
-                <div key={day} className="grid gap-4 py-5 first:pt-2 last:pb-2 md:grid-cols-[160px_1fr] md:items-center">
-                  <div>
-                    <p className="inline-flex rounded-full bg-red-600 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-red-950/20">{day}</p>
-                  </div>
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    {services.map(([time, name]) => (
-                      <div key={`${day}-${time}`} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-blue-100">
-                        <p className="text-2xl font-black leading-none text-blue-950">{time}</p>
-                        <p className="mt-2 text-sm font-semibold text-slate-600">{name}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+
+            <div className="p-4 sm:p-6">
+              <div className="flex snap-x gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0">
+                {scheduleItems.map((service, index) => (
+                  <article
+                    key={`${service.day}-${service.time}`}
+                    className="group relative flex min-w-[235px] snap-start flex-col justify-between overflow-hidden rounded-3xl border border-blue-100 bg-slate-50 p-5 shadow-lg shadow-blue-950/5 transition duration-300 hover:-translate-y-1 hover:border-red-200 hover:bg-white hover:shadow-xl hover:shadow-blue-950/10 lg:min-w-0"
+                  >
+                    <div className="absolute right-4 top-4 text-5xl font-black leading-none text-blue-950/[0.04]">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+                    <div>
+                      <span className="inline-flex rounded-full bg-red-600 px-3 py-1.5 text-[0.68rem] font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-red-950/20">
+                        {service.day}
+                      </span>
+                      <p className="mt-6 text-3xl font-black leading-none text-blue-950">{service.time}</p>
+                      <p className="mt-3 text-sm font-semibold text-slate-600">{service.name}</p>
+                    </div>
+                    <div className="mt-6 h-1.5 rounded-full bg-blue-100">
+                      <div className="h-full w-10 rounded-full bg-red-600 transition-all duration-300 group-hover:w-full" />
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           </div>
         </div>
