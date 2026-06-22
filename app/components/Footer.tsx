@@ -7,6 +7,7 @@ const footerLinks: FooterLink[] = [
   { label: "Inicio", href: "#inicio" },
   { label: "Horarios", href: "#servicios" },
   { label: "Conócenos", href: "#conocenos" },
+  { label: "Descendencia", href: "#descendencia" },
   { label: "Ministerios", href: "#ministerios" },
   { label: "Galería", href: "#galeria" },
   { label: "Contacto", href: "#contacto" },

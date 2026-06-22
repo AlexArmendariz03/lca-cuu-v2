@@ -26,6 +26,7 @@ type MenuItem = {
 const menuItems: MenuItem[] = [
   { label: "Inicio", href: "#inicio" },
   { label: "Conócenos", href: "#conocenos" },
+  { label: "Descendencia", href: "#descendencia" },
   { label: "Ministerios", href: "#ministerios" },
   { label: "Galería", href: "#galeria" },
   { label: "Servicios", href: "#servicios" },
@@ -96,6 +97,11 @@ export default function Navigation() {
           </DropdownMenu>
         </Dropdown>
 
+        <NavbarItem>
+          <Link href="#descendencia" className="font-semibold text-white/90 transition hover:text-white">
+            Descendencia
+          </Link>
+        </NavbarItem>
         <NavbarItem>
           <Link href="#galeria" className="font-semibold text-white/90 transition hover:text-white">
             Galería
