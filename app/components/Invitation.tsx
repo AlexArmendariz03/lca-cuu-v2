@@ -1,3 +1,4 @@
+import type { ComponentType, SVGProps } from "react";
 import React from "react";
 
 const FacebookIcon = () => (
@@ -44,7 +45,15 @@ const LocationIcon = () => (
   </svg>
 );
 
-const socialLinks = [
+type SocialLink = {
+  label: string;
+  description: string;
+  href: string;
+  accent: string;
+  Icon: ComponentType<SVGProps<SVGSVGElement>>;
+};
+
+const socialLinks: SocialLink[] = [
   {
     label: "Facebook",
     description:

@@ -1,7 +1,9 @@
 import Image from "next/image";
 import React from "react";
 
-const footerLinks = [
+type FooterLink = { label: string; href: string };
+
+const footerLinks: FooterLink[] = [
   { label: "Inicio", href: "#inicio" },
   { label: "Horarios", href: "#servicios" },
   { label: "Conócenos", href: "#conocenos" },
@@ -10,7 +12,7 @@ const footerLinks = [
   { label: "Contacto", href: "#contacto" },
 ];
 
-const footerHighlights = ["Compañerismo", "Familia", "Fe", "Esperanza"];
+const footerHighlights: string[] = ["Compañerismo", "Familia", "Fe", "Esperanza"];
 
 export default function Footer() {
   return (

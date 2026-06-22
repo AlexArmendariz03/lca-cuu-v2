@@ -3,7 +3,41 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-const slides = [
+type HeroSlide = {
+  image: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+};
+
+type Ministry = {
+  title: string;
+  description: string;
+  icon: string;
+  nextStep: string;
+};
+
+type GalleryItem = {
+  src: string;
+  alt: string;
+  label: string;
+};
+
+type ScheduleItem = {
+  day: string;
+  time: string;
+  name: string;
+  note: string;
+  featured?: boolean;
+};
+
+type ValueCard = {
+  number: string;
+  title: string;
+  description: string;
+};
+
+const slides: HeroSlide[] = [
   {
     image: "/partyhouse.webp",
     eyebrow: "Bienvenido a casa",
@@ -27,36 +61,62 @@ const slides = [
   },
 ];
 
-const ministries = [
+const ministries: Ministry[] = [
   {
     title: "Familias",
     description: "Un espacio seguro para crecer juntos en amor, restauración y dirección espiritual.",
     icon: "✦",
+    nextStep: "Grupos, oración y acompañamiento para matrimonios y familias.",
   },
   {
     title: "Jóvenes",
     description: "Reuniones dinámicas, amistades sanas y conversaciones relevantes para esta generación.",
     icon: "✧",
+    nextStep: "Conecta con actividades semanales y eventos especiales.",
   },
   {
     title: "Niños",
     description: "Ambientes alegres y cuidados para que los más pequeños aprendan de Jesús.",
     icon: "✺",
+    nextStep: "Lecciones bíblicas, dinámicas y cuidado durante los servicios.",
   },
 ];
 
-const gallery = [
+const gallery: GalleryItem[] = [
   { src: "/servicios.jpg", alt: "Servicio de iglesia", label: "Servicios" },
   { src: "/pastores.webp", alt: "Pastores de la iglesia", label: "Pastores" },
   { src: "/Marioniños.jpg", alt: "Ministerio de niños", label: "Niños" },
 ];
 
-const scheduleItems = [
+const scheduleItems: ScheduleItem[] = [
   { day: "Domingo", time: "9:45 AM", name: "Escuela dominical", note: "Formación bíblica" },
   { day: "Domingo", time: "11:00 AM", name: "Servicio matutino", note: "Reunión familiar", featured: true },
   { day: "Domingo", time: "6:00 PM", name: "Servicio de milagros", note: "Oración y fe" },
   { day: "Miércoles", time: "7:00 PM", name: "Reunión entre semana", note: "Recarga espiritual" },
   { day: "Sábado", time: "7:00 PM", name: "Conciertos", note: "Jóvenes y comunidad" },
+];
+
+const valueCards: ValueCard[] = [
+  {
+    number: "01",
+    title: "Compañerismo",
+    description: "Conexiones reales para cada etapa de vida.",
+  },
+  {
+    number: "02",
+    title: "Propósito",
+    description: "Una fe práctica para servir a Dios y a la ciudad.",
+  },
+  {
+    number: "03",
+    title: "Restauración",
+    description: "Un ambiente de gracia para volver a empezar.",
+  },
+  {
+    number: "04",
+    title: "Servicio",
+    description: "Oportunidades para usar tus dones y bendecir a otros.",
+  },
 ];
 
 export default function HomePage() {
@@ -265,16 +325,13 @@ export default function HomePage() {
               Conservamos lo esencial: una comunidad cercana, adoración sincera y enseñanza bíblica. Renovamos la experiencia para que desde la primera visita se sienta claro, amigable y memorable.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5">
-                <span className="text-3xl font-black text-red-600">01</span>
-                <h3 className="mt-3 font-black text-blue-950">Compañerismo</h3>
-                <p className="mt-2 text-sm text-slate-600">Conexiones reales para cada etapa de vida.</p>
-              </div>
-              <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5">
-                <span className="text-3xl font-black text-red-600">02</span>
-                <h3 className="mt-3 font-black text-blue-950">Propósito</h3>
-                <p className="mt-2 text-sm text-slate-600">Una fe práctica para servir a Dios y a la ciudad.</p>
-              </div>
+              {valueCards.map((value) => (
+                <div key={value.number} className="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10">
+                  <span className="text-3xl font-black text-red-600">{value.number}</span>
+                  <h3 className="mt-3 font-black text-blue-950">{value.title}</h3>
+                  <p className="mt-2 text-sm text-slate-600">{value.description}</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className="relative" data-aos="fade-left">
@@ -302,6 +359,7 @@ export default function HomePage() {
                 <div className="grid h-14 w-14 place-items-center rounded-2xl bg-red-600 text-2xl text-white shadow-lg shadow-red-950/30">{ministry.icon}</div>
                 <h3 className="mt-8 text-2xl font-black">{ministry.title}</h3>
                 <p className="mt-4 text-blue-100 transition group-hover:text-slate-600">{ministry.description}</p>
+                <p className="mt-6 rounded-2xl border border-white/10 bg-white/10 p-4 text-sm font-semibold text-blue-50 transition group-hover:border-blue-100 group-hover:bg-slate-50 group-hover:text-slate-600">{ministry.nextStep}</p>
               </article>
             ))}
           </div>

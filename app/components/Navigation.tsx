@@ -18,7 +18,12 @@ import {
   NavbarMenuItem,
 } from "@nextui-org/react";
 
-const menuItems = [
+type MenuItem = {
+  label: string;
+  href: string;
+};
+
+const menuItems: MenuItem[] = [
   { label: "Inicio", href: "#inicio" },
   { label: "Conócenos", href: "#conocenos" },
   { label: "Ministerios", href: "#ministerios" },
