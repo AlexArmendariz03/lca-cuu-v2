@@ -51,6 +51,14 @@ const gallery = [
   { src: "/Marioniños.jpg", alt: "Ministerio de niños", label: "Niños" },
 ];
 
+const scheduleItems = [
+  { day: "Domingo", time: "9:45 AM", name: "Escuela dominical", note: "Formación bíblica" },
+  { day: "Domingo", time: "11:00 AM", name: "Servicio matutino", note: "Reunión familiar", featured: true },
+  { day: "Domingo", time: "6:00 PM", name: "Servicio de milagros", note: "Oración y fe" },
+  { day: "Miércoles", time: "7:00 PM", name: "Reunión entre semana", note: "Recarga espiritual" },
+  { day: "Sábado", time: "7:00 PM", name: "Conciertos", note: "Jóvenes y comunidad" },
+];
+
 export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
 
@@ -167,35 +175,80 @@ export default function HomePage() {
 
       <section id="servicios" className="relative z-20 -mt-16 px-6 lg:px-8">
         <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/95 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl">
-          <div className="grid overflow-hidden rounded-[1.6rem] bg-white ring-1 ring-blue-100 lg:grid-cols-[0.85fr_1.45fr]">
-            <div className="relative isolate overflow-hidden bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 p-7 text-white">
-              <div className="absolute -right-16 -top-16 -z-10 h-44 w-44 rounded-full bg-red-600/30 blur-3xl" />
-              <p className="text-sm font-black uppercase tracking-[0.26em] text-red-300">Horarios</p>
-              <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Reuniones de la semana</h2>
-              <p className="mt-4 text-sm font-semibold leading-6 text-blue-100">
-                Todo en un solo lugar, ordenado por día para que encuentres rápido la reunión ideal para tu familia.
-              </p>
+          <div className="relative isolate overflow-hidden rounded-[1.6rem] bg-white ring-1 ring-blue-100">
+            <div className="absolute -right-20 -top-20 -z-10 h-56 w-56 rounded-full bg-red-600/10 blur-3xl" />
+            <div className="absolute -bottom-24 left-12 -z-10 h-64 w-64 rounded-full bg-blue-900/10 blur-3xl" />
+
+            <div className="grid gap-6 bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 p-7 text-white lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:p-8">
+              <div>
+                <p className="text-sm font-black uppercase tracking-[0.26em] text-red-300">Horarios</p>
+                <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Reuniones de la semana</h2>
+              </div>
+              <div className="max-w-2xl lg:ml-auto lg:text-right">
+                <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-white/90 backdrop-blur-md">
+                  Iglesia de compañerismo cristiano
+                </p>
+                <p className="mt-3 text-sm font-semibold leading-6 text-blue-100">
+                  Un bloque claro, dinámico y horizontal para elegir rápido la reunión ideal para tu familia.
+                </p>
+              </div>
             </div>
-            <div className="divide-y divide-blue-100 p-3 sm:p-5">
-              {[
-                ["Domingo", [["9:45 AM", "Escuela dominical"], ["11:00 AM", "Servicio matutino"], ["6:00 PM", "Servicio de milagros"]]],
-                ["Miércoles", [["7:00 PM", "Reunión entre semana"]]],
-                ["Sábado", [["7:00 PM", "Conciertos"]]],
-              ].map(([day, services]) => (
-                <div key={day} className="grid gap-4 py-5 first:pt-2 last:pb-2 md:grid-cols-[160px_1fr] md:items-center">
-                  <div>
-                    <p className="inline-flex rounded-full bg-red-600 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white shadow-lg shadow-red-950/20">{day}</p>
-                  </div>
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    {services.map(([time, name]) => (
-                      <div key={`${day}-${time}`} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-blue-100">
-                        <p className="text-2xl font-black leading-none text-blue-950">{time}</p>
-                        <p className="mt-2 text-sm font-semibold text-slate-600">{name}</p>
+
+            <div className="p-4 sm:p-6">
+              <div className="rounded-[1.45rem] border border-blue-100 bg-gradient-to-r from-slate-50 via-white to-slate-50 p-3 shadow-inner shadow-blue-950/5 sm:p-4">
+                <div className="flex items-stretch gap-3 overflow-x-auto pb-2 lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0">
+                  {scheduleItems.map((service, index) => (
+                    <article
+                      key={`${service.day}-${service.time}`}
+                      className={`group relative flex min-w-[235px] flex-col overflow-hidden rounded-3xl border p-5 transition duration-300 hover:-translate-y-1 hover:shadow-xl lg:min-w-0 ${
+                        service.featured
+                          ? "border-red-200 bg-blue-950 text-white shadow-xl shadow-blue-950/20"
+                          : "border-blue-100 bg-white text-slate-950 shadow-lg shadow-blue-950/5 hover:border-red-200"
+                      }`}
+                    >
+                      <div className={`absolute right-4 top-4 text-5xl font-black leading-none ${service.featured ? "text-white/10" : "text-blue-950/[0.04]"}`}>
+                        {String(index + 1).padStart(2, "0")}
                       </div>
-                    ))}
-                  </div>
+
+                      <div className="flex items-center justify-between gap-3">
+                        <span className={`inline-flex rounded-full px-3 py-1.5 text-[0.68rem] font-black uppercase tracking-[0.18em] shadow-lg ${service.featured ? "bg-red-600 text-white shadow-red-950/30" : "bg-red-600 text-white shadow-red-950/20"}`}>
+                          {service.day}
+                        </span>
+                        {service.featured && (
+                          <span className="rounded-full bg-white/10 px-3 py-1 text-[0.65rem] font-black uppercase tracking-[0.16em] text-red-100 ring-1 ring-white/15">
+                            Principal
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="mt-6 flex grow flex-col">
+                        <p className={`text-3xl font-black leading-none ${service.featured ? "text-white" : "text-blue-950"}`}>{service.time}</p>
+                        <p className={`mt-3 text-sm font-black ${service.featured ? "text-blue-50" : "text-slate-700"}`}>{service.name}</p>
+                        <p className={`mt-2 text-xs font-semibold ${service.featured ? "text-blue-100" : "text-slate-500"}`}>{service.note}</p>
+                      </div>
+
+                      <div className={`mt-6 h-1.5 rounded-full ${service.featured ? "bg-white/15" : "bg-blue-100"}`}>
+                        <div className="h-full w-10 rounded-full bg-red-600 transition-all duration-300 group-hover:w-full" />
+                      </div>
+                    </article>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-2xl border border-blue-100 bg-white p-4 shadow-lg shadow-blue-950/5">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-red-600">Para todos</p>
+                  <p className="mt-2 text-sm font-semibold text-slate-600">Familias, jóvenes y niños son bienvenidos en casa.</p>
+                </div>
+                <div className="rounded-2xl border border-blue-100 bg-white p-4 shadow-lg shadow-blue-950/5">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-red-600">Primera visita</p>
+                  <p className="mt-2 text-sm font-semibold text-slate-600">Llega unos minutos antes y nuestro equipo te orienta.</p>
+                </div>
+                <a href="#contacto" className="rounded-2xl bg-red-600 p-4 text-white shadow-lg shadow-red-950/20 transition hover:-translate-y-1 hover:bg-red-500">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-red-100">¿Dudas?</p>
+                  <p className="mt-2 text-sm font-black">Contáctanos y planea tu visita →</p>
+                </a>
+              </div>
             </div>
           </div>
         </div>
