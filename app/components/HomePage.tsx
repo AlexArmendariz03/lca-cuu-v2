@@ -382,49 +382,68 @@ export default function HomePage() {
       </section>
 
 
-      <section id="descendencia" className="relative overflow-hidden bg-white px-6 py-24 lg:px-8">
-        <div className="absolute left-1/2 top-16 h-72 w-72 -translate-x-1/2 rounded-full bg-red-600/10 blur-3xl" />
-        <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-blue-950/10 blur-3xl" />
+      <section id="descendencia" className="relative isolate overflow-hidden bg-slate-100 px-6 py-24 lg:px-8">
+        <div className="absolute inset-x-0 top-0 -z-10 h-44 bg-blue-950" />
+        <div className="absolute left-1/2 top-20 -z-10 h-80 w-80 -translate-x-1/2 rounded-full bg-red-600/20 blur-3xl" />
+        <div className="absolute bottom-0 right-0 -z-10 h-96 w-96 rounded-full bg-blue-950/10 blur-3xl" />
 
-        <div className="relative mx-auto max-w-7xl">
-          <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-            <div data-aos="fade-right">
-              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Descendencia de iglesia</p>
+        <div className="mx-auto max-w-7xl">
+          <div className="rounded-[2.5rem] border border-white/70 bg-white p-5 shadow-2xl shadow-blue-950/10 sm:p-8 lg:p-10">
+            <div className="mx-auto max-w-3xl text-center" data-aos="fade-up">
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Sección especial</p>
               <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
-                De Prescott a Chihuahua: una historia que sigue avanzando.
+                Organigrama de descendencia de iglesia.
               </h2>
               <p className="mt-6 text-lg text-slate-600">
-                Este mapa visual deja lista la estructura para documentar la línea de envío, pastores, fechas y testimonios de cada ciudad conforme vayas completando la información.
+                Una estructura jerárquica para mostrar de dónde nace la obra y cómo llega hasta La Casa del Alfarero Chihuahua. Queda lista para agregar nombres de pastores, años, fotos o notas históricas.
               </p>
-              <div className="mt-8 rounded-3xl border border-blue-100 bg-slate-50 p-5 shadow-inner shadow-blue-950/5">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-red-600">Ruta base</p>
-                <p className="mt-3 text-2xl font-black text-blue-950">Prescott → Nogales → Los Mochis → Chihuahua</p>
-              </div>
             </div>
 
-            <div className="relative" data-aos="fade-left">
-              <div className="absolute left-8 top-10 hidden h-[calc(100%-5rem)] w-1 rounded-full bg-gradient-to-b from-red-600 via-blue-950 to-red-600 md:block" />
-              <div className="grid gap-4">
-                {churchLineage.map((item, index) => (
-                  <article
-                    key={item.city}
-                    className="relative grid gap-4 rounded-[2rem] border border-blue-100 bg-white p-5 shadow-xl shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-blue-950/10 md:grid-cols-[4.5rem_1fr] md:items-center"
-                  >
-                    <div className="relative z-10 grid h-16 w-16 place-items-center rounded-2xl bg-blue-950 text-xl font-black text-white shadow-lg shadow-blue-950/20">
-                      {String(index + 1).padStart(2, "0")}
+            <div className="mt-12 overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-50 via-white to-blue-50 p-5 ring-1 ring-blue-100 sm:p-8" data-aos="zoom-in">
+              <div className="relative mx-auto flex max-w-4xl flex-col items-center">
+                <div className="absolute bottom-16 top-16 hidden w-1 rounded-full bg-gradient-to-b from-red-600 via-blue-950 to-red-600 md:block" />
+
+                {churchLineage.map((item, index) => {
+                  const isFinalNode = index === churchLineage.length - 1;
+
+                  return (
+                    <div key={item.city} className="relative z-10 flex w-full flex-col items-center">
+                      <article
+                        className={`w-full max-w-2xl rounded-[2rem] border p-6 text-center shadow-xl transition hover:-translate-y-1 sm:p-7 ${
+                          isFinalNode
+                            ? "border-red-200 bg-blue-950 text-white shadow-blue-950/20"
+                            : "border-blue-100 bg-white text-slate-950 shadow-blue-950/5"
+                        }`}
+                      >
+                        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-red-600 text-lg font-black text-white shadow-lg shadow-red-950/20">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+                        <div className="mt-5 flex flex-wrap justify-center gap-3">
+                          <span className={`rounded-full px-3 py-1 text-xs font-black uppercase tracking-[0.16em] ${isFinalNode ? "bg-white/10 text-red-100 ring-1 ring-white/15" : "bg-red-50 text-red-600"}`}>
+                            {item.label}
+                          </span>
+                          <span className={`text-sm font-bold ${isFinalNode ? "text-blue-100" : "text-slate-500"}`}>{item.country}</span>
+                        </div>
+                        <h3 className={`mt-4 text-3xl font-black ${isFinalNode ? "text-white" : "text-blue-950"}`}>{item.city}</h3>
+                        <p className={`mx-auto mt-3 max-w-xl text-sm font-semibold leading-6 ${isFinalNode ? "text-blue-100" : "text-slate-600"}`}>
+                          {item.description}
+                        </p>
+                      </article>
+
+                      {!isFinalNode && (
+                        <div className="flex h-14 flex-col items-center justify-center" aria-hidden="true">
+                          <span className="h-full w-1 bg-blue-950/20" />
+                          <span className="-mt-3 grid h-8 w-8 place-items-center rounded-full bg-red-600 text-white shadow-lg shadow-red-950/20">↓</span>
+                        </div>
+                      )}
                     </div>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="rounded-full bg-red-600 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-white">
-                          {item.label}
-                        </span>
-                        <span className="text-sm font-bold text-slate-500">{item.country}</span>
-                      </div>
-                      <h3 className="mt-3 text-3xl font-black text-blue-950">{item.city}</h3>
-                      <p className="mt-2 text-sm font-semibold leading-6 text-slate-600">{item.description}</p>
-                    </div>
-                  </article>
-                ))}
+                  );
+                })}
+              </div>
+
+              <div className="mt-10 rounded-3xl border border-blue-100 bg-white p-5 text-center shadow-inner shadow-blue-950/5">
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-red-600">Ruta base</p>
+                <p className="mt-3 text-2xl font-black text-blue-950">Prescott → Nogales → Los Mochis → Chihuahua</p>
               </div>
             </div>
           </div>
