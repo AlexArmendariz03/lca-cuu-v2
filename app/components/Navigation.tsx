@@ -24,13 +24,13 @@ type MenuItem = {
 };
 
 const menuItems: MenuItem[] = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Conócenos", href: "#conocenos" },
-  { label: "Descendencia", href: "#descendencia" },
-  { label: "Ministerios", href: "#ministerios" },
-  { label: "Galería", href: "#galeria" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Inicio", href: "/#inicio" },
+  { label: "Conócenos", href: "/#conocenos" },
+  { label: "Nuestra raíz", href: "/nuestra-raiz" },
+  { label: "Ministerios", href: "/#ministerios" },
+  { label: "Galería", href: "/#galeria" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Contacto", href: "/#contacto" },
 ];
 
 export default function Navigation() {
@@ -59,7 +59,7 @@ export default function Navigation() {
 
       <NavbarContent className="hidden gap-6 sm:flex" justify="center">
         <NavbarItem>
-          <Link href="#inicio" className="font-semibold text-white/90 transition hover:text-white">
+          <Link href="/#inicio" className="font-semibold text-white/90 transition hover:text-white">
             Inicio
           </Link>
         </NavbarItem>
@@ -98,22 +98,22 @@ export default function Navigation() {
         </Dropdown>
 
         <NavbarItem>
-          <Link href="#descendencia" className="font-semibold text-white/90 transition hover:text-white">
-            Descendencia
+          <Link href="/nuestra-raiz" className="font-semibold text-white/90 transition hover:text-white">
+            Nuestra raíz
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#galeria" className="font-semibold text-white/90 transition hover:text-white">
+          <Link href="/#galeria" className="font-semibold text-white/90 transition hover:text-white">
             Galería
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#servicios" className="font-semibold text-white/90 transition hover:text-white">
+          <Link href="/#servicios" className="font-semibold text-white/90 transition hover:text-white">
             Servicios
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#contacto" className="font-semibold text-white/90 transition hover:text-white">
+          <Link href="/#contacto" className="font-semibold text-white/90 transition hover:text-white">
             Contacto
           </Link>
         </NavbarItem>
