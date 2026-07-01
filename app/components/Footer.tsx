@@ -1,16 +1,18 @@
 import Image from "next/image";
 import React from "react";
 
-const footerLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Horarios", href: "#servicios" },
-  { label: "Conócenos", href: "#conocenos" },
-  { label: "Ministerios", href: "#ministerios" },
-  { label: "Galería", href: "#galeria" },
-  { label: "Contacto", href: "#contacto" },
+type FooterLink = { label: string; href: string };
+
+const footerLinks: FooterLink[] = [
+  { label: "Inicio", href: "/#inicio" },
+  { label: "Nuestra historia", href: "/nuestra-historia" },
+  { label: "Nuestra visión", href: "/#vision" },
+  { label: "Galería", href: "/#galeria" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Contacto", href: "/#contacto" },
 ];
 
-const footerHighlights = ["Compañerismo", "Familia", "Fe", "Esperanza"];
+const footerHighlights: string[] = ["Compañerismo", "Familia", "Fe", "Esperanza"];
 
 export default function Footer() {
   return (
@@ -21,7 +23,7 @@ export default function Footer() {
       <div className="relative mx-auto max-w-7xl">
         <div className="grid gap-10 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-blue-950/30 backdrop-blur-md md:grid-cols-[1.1fr_0.9fr] lg:p-8">
           <div>
-            <a href="#inicio" className="inline-flex items-center rounded-2xl bg-white p-3 shadow-xl shadow-blue-950/20 transition hover:-translate-y-1">
+            <a href="/#inicio" className="inline-flex items-center rounded-2xl bg-white p-3 shadow-xl shadow-blue-950/20 transition hover:-translate-y-1">
               <Image src="/logoLCA.png" alt="Logo La Casa del Alfarero" width={190} height={70} className="h-auto w-44" />
             </a>
             <p className="mt-6 max-w-xl text-sm font-semibold leading-7 text-blue-100">
@@ -52,7 +54,7 @@ export default function Footer() {
               <p className="text-sm font-black uppercase tracking-[0.22em] text-red-600">Te esperamos</p>
               <p className="mt-4 text-3xl font-black leading-none">Domingo</p>
               <p className="mt-2 text-sm font-bold text-slate-600">11:00 AM · Servicio matutino</p>
-              <a href="#servicios" className="mt-5 inline-flex rounded-full bg-red-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-red-950/20 transition hover:-translate-y-1 hover:bg-red-500">
+              <a href="/#servicios" className="mt-5 inline-flex rounded-full bg-red-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-red-950/20 transition hover:-translate-y-1 hover:bg-red-500">
                 Ver horarios
               </a>
             </div>

@@ -18,13 +18,18 @@ import {
   NavbarMenuItem,
 } from "@nextui-org/react";
 
-const menuItems = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Conócenos", href: "#conocenos" },
-  { label: "Ministerios", href: "#ministerios" },
-  { label: "Galería", href: "#galeria" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Contacto", href: "#contacto" },
+type MenuItem = {
+  label: string;
+  href: string;
+};
+
+const menuItems: MenuItem[] = [
+  { label: "Inicio", href: "/#inicio" },
+  { label: "Nuestra historia", href: "/nuestra-historia" },
+  { label: "Nuestra visión", href: "/#vision" },
+  { label: "Galería", href: "/#galeria" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Contacto", href: "/#contacto" },
 ];
 
 export default function Navigation() {
@@ -53,7 +58,7 @@ export default function Navigation() {
 
       <NavbarContent className="hidden gap-6 sm:flex" justify="center">
         <NavbarItem>
-          <Link href="#inicio" className="font-semibold text-white/90 transition hover:text-white">
+          <Link href="/#inicio" className="font-semibold text-white/90 transition hover:text-white">
             Inicio
           </Link>
         </NavbarItem>
@@ -67,42 +72,27 @@ export default function Navigation() {
             </DropdownTrigger>
           </NavbarItem>
           <DropdownMenu aria-label="Quiénes somos" className="w-[340px]" itemClasses={{ base: "gap-4" }}>
-            <DropdownItem key="historia" description="Nuestra historia" />
-            <DropdownItem key="creemos" description="Lo que creemos" />
-            <DropdownItem key="vision" description="Nuestra visión" />
-            <DropdownItem key="pastores" description="Pastores y equipo" />
-            <DropdownItem key="lideres" description="Líderes" />
-          </DropdownMenu>
-        </Dropdown>
-
-        <Dropdown>
-          <NavbarItem>
-            <DropdownTrigger>
-              <Button disableRipple className="p-0 font-semibold text-white/90 hover:bg-transparent hover:text-white" radius="sm" variant="light">
-                Ministerios
-              </Button>
-            </DropdownTrigger>
-          </NavbarItem>
-          <DropdownMenu aria-label="Ministerios" className="w-[340px]" itemClasses={{ base: "gap-4" }}>
-            <DropdownItem key="conciertos" description="Conciertos" />
-            <DropdownItem key="jovenes" description="Jóvenes" />
-            <DropdownItem key="nuevos" description="Nuevos conversos" />
-            <DropdownItem key="barrios" description="Ministerios de barrio" />
+            <DropdownItem key="historia" href="/nuestra-historia" description="Organigrama y descendencia">
+              Nuestra historia
+            </DropdownItem>
+            <DropdownItem key="vision" href="/#vision" description="Hacia dónde vamos como iglesia">
+              Nuestra visión
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
 
         <NavbarItem>
-          <Link href="#galeria" className="font-semibold text-white/90 transition hover:text-white">
+          <Link href="/#galeria" className="font-semibold text-white/90 transition hover:text-white">
             Galería
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#servicios" className="font-semibold text-white/90 transition hover:text-white">
+          <Link href="/#servicios" className="font-semibold text-white/90 transition hover:text-white">
             Servicios
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#contacto" className="font-semibold text-white/90 transition hover:text-white">
+          <Link href="/#contacto" className="font-semibold text-white/90 transition hover:text-white">
             Contacto
           </Link>
         </NavbarItem>

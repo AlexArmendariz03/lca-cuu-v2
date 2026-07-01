@@ -3,7 +3,41 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-const slides = [
+type HeroSlide = {
+  image: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+};
+
+type GalleryPhoto = {
+  src: string;
+  alt: string;
+};
+
+type GalleryAlbum = {
+  title: string;
+  description: string;
+  cover: string;
+  photos: GalleryPhoto[];
+};
+
+type ScheduleItem = {
+  day: string;
+  time: string;
+  name: string;
+  note: string;
+  featured?: boolean;
+};
+
+type ValueCard = {
+  number: string;
+  title: string;
+  description: string;
+};
+
+
+const slides: HeroSlide[] = [
   {
     image: "/partyhouse.webp",
     eyebrow: "Bienvenido a casa",
@@ -27,31 +61,42 @@ const slides = [
   },
 ];
 
-const ministries = [
+
+
+const galleryAlbums: GalleryAlbum[] = [
   {
-    title: "Familias",
-    description: "Un espacio seguro para crecer juntos en amor, restauración y dirección espiritual.",
-    icon: "✦",
+    title: "Servicios",
+    description: "Momentos de adoración, palabra y convivencia en nuestras reuniones.",
+    cover: "/servicios.jpg",
+    photos: [
+      { src: "/servicios.jpg", alt: "Servicio de iglesia" },
+      { src: "/igleisa.jpg", alt: "Auditorio durante una reunión" },
+      { src: "/partyhouse.webp", alt: "Comunidad reunida" },
+    ],
   },
   {
-    title: "Jóvenes",
-    description: "Reuniones dinámicas, amistades sanas y conversaciones relevantes para esta generación.",
-    icon: "✧",
+    title: "Pastores",
+    description: "Espacio para fotografías pastorales, liderazgo y equipo de apoyo.",
+    cover: "/pastores.webp",
+    photos: [
+      { src: "/pastores.webp", alt: "Pastores de la iglesia" },
+      { src: "/avivaHumber.webp", alt: "Predicación y visión" },
+      { src: "/logoLCA.png", alt: "Identidad La Casa del Alfarero" },
+    ],
   },
   {
     title: "Niños",
-    description: "Ambientes alegres y cuidados para que los más pequeños aprendan de Jesús.",
-    icon: "✺",
+    description: "Actividades y ambientes donde los más pequeños aprenden de Jesús.",
+    cover: "/Marioniños.jpg",
+    photos: [
+      { src: "/Marioniños.jpg", alt: "Ministerio de niños" },
+      { src: "/servicios.jpg", alt: "Familias en servicio" },
+      { src: "/partyhouse.webp", alt: "Actividad familiar" },
+    ],
   },
 ];
 
-const gallery = [
-  { src: "/servicios.jpg", alt: "Servicio de iglesia", label: "Servicios" },
-  { src: "/pastores.webp", alt: "Pastores de la iglesia", label: "Pastores" },
-  { src: "/Marioniños.jpg", alt: "Ministerio de niños", label: "Niños" },
-];
-
-const scheduleItems = [
+const scheduleItems: ScheduleItem[] = [
   { day: "Domingo", time: "9:45 AM", name: "Escuela dominical", note: "Formación bíblica" },
   { day: "Domingo", time: "11:00 AM", name: "Servicio matutino", note: "Reunión familiar", featured: true },
   { day: "Domingo", time: "6:00 PM", name: "Servicio de milagros", note: "Oración y fe" },
@@ -59,8 +104,34 @@ const scheduleItems = [
   { day: "Sábado", time: "7:00 PM", name: "Conciertos", note: "Jóvenes y comunidad" },
 ];
 
+const valueCards: ValueCard[] = [
+  {
+    number: "01",
+    title: "Compañerismo",
+    description: "Conexiones reales para cada etapa de vida.",
+  },
+  {
+    number: "02",
+    title: "Propósito",
+    description: "Una fe práctica para servir a Dios y a la ciudad.",
+  },
+  {
+    number: "03",
+    title: "Restauración",
+    description: "Un ambiente de gracia para volver a empezar.",
+  },
+  {
+    number: "04",
+    title: "Servicio",
+    description: "Oportunidades para usar tus dones y bendecir a otros.",
+  },
+];
+
+
 export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [activeGallery, setActiveGallery] = useState<GalleryAlbum | null>(null);
+  const [expandedPhoto, setExpandedPhoto] = useState<GalleryPhoto | null>(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -76,6 +147,23 @@ export default function HomePage() {
 
   const goToNextSlide = () => {
     setActiveSlide((currentSlide) => (currentSlide + 1) % slides.length);
+  };
+
+  const closeGallery = () => {
+    setActiveGallery(null);
+    setExpandedPhoto(null);
+  };
+
+  const goToAdjacentPhoto = (direction: "previous" | "next") => {
+    if (!activeGallery || !expandedPhoto) return;
+
+    const currentIndex = activeGallery.photos.findIndex((photo) => photo.src === expandedPhoto.src);
+    const nextIndex =
+      direction === "next"
+        ? (currentIndex + 1) % activeGallery.photos.length
+        : (currentIndex - 1 + activeGallery.photos.length) % activeGallery.photos.length;
+
+    setExpandedPhoto(activeGallery.photos[nextIndex]);
   };
 
   return (
@@ -265,16 +353,13 @@ export default function HomePage() {
               Conservamos lo esencial: una comunidad cercana, adoración sincera y enseñanza bíblica. Renovamos la experiencia para que desde la primera visita se sienta claro, amigable y memorable.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5">
-                <span className="text-3xl font-black text-red-600">01</span>
-                <h3 className="mt-3 font-black text-blue-950">Compañerismo</h3>
-                <p className="mt-2 text-sm text-slate-600">Conexiones reales para cada etapa de vida.</p>
-              </div>
-              <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5">
-                <span className="text-3xl font-black text-red-600">02</span>
-                <h3 className="mt-3 font-black text-blue-950">Propósito</h3>
-                <p className="mt-2 text-sm text-slate-600">Una fe práctica para servir a Dios y a la ciudad.</p>
-              </div>
+              {valueCards.map((value) => (
+                <div key={value.number} className="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10">
+                  <span className="text-3xl font-black text-red-600">{value.number}</span>
+                  <h3 className="mt-3 font-black text-blue-950">{value.title}</h3>
+                  <p className="mt-2 text-sm text-slate-600">{value.description}</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className="relative" data-aos="fade-left">
@@ -290,44 +375,129 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="ministerios" className="bg-blue-950 px-6 py-24 text-white lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-2xl" data-aos="fade-up">
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">Ministerios</p>
-            <h2 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Hay un lugar para ti y tu familia.</h2>
+      <section id="vision" className="bg-white px-6 py-24 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Nuestra visión</p>
+            <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
+              Ser una iglesia que forma discípulos, restaura familias y alcanza nuevas ciudades.
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-slate-600">
+              Queremos que cada persona encuentre un lugar para crecer, servir y compartir esperanza. Esta sección queda lista para que agregues declaración oficial, metas y próximos proyectos.
+            </p>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {ministries.map((ministry) => (
-              <article key={ministry.title} data-aos="fade-up" className="group rounded-[2rem] border border-white/10 bg-white/10 p-8 backdrop-blur-md transition hover:-translate-y-2 hover:bg-white hover:text-blue-950">
-                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-red-600 text-2xl text-white shadow-lg shadow-red-950/30">{ministry.icon}</div>
-                <h3 className="mt-8 text-2xl font-black">{ministry.title}</h3>
-                <p className="mt-4 text-blue-100 transition group-hover:text-slate-600">{ministry.description}</p>
-              </article>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {["Alcanzar", "Discipular", "Enviar"].map((item, index) => (
+              <div key={item} className="rounded-[2rem] border border-blue-100 bg-slate-50 p-6 text-center shadow-lg shadow-blue-950/5">
+                <p className="text-4xl font-black text-red-600">{String(index + 1).padStart(2, "0")}</p>
+                <h3 className="mt-4 text-xl font-black text-blue-950">{item}</h3>
+                <p className="mt-3 text-sm font-semibold leading-6 text-slate-600">
+                  {item === "Alcanzar" ? "Con el evangelio a nuestra ciudad." : item === "Discipular" ? "Con fundamento bíblico y comunidad." : "Con visión para nuevas obras."}
+                </p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
+
       <section id="galeria" className="px-6 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end" data-aos="fade-up">
             <div>
-              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Vida en comunidad</p>
-              <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">Momentos que cuentan una historia.</h2>
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería padre</p>
+              <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">Elige una sección para abrir sus fotos.</h2>
             </div>
-            <p className="max-w-xl text-slate-600">Diseñamos una experiencia visual más limpia, con tarjetas, profundidad y llamados a la acción claros sin perder la identidad azul, blanco y rojo de la iglesia.</p>
+            <p className="max-w-xl text-slate-600">Cada tarjeta funciona como una galería padre. Al dar click se abre un conjunto de fotos relacionado con esa sección.</p>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {gallery.map((item) => (
-              <figure key={item.src} className="group relative h-96 overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10" data-aos="zoom-in">
-                <Image src={item.src} alt={item.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-700 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/85 via-blue-950/20 to-transparent" />
-                <figcaption className="absolute bottom-6 left-6 rounded-full bg-white px-5 py-2 font-black text-blue-950 shadow-lg">{item.label}</figcaption>
-              </figure>
+            {galleryAlbums.map((album) => (
+              <button
+                key={album.title}
+                type="button"
+                onClick={() => setActiveGallery(album)}
+                className="group relative h-96 overflow-hidden rounded-[2rem] text-left shadow-xl shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus:ring-4"
+                data-aos="zoom-in"
+              >
+                <Image src={album.cover} alt={album.title} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-950/20 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <span className="rounded-full bg-white px-5 py-2 font-black text-blue-950 shadow-lg">{album.title}</span>
+                  <p className="mt-4 text-sm font-semibold leading-6 text-white">{album.description}</p>
+                  <p className="mt-3 text-xs font-black uppercase tracking-[0.2em] text-red-200">Abrir galería</p>
+                </div>
+              </button>
             ))}
           </div>
         </div>
       </section>
+
+      {activeGallery ? (
+        <div className="fixed inset-0 z-[80] overflow-y-auto bg-blue-950/90 px-6 py-10 backdrop-blur-md" role="dialog" aria-modal="true" aria-label={`Galería ${activeGallery.title}`}>
+          <div className="mx-auto max-w-6xl rounded-[2rem] bg-white p-5 shadow-2xl sm:p-8">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería</p>
+                <h3 className="mt-2 text-4xl font-black text-blue-950">{activeGallery.title}</h3>
+                <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-slate-600">{activeGallery.description}</p>
+              </div>
+              <button type="button" onClick={closeGallery} className="rounded-full bg-blue-950 px-5 py-3 text-sm font-black text-white transition hover:bg-red-600">
+                Cerrar
+              </button>
+            </div>
+            <p className="mt-6 rounded-2xl bg-slate-50 p-4 text-sm font-semibold text-slate-600">
+              Tip UX/UI: haz click en cualquier foto para verla grande, con fondo oscuro y navegación entre imágenes.
+            </p>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {activeGallery.photos.map((photo) => (
+                <button
+                  key={photo.src}
+                  type="button"
+                  onClick={() => setExpandedPhoto(photo)}
+                  className="group relative h-80 overflow-hidden rounded-3xl bg-slate-100 text-left shadow-lg shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus:ring-4"
+                >
+                  <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-950/70 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+                  <span className="absolute bottom-4 left-4 rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-blue-950 opacity-0 shadow-lg transition group-hover:opacity-100">
+                    Expandir
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {expandedPhoto ? (
+              <div className="fixed inset-0 z-[90] grid place-items-center bg-black/90 p-4" role="dialog" aria-modal="true" aria-label={expandedPhoto.alt}>
+                <div className="relative h-[82vh] w-full max-w-6xl overflow-hidden rounded-[2rem] bg-slate-950 shadow-2xl shadow-black/40">
+                  <Image src={expandedPhoto.src} alt={expandedPhoto.alt} fill sizes="100vw" className="object-contain" />
+                  <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 bg-gradient-to-b from-black/70 to-transparent p-4 text-white">
+                    <p className="text-sm font-black uppercase tracking-[0.18em]">{expandedPhoto.alt}</p>
+                    <button type="button" onClick={() => setExpandedPhoto(null)} className="rounded-full bg-white px-4 py-2 text-sm font-black text-blue-950 transition hover:bg-red-600 hover:text-white">
+                      Cerrar foto
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => goToAdjacentPhoto("previous")}
+                    className="absolute left-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-black text-blue-950 shadow-xl transition hover:bg-red-600 hover:text-white"
+                    aria-label="Foto anterior"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => goToAdjacentPhoto("next")}
+                    className="absolute right-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-black text-blue-950 shadow-xl transition hover:bg-red-600 hover:text-white"
+                    aria-label="Foto siguiente"
+                  >
+                    ›
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
+
