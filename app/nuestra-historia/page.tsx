@@ -145,12 +145,12 @@ export default function NuestraRaizPage() {
               ← Volver al inicio
             </Link>
             <div className="mt-10 max-w-4xl">
-              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">Nuestra raíz</p>
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">Nuestra historia</p>
               <h1 className="mt-4 text-5xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
-                Organigrama completo de la iglesia.
+                Nuestra historia y descendencia.
               </h1>
               <p className="mt-6 max-w-3xl text-lg leading-8 text-blue-100">
-                Una página especial para documentar la raíz, las obras que se desprenden de Chihuahua y los espacios donde podrás cargar las fotos de los pastores.
+                Una página especial para documentar nuestra raíz, las obras que se desprenden de Chihuahua y los espacios donde podrás cargar las fotos de los pastores.
               </p>
             </div>
           </div>

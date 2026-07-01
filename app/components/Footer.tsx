@@ -5,11 +5,10 @@ type FooterLink = { label: string; href: string };
 
 const footerLinks: FooterLink[] = [
   { label: "Inicio", href: "/#inicio" },
-  { label: "Horarios", href: "/#servicios" },
-  { label: "Conócenos", href: "/#conocenos" },
-  { label: "Nuestra raíz", href: "/nuestra-raiz" },
-  { label: "Ministerios", href: "/#ministerios" },
+  { label: "Nuestra historia", href: "/nuestra-historia" },
+  { label: "Nuestra visión", href: "/#vision" },
   { label: "Galería", href: "/#galeria" },
+  { label: "Servicios", href: "/#servicios" },
   { label: "Contacto", href: "/#contacto" },
 ];
 
