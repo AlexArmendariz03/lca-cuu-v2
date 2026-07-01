@@ -131,6 +131,7 @@ const valueCards: ValueCard[] = [
 export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeGallery, setActiveGallery] = useState<GalleryAlbum | null>(null);
+  const [expandedPhoto, setExpandedPhoto] = useState<GalleryPhoto | null>(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -146,6 +147,23 @@ export default function HomePage() {
 
   const goToNextSlide = () => {
     setActiveSlide((currentSlide) => (currentSlide + 1) % slides.length);
+  };
+
+  const closeGallery = () => {
+    setActiveGallery(null);
+    setExpandedPhoto(null);
+  };
+
+  const goToAdjacentPhoto = (direction: "previous" | "next") => {
+    if (!activeGallery || !expandedPhoto) return;
+
+    const currentIndex = activeGallery.photos.findIndex((photo) => photo.src === expandedPhoto.src);
+    const nextIndex =
+      direction === "next"
+        ? (currentIndex + 1) % activeGallery.photos.length
+        : (currentIndex - 1 + activeGallery.photos.length) % activeGallery.photos.length;
+
+    setExpandedPhoto(activeGallery.photos[nextIndex]);
   };
 
   return (
@@ -423,17 +441,59 @@ export default function HomePage() {
                 <h3 className="mt-2 text-4xl font-black text-blue-950">{activeGallery.title}</h3>
                 <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-slate-600">{activeGallery.description}</p>
               </div>
-              <button type="button" onClick={() => setActiveGallery(null)} className="rounded-full bg-blue-950 px-5 py-3 text-sm font-black text-white transition hover:bg-red-600">
+              <button type="button" onClick={closeGallery} className="rounded-full bg-blue-950 px-5 py-3 text-sm font-black text-white transition hover:bg-red-600">
                 Cerrar
               </button>
             </div>
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <p className="mt-6 rounded-2xl bg-slate-50 p-4 text-sm font-semibold text-slate-600">
+              Tip UX/UI: haz click en cualquier foto para verla grande, con fondo oscuro y navegación entre imágenes.
+            </p>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
               {activeGallery.photos.map((photo) => (
-                <figure key={photo.src} className="relative h-80 overflow-hidden rounded-3xl bg-slate-100 shadow-lg shadow-blue-950/10">
-                  <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
-                </figure>
+                <button
+                  key={photo.src}
+                  type="button"
+                  onClick={() => setExpandedPhoto(photo)}
+                  className="group relative h-80 overflow-hidden rounded-3xl bg-slate-100 text-left shadow-lg shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus:ring-4"
+                >
+                  <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-950/70 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+                  <span className="absolute bottom-4 left-4 rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-blue-950 opacity-0 shadow-lg transition group-hover:opacity-100">
+                    Expandir
+                  </span>
+                </button>
               ))}
             </div>
+
+            {expandedPhoto ? (
+              <div className="fixed inset-0 z-[90] grid place-items-center bg-black/90 p-4" role="dialog" aria-modal="true" aria-label={expandedPhoto.alt}>
+                <div className="relative h-[82vh] w-full max-w-6xl overflow-hidden rounded-[2rem] bg-slate-950 shadow-2xl shadow-black/40">
+                  <Image src={expandedPhoto.src} alt={expandedPhoto.alt} fill sizes="100vw" className="object-contain" />
+                  <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 bg-gradient-to-b from-black/70 to-transparent p-4 text-white">
+                    <p className="text-sm font-black uppercase tracking-[0.18em]">{expandedPhoto.alt}</p>
+                    <button type="button" onClick={() => setExpandedPhoto(null)} className="rounded-full bg-white px-4 py-2 text-sm font-black text-blue-950 transition hover:bg-red-600 hover:text-white">
+                      Cerrar foto
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => goToAdjacentPhoto("previous")}
+                    className="absolute left-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-black text-blue-950 shadow-xl transition hover:bg-red-600 hover:text-white"
+                    aria-label="Foto anterior"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => goToAdjacentPhoto("next")}
+                    className="absolute right-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-black text-blue-950 shadow-xl transition hover:bg-red-600 hover:text-white"
+                    aria-label="Foto siguiente"
+                  >
+                    ›
+                  </button>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}
