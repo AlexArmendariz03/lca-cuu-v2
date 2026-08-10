@@ -1,8 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import Navigation from "@/app/components/Navigation";
 import Footer from "@/app/components/Footer";
+
+const historicalPhotos: string[] = ["/historia/historia-02.jpg", "/historia/historia-01.jpg"];
 
 type PastorInfo = {
   name: string;
@@ -104,23 +107,31 @@ export default function NuestraRaizPage() {
                 </Link>
               </div>
 
-              <div className="mt-10 max-w-5xl">
-                <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">
-                  Nuestra historia
-                </p>
+              <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
+                <div>
+                  <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">
+                    Nuestra historia
+                  </p>
 
-                <h1 className="mt-4 text-5xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
-                  Historia de nuestro compañerismo
-                </h1>
+                  <h1 className="mt-4 text-5xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
+                    Historia de nuestro compañerismo
+                  </h1>
 
-                <div className="mt-8 space-y-6 max-w-5xl text-lg leading-8 text-blue-100">
-                  <p>
+                  <p className="mt-8 text-lg leading-8 text-blue-100">
                     En 1970, el pastor Wayman y Nelda Mitchell llegaron a
                     Prescott, Arizona, para dirigir una pequeña iglesia. Poco
                     después, muchos jóvenes hippies se convirtieron a Cristo, y
                     Dios comenzó a derramar un avivamiento en la congregación.
                   </p>
+                </div>
 
+                <div className="relative aspect-[780/506] w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-950/30">
+                  <Image src="/historia/historia-intro.jpg" alt="Pastor Wayman Mitchell predicando" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" priority />
+                </div>
+              </div>
+
+              <div className="mt-10 max-w-5xl">
+                <div className="space-y-6 max-w-5xl text-lg leading-8 text-blue-100">
                   <p>
                     El pastor Mitchell utilizó los conciertos evangelísticos como
                     una herramienta para alcanzar a los jóvenes. El primer
@@ -181,13 +192,9 @@ export default function NuestraRaizPage() {
                 Momentos que marcaron el inicio de esta historia.
               </h2>
               <div className="mt-10 grid gap-6 sm:grid-cols-2">
-                {[1, 2].map((slot) => (
-                  <div
-                    key={slot}
-                    className="flex aspect-[4/3] w-full flex-col items-center justify-center gap-2 rounded-[2rem] border-2 border-dashed border-blue-200 bg-slate-50 text-slate-400"
-                  >
-                    <span className="text-3xl">＋</span>
-                    <span className="text-xs font-black uppercase tracking-[0.16em]">Cargar foto histórica</span>
+                {historicalPhotos.map((photo) => (
+                  <div key={photo} className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10">
+                    <Image src={photo} alt="Fotografía histórica de la fraternidad" fill sizes="(min-width: 640px) 50vw, 100vw" className="object-cover" />
                   </div>
                 ))}
               </div>
@@ -196,14 +203,9 @@ export default function NuestraRaizPage() {
 
           <section className="bg-slate-50 px-6 py-20 lg:px-8">
             <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="order-2 grid grid-cols-2 gap-5 lg:order-1">
-                <div className="flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-[1.6rem] border-2 border-dashed border-blue-200 bg-white text-slate-400">
-                  <span className="text-2xl">＋</span>
-                  <span className="text-center text-[0.65rem] font-black uppercase tracking-[0.14em]">Foto de<br />Wayman Mitchell</span>
-                </div>
-                <div className="flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-[1.6rem] border-2 border-dashed border-blue-200 bg-white text-slate-400">
-                  <span className="text-2xl">＋</span>
-                  <span className="text-center text-[0.65rem] font-black uppercase tracking-[0.14em]">Foto de<br />Nelda Mitchell</span>
+              <div className="order-2 mx-auto w-full max-w-sm lg:order-1">
+                <div className="relative aspect-square w-full overflow-hidden rounded-[1.6rem] shadow-xl shadow-blue-950/10">
+                  <Image src="/historia/mitchell-fundadores.webp" alt="Wayman y Nelda Mitchell" fill sizes="(min-width: 1024px) 40vw, 90vw" className="object-cover" />
                 </div>
               </div>
 
