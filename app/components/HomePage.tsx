@@ -97,23 +97,27 @@ const upcomingEvents: UpcomingEvent[] = [
 const valueCards: ValueCard[] = [
   {
     number: "01",
-    title: "Compañerismo",
-    description: "Conexiones reales para cada etapa de vida.",
+    title: "Discipulado",
+    description:
+      "Creemos que el futuro pastor debe estar preparado en todos los aspectos para enfrentar la vida de un pastor, principalmente siendo un buen predicador que alimenta a su congregación con la palabra de Dios. Es un proceso donde desafiamos a los creyentes a madurar y crecer como seguidores de Cristo.",
   },
   {
     number: "02",
-    title: "Propósito",
-    description: "Una fe práctica para servir a Dios y a la ciudad.",
+    title: "Evangelismo",
+    description:
+      "Estamos conscientes de la gran necesidad que existe en el mundo por conocer la verdad de Cristo. La función de nuestra iglesia es ser la luz del mundo (Mateo 5:14) y llevar esperanza y el mensaje de salvación a todos aquellos que aún carecen de ella.",
   },
   {
     number: "03",
-    title: "Restauración",
-    description: "Un ambiente de gracia para volver a empezar.",
+    title: "Plantación de iglesias",
+    description:
+      "Obedecemos la Gran Comisión llevando el evangelio a otras ciudades y naciones. Preparamos pastores en un discipulado bíblico y práctico para luego enviarlos a los campos de cosecha, a las ciudades y naciones.",
   },
   {
     number: "04",
-    title: "Servicio",
-    description: "Oportunidades para usar tus dones y bendecir a otros.",
+    title: "Compañerismo",
+    description:
+      "Nos esforzamos por que nuestra iglesia sea un lugar donde se imparta la palabra de Dios, pero también que sea una familia y un lugar de comunión y amor.",
   },
 ];
 
@@ -370,63 +374,47 @@ export default function HomePage() {
       </section>
 
       <section id="conocenos" className="px-6 py-24 lg:px-8">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div data-aos="fade-right">
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Nuestra casa</p>
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-4xl text-center" data-aos="fade-up">
+            <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Nuestra misión</p>
             <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
-              Una casa abierta para toda tu familia.
+              Predicar el evangelio a toda criatura.
             </h2>
             <p className="mt-6 text-lg text-slate-600">
-              Conservamos lo esencial: una comunidad cercana, adoración sincera y enseñanza bíblica. Renovamos la experiencia para que desde la primera visita se sienta claro, amigable y memorable.
+              La misión principal de La Casa del Alfarero es llevar a cabo la comisión de Cristo de predicar el
+              evangelio a toda criatura. Para esto, nuestras iglesias se enfocan en el discipulado, la plantación
+              de iglesias y el evangelismo mundial. Fue Cristo mismo quien dejó este mandato, y gracias a la
+              obediencia a este mandato es que nosotros mismos estamos aquí.
             </p>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              {valueCards.map((value) => (
-                <div key={value.number} className="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10">
-                  <span className="text-3xl font-black text-red-600">{value.number}</span>
-                  <h3 className="mt-3 font-black text-blue-950">{value.title}</h3>
-                  <p className="mt-2 text-sm text-slate-600">{value.description}</p>
-                </div>
-              ))}
+            <p className="mt-4 text-lg text-slate-600">
+              Constantemente nos esforzamos por llegar a toda clase de gente que no conoce el evangelio de
+              Jesucristo, ya sea por medio de predicación, bandas de música, películas, teatro, evangelismos,
+              visitas casa por casa, cruzadas de milagros y muchas actividades más. Nuestra misión es ayudar a
+              otras personas a tener una relación personal y verdadera con el Salvador y Señor, Cristo Jesús.
+            </p>
+            <div className="mt-6 rounded-2xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5">
+              <p className="text-lg font-semibold italic leading-8 text-blue-950">
+                “Y les dijo: Id por todo el mundo y predicad el evangelio a toda criatura”.
+              </p>
+              <p className="mt-2 text-sm font-black uppercase tracking-[0.18em] text-red-600">Marcos 16:15</p>
             </div>
           </div>
-          <div className="relative" data-aos="fade-left">
-            <div className="absolute -inset-5 rounded-[2rem] bg-gradient-to-tr from-red-600/20 to-blue-950/20 blur-2xl" />
-            <div className="relative h-[520px] w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-950/20">
-              <Image src="/pastores.webp" alt="Pastores de La Casa del Alfarero" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
-            </div>
-            <div className="absolute bottom-6 left-6 right-6 rounded-3xl border border-white/30 bg-blue-950/80 p-5 text-white backdrop-blur-md">
-              <p className="text-sm uppercase tracking-[0.2em] text-red-200">Bienvenida pastoral</p>
-              <p className="mt-2 font-semibold">Queremos que encuentres una familia espiritual y un lugar para crecer.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section id="vision" className="bg-white px-6 py-24 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-          <div>
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Nuestra visión</p>
-            <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
-              Ser una iglesia que forma discípulos, restaura familias y alcanza nuevas ciudades.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-slate-600">
-              Queremos que cada persona encuentre un lugar para crecer, servir y compartir esperanza. Esta sección queda lista para que agregues declaración oficial, metas y próximos proyectos.
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {["Alcanzar", "Discipular", "Enviar"].map((item, index) => (
-              <div key={item} className="rounded-[2rem] border border-blue-100 bg-slate-50 p-6 text-center shadow-lg shadow-blue-950/5">
-                <p className="text-4xl font-black text-red-600">{String(index + 1).padStart(2, "0")}</p>
-                <h3 className="mt-4 text-xl font-black text-blue-950">{item}</h3>
-                <p className="mt-3 text-sm font-semibold leading-6 text-slate-600">
-                  {item === "Alcanzar" ? "Con el evangelio a nuestra ciudad." : item === "Discipular" ? "Con fundamento bíblico y comunidad." : "Con visión para nuevas obras."}
-                </p>
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {valueCards.map((value) => (
+              <div key={value.number} className="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10">
+                <span className="text-3xl font-black text-red-600">{value.number}</span>
+                <h3 className="mt-3 font-black text-blue-950">{value.title}</h3>
+                <p className="mt-2 text-sm text-slate-600">{value.description}</p>
               </div>
             ))}
           </div>
+
+          <div className="relative mx-auto mt-14 aspect-[21/9] w-full max-w-4xl overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10" data-aos="fade-up">
+            <Image src="/iglesiaGente2.jpg" alt="Congregación de La Casa del Alfarero en un servicio" fill sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" />
+          </div>
         </div>
       </section>
-
 
       <section id="galeria" className="px-6 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
