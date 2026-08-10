@@ -1,10 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import Footer from "@/app/components/Footer";
 import Navigation from "@/app/components/Navigation";
+import Footer from "@/app/components/Footer";
 
 type PastorInfo = {
   name: string;
@@ -81,163 +79,95 @@ const chihuahuaTree: ChurchNode = {
   ],
 };
 
-const zoomLevels = [0.75, 0.9, 1, 1.1, 1.25];
-
-function PastorPhoto({ pastor, featured = false }: { pastor: PastorInfo; featured?: boolean }) {
-  return (
-    <div className="mx-auto w-full max-w-[8.5rem]">
-      <div className={`relative mx-auto aspect-square overflow-hidden rounded-[1.25rem] border-2 ${featured ? "border-white/20 bg-white/10" : "border-dashed border-blue-200 bg-slate-50"}`}>
-        {pastor.photoSrc ? (
-          <Image src={pastor.photoSrc} alt={`Foto de ${pastor.name}`} fill sizes="136px" className="object-cover" />
-        ) : (
-          <div className={`flex h-full flex-col items-center justify-center p-3 text-center ${featured ? "text-blue-100" : "text-slate-500"}`}>
-            <span className="text-2xl">＋</span>
-            <span className="mt-2 text-[0.62rem] font-black uppercase tracking-[0.16em]">Cargar foto</span>
-          </div>
-        )}
-      </div>
-      <p className={`mt-2 text-[0.68rem] font-black uppercase tracking-[0.16em] ${featured ? "text-red-100" : "text-red-600"}`}>{pastor.name}</p>
-    </div>
-  );
-}
-
-function ChurchCard({ node, step, featured = false, compact = false }: { node: ChurchNode; step?: string; featured?: boolean; compact?: boolean; key?: string }) {
-  return (
-    <article className={`relative mx-auto w-full rounded-[1.6rem] border p-4 text-center shadow-xl transition hover:-translate-y-1 sm:p-5 ${featured ? "max-w-2xl border-red-200 bg-blue-950 text-white shadow-blue-950/20" : "max-w-md border-blue-100 bg-white text-slate-950 shadow-blue-950/5"}`}>
-      {step ? (
-        <div className="absolute -top-4 left-1/2 grid h-9 w-9 -translate-x-1/2 place-items-center rounded-full bg-red-600 text-xs font-black text-white shadow-lg shadow-red-950/20">
-          {step}
-        </div>
-      ) : null}
-      <div className={`grid gap-5 ${compact ? "sm:grid-cols-[7.5rem_1fr] sm:items-center sm:text-left" : ""}`}>
-        <PastorPhoto pastor={node.pastor} featured={featured} />
-        <div>
-          <p className={`text-xs font-black uppercase tracking-[0.18em] ${featured ? "text-red-200" : "text-red-600"}`}>{node.location}</p>
-          <h3 className={`mt-3 font-black ${featured ? "text-3xl text-white" : "text-xl text-blue-950"}`}>{node.name}</h3>
-          <p className={`mt-3 text-sm font-semibold leading-6 ${featured ? "text-blue-100" : "text-slate-600"}`}>{node.note}</p>
-        </div>
-      </div>
-    </article>
-  );
-}
-
 export default function NuestraRaizPage() {
-  const [zoom, setZoom] = useState(0.9);
-
-  const zoomIn = () => {
-    setZoom((currentZoom) => zoomLevels[Math.min(zoomLevels.indexOf(currentZoom) + 1, zoomLevels.length - 1)]);
-  };
-
-  const zoomOut = () => {
-    setZoom((currentZoom) => zoomLevels[Math.max(zoomLevels.indexOf(currentZoom) - 1, 0)]);
-  };
-
-  const resetZoom = () => setZoom(0.9);
-
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-950">
-      <Navigation />
-      <main className="overflow-hidden">
-        <section className="relative isolate bg-blue-950 px-6 pb-20 pt-36 text-white lg:px-8">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.16),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(220,38,38,0.28),transparent_32%)]" />
-          <div className="mx-auto max-w-7xl">
-            <Link href="/" className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-red-100 backdrop-blur-md transition hover:bg-white hover:text-blue-950">
-              ← Volver al inicio
-            </Link>
-            <div className="mt-10 max-w-4xl">
-              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">Nuestra historia</p>
-              <h1 className="mt-4 text-5xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
-                Nuestra historia y descendencia.
-              </h1>
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-blue-100">
-                Una página especial para documentar nuestra raíz, las obras que se desprenden de Chihuahua y los espacios donde podrás cargar las fotos de los pastores.
-              </p>
-            </div>
-          </div>
-        </section>
+      <div className="min-h-screen bg-slate-50 text-slate-950">
+        <Navigation />
 
-        <section className="px-6 py-20 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="rounded-[2.5rem] border border-blue-100 bg-white p-5 shadow-2xl shadow-blue-950/10 sm:p-8 lg:p-10">
-              <div className="mx-auto max-w-3xl text-center">
-                <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Organigrama</p>
-                <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
-                  De la raíz al fruto de Chihuahua.
-                </h2>
-                <p className="mt-5 text-slate-600">
-                  La línea principal muestra Prescott, Nogales y Los Mochis hasta llegar a Chihuahua; debajo se integran las obras que se desprenden de Chihuahua y la rama de Torreón hacia Jiménez.
+        <main className="overflow-hidden">
+          <section className="relative isolate bg-blue-950 px-6 pb-20 pt-36 text-white lg:px-8">
+            <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.16),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(220,38,38,0.28),transparent_32%)]" />
+
+            <div className="mx-auto max-w-7xl">
+              <Link
+                  href="/"
+                  className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-red-100 backdrop-blur-md transition hover:bg-white hover:text-blue-950"
+              >
+                ← Volver al inicio
+              </Link>
+
+              <div className="mt-10 max-w-5xl">
+                <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">
+                  Nuestra historia
                 </p>
-              </div>
 
-              <div className="mt-12 rounded-[2.5rem] bg-slate-100 p-4 ring-1 ring-blue-100 sm:p-6 lg:p-8">
-                <div className="mb-5 flex flex-col gap-3 rounded-3xl border border-blue-100 bg-white p-3 shadow-lg shadow-blue-950/5 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-red-600">Vista del organigrama</p>
-                    <p className="mt-1 text-sm font-semibold text-slate-600">Usa los controles para alejar o acercar y revisarlo mejor en pantalla completa.</p>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <button type="button" onClick={zoomOut} className="grid h-10 w-10 place-items-center rounded-full bg-blue-950 text-lg font-black text-white shadow-lg shadow-blue-950/20 transition hover:bg-blue-900" aria-label="Alejar organigrama">−</button>
-                    <button type="button" onClick={resetZoom} className="rounded-full border border-blue-100 px-4 py-2 text-sm font-black text-blue-950 transition hover:border-red-200 hover:text-red-600">{Math.round(zoom * 100)}%</button>
-                    <button type="button" onClick={zoomIn} className="grid h-10 w-10 place-items-center rounded-full bg-red-600 text-lg font-black text-white shadow-lg shadow-red-950/20 transition hover:bg-red-500" aria-label="Acercar organigrama">＋</button>
-                  </div>
-                </div>
+                <h1 className="mt-4 text-5xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
+                  Historia de nuestro compañerismo
+                </h1>
 
-                <div className="max-h-[82vh] overflow-auto rounded-[2rem] bg-white/70 p-4 shadow-inner shadow-blue-950/5">
-                  <div className="relative mx-auto min-w-[980px] max-w-5xl transition-transform duration-300" style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}>
-                    <div className="absolute left-1/2 top-10 hidden h-[31rem] w-1 -translate-x-1/2 rounded-full bg-gradient-to-b from-red-600 via-blue-950 to-blue-950/20 md:block" aria-hidden="true" />
+                <div className="mt-8 space-y-6 max-w-5xl text-lg leading-8 text-blue-100">
+                  <p>
+                    En 1970, el pastor Wayman y Nelda Mitchell llegaron a
+                    Prescott, Arizona, para dirigir una pequeña iglesia. Poco
+                    después, muchos jóvenes hippies se convirtieron a Cristo, y
+                    Dios comenzó a derramar un avivamiento en la congregación.
+                  </p>
 
-                    <div className="relative z-10 grid gap-0">
-                    {rootPath.map((node, index) => (
-                      <div key={node.name} className="flex flex-col items-center">
-                        <ChurchCard node={node} step={String(index + 1).padStart(2, "0")} compact />
-                        <div className="flex h-14 flex-col items-center justify-center" aria-hidden="true">
-                          <span className="h-full w-1 bg-blue-950/20" />
-                          <span className="-mt-3 grid h-8 w-8 place-items-center rounded-full bg-red-600 text-white shadow-lg shadow-red-950/20">↓</span>
-                        </div>
-                      </div>
-                    ))}
+                  <p>
+                    El pastor Mitchell utilizó los conciertos evangelísticos como
+                    una herramienta para alcanzar a los jóvenes. El primer
+                    concierto reunió a más de 200 asistentes y muchas personas
+                    entregaron su vida a Jesús. Desde entonces, el evangelismo
+                    personal y la participación activa de los nuevos creyentes se
+                    convirtieron en pilares fundamentales de la iglesia.
+                  </p>
 
-                    <div className="flex flex-col items-center">
-                      <ChurchCard node={chihuahuaTree} step="04" featured />
-                      <div className="h-12 w-1 bg-blue-950/20" aria-hidden="true" />
-                      <div className="mb-8 h-1 w-full max-w-5xl rounded-full bg-blue-950/20" aria-hidden="true" />
-                    </div>
-                  </div>
+                  <p>
+                    Posteriormente surgieron los equipos de impacto, grupos que
+                    viajaban a otras ciudades para evangelizar y apoyar a otras
+                    iglesias, mientras Dios revelaba una visión clara de
+                    discipulado, preparando a jóvenes y matrimonios para el
+                    ministerio.
+                  </p>
 
-                    <div className="grid gap-5 lg:grid-cols-4">
-                    {chihuahuaTree.children?.map((branch, index) => (
-                      <div key={branch.name} className="flex flex-col items-center">
-                        <ChurchCard node={branch} step={String(index + 1).padStart(2, "0")} />
+                  <p>
+                    En 1973 se envió la primera pareja a plantar una iglesia en
+                    otra ciudad, iniciando un movimiento de plantación de iglesias
+                    por el suroeste de Estados Unidos.
+                  </p>
 
-                        {branch.children?.length ? (
-                          <div className="mt-5 w-full">
-                            <div className="mx-auto h-10 w-1 bg-blue-950/20" aria-hidden="true" />
-                            <p className="mb-4 text-center text-xs font-black uppercase tracking-[0.18em] text-blue-950">Se desprende</p>
-                            <div className="grid gap-4">
-                              {branch.children.map((child) => (
-                                <ChurchCard key={child.name} node={child} featured />
-                              ))}
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    ))}
-                    </div>
+                  <p>
+                    En 1978 se estableció la primera iglesia internacional en
+                    Australia, demostrando que el Evangelio tenía el mismo poder
+                    en cualquier nación. Después se expandió a países como México,
+                    Holanda y Alemania, y posteriormente a todo el mundo.
+                  </p>
+
+                  <div className="rounded-2xl border border-red-400/20 bg-white/10 p-6 backdrop-blur">
+                    <p className="text-red-300 font-black uppercase tracking-widest text-sm">
+                      Hoy
+                    </p>
+
+                    <p className="mt-3 text-xl font-semibold text-white leading-8">
+                      Actualmente la Fraternidad cuenta con{" "}
+                      <span className="text-red-300">
+                      más de 3,000 iglesias
+                    </span>{" "}
+                      establecidas en{" "}
+                      <span className="text-red-300">
+                      más de 120 naciones
+                    </span>
+                      , manteniendo como base el evangelismo, el discipulado y la
+                      plantación de iglesias.
+                    </p>
                   </div>
                 </div>
               </div>
-
-              <div className="mt-8 rounded-3xl border border-dashed border-red-200 bg-red-50/70 p-5 text-center">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-red-600">Nota para edición</p>
-                <p className="mt-2 text-sm font-semibold leading-6 text-slate-600">
-                  Para cargar fotos, reemplaza cada <span className="font-black text-blue-950">photoSrc vacío</span> por la ruta de la imagen del pastor dentro de <span className="font-black text-blue-950">/public</span>, por ejemplo <span className="font-black text-blue-950">/pastores/sol-de-oriente.webp</span>.
-                </p>
-              </div>
             </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+          </section>
+        </main>
+
+        <Footer />
+      </div>
   );
 }
