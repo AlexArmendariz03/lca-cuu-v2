@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navigation from "@/app/components/Navigation";
@@ -14,7 +14,6 @@ type PastorInfo = {
 type ChurchNode = {
     name: string;
     location: string;
-    note: string;
     pastor: PastorInfo;
     children?: ChurchNode[];
 };
@@ -23,19 +22,16 @@ const rootPath: ChurchNode[] = [
     {
         name: "Prescott",
         location: "Arizona, EUA",
-        note: "Raíz del compañerismo y referencia de envío.",
         pastor: { name: "Greg Y Lisa Mitchell", photoSrc: "/prescott.jpg" },
     },
     {
         name: "Nogales",
         location: "Sonora, México",
-        note: "Puente de la visión hacia México.",
         pastor: { name: "Jose Luis y Lucy Gaxiola", photoSrc: "/nogales.jpg" },
     },
     {
         name: "Los Mochis",
         location: "Sinaloa, México",
-        note: "Etapa de siembra y formación.",
         pastor: { name: "Victor y Lupita Higuera", photoSrc: "/mochis.jpg" },
     },
 ];
@@ -43,38 +39,32 @@ const rootPath: ChurchNode[] = [
 const chihuahuaTree: ChurchNode = {
     name: "La Casa del Alfarero Chihuahua",
     location: "Chihuahua, México",
-    note: "Iglesia madre desde donde se desprenden nuevas obras y ciudades.",
-    pastor: { name: "Jorge y Abigail Covarrubias", photoSrc: "/pastors2.jpg" },
+    pastor: { name: "Jorge y Abigail Covarrubias", photoSrc: "/pastores/JorgePalomar.jpg" },
     children: [
         {
             name: "Sol de Oriente",
             location: "Chihuahua",
-            note: "Obra desprendida de La Casa del Alfarero Chihuahua.",
-            pastor: { name: "Nombre del pastor", photoSrc: "" },
+            pastor: { name: "Jhobanny y Leslie Blanco", photoSrc: "/pastores/JioSol.jpg" },
         },
         {
             name: "Corredor",
             location: "Chihuahua",
-            note: "Extensión para alcanzar nuevas familias y comunidades.",
-            pastor: { name: "Nombre del pastor", photoSrc: "" },
+            pastor: { name: "Juan y Ana Reyes", photoSrc: "/pastores/JuaReyesCorredor.jpg" },
         },
         {
             name: "Aldama",
             location: "Chihuahua",
-            note: "Iglesia hija con enfoque local y evangelístico.",
-            pastor: { name: "Nombre del pastor", photoSrc: "" },
+            pastor: { name: "Armando y Blanca Mendoza", photoSrc: "/pastores/ArmandoAldama.jpg" },
         },
         {
             name: "Torreón",
             location: "Coahuila",
-            note: "Obra enviada desde Chihuahua con una nueva rama de crecimiento.",
-            pastor: { name: "Nombre del pastor", photoSrc: "" },
+            pastor: { name: "Caleb y Adriana Marquez", photoSrc: "/pastores/CalebTorreon.jpg" },
             children: [
                 {
                     name: "Jiménez",
                     location: "Chihuahua",
-                    note: "Iglesia que se desprende de la obra en Torreón.",
-                    pastor: { name: "Nombre del pastor", photoSrc: "" },
+                    pastor: { name: "Alberto y Ericka Mendez", photoSrc: "/pastores/AlbertoJimenez.jpg" },
                 },
             ],
         },
@@ -83,7 +73,7 @@ const chihuahuaTree: ChurchNode = {
 
 const zoomLevels = [0.75, 0.9, 1, 1.1, 1.25];
 
-function PastorPhoto({ pastor, featured = false }: { pastor: PastorInfo; featured?: boolean }) {
+function PastorPhoto({ pastor, featured = false, showLabel = true }: { pastor: PastorInfo; featured?: boolean; showLabel?: boolean }) {
     return (
         <div className="mx-auto w-full max-w-[8.5rem]">
             <div
@@ -104,9 +94,11 @@ function PastorPhoto({ pastor, featured = false }: { pastor: PastorInfo; feature
                     </div>
                 )}
             </div>
-            <p className={`mt-2 text-[0.68rem] font-black uppercase tracking-[0.16em] ${featured ? "text-red-100" : "text-red-600"}`}>
-                {pastor.name}
-            </p>
+            {showLabel ? (
+                <p className={`mt-2 text-[0.68rem] font-black uppercase tracking-[0.16em] ${featured ? "text-red-100" : "text-red-600"}`}>
+                    {pastor.name}
+                </p>
+            ) : null}
         </div>
     );
 }
@@ -138,15 +130,15 @@ function ChurchCard({
                 </div>
             ) : null}
             <div className={`grid gap-5 ${compact ? "sm:grid-cols-[7.5rem_1fr] sm:items-center sm:text-left" : ""}`}>
-                <PastorPhoto pastor={node.pastor} featured={featured} />
+                <PastorPhoto pastor={node.pastor} featured={featured} showLabel={!compact} />
                 <div>
                     <p className={`text-xs font-black uppercase tracking-[0.18em] ${featured ? "text-red-200" : "text-red-600"}`}>
                         {node.location}
                     </p>
                     <h3 className={`mt-3 font-black ${featured ? "text-3xl text-white" : "text-xl text-blue-950"}`}>{node.name}</h3>
-                    <p className={`mt-3 text-sm font-semibold leading-6 ${featured ? "text-blue-100" : "text-slate-600"}`}>
-                        {node.note}
-                    </p>
+                    {compact ? (
+                        <p className="mt-2 text-sm font-bold text-red-600">{node.pastor.name}</p>
+                    ) : null}
                 </div>
             </div>
         </article>
@@ -155,6 +147,16 @@ function ChurchCard({
 
 export default function OrganigramaPage() {
     const [zoom, setZoom] = useState(0.9);
+    const [isDesktop, setIsDesktop] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(min-width: 1024px)");
+        const updateIsDesktop = () => setIsDesktop(mediaQuery.matches);
+
+        updateIsDesktop();
+        mediaQuery.addEventListener("change", updateIsDesktop);
+        return () => mediaQuery.removeEventListener("change", updateIsDesktop);
+    }, []);
 
     const zoomIn = () => {
         setZoom((currentZoom) => zoomLevels[Math.min(zoomLevels.indexOf(currentZoom) + 1, zoomLevels.length - 1)]);
@@ -172,7 +174,7 @@ export default function OrganigramaPage() {
 
             <main className="overflow-hidden">
                 {/* Hero */}
-                <section className="relative isolate bg-blue-950 px-6 pb-16 pt-32 text-white lg:px-8">
+                <section className="relative isolate bg-blue-950 px-6 pb-8 pt-32 text-white lg:px-8">
                     <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.16),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(220,38,38,0.28),transparent_32%)]" />
 
                     <div className="mx-auto max-w-7xl">
@@ -207,13 +209,13 @@ export default function OrganigramaPage() {
                 </section>
 
                 {/* Organigrama */}
-                <section className="px-6 py-20 lg:px-8">
+                <section className="px-6 pb-20 pt-8 lg:px-8">
                     <div className="mx-auto max-w-7xl">
                         <div className="rounded-[2.5rem] border border-blue-100 bg-white p-5 shadow-2xl shadow-blue-950/10 sm:p-8 lg:p-10">
 
                             <div className="rounded-[2.5rem] bg-slate-100 p-4 ring-1 ring-blue-100 sm:p-6 lg:p-8">
-                                {/* Controles de zoom */}
-                                <div className="mb-5 flex flex-col gap-3 rounded-3xl border border-blue-100 bg-white p-3 shadow-lg shadow-blue-950/5 sm:flex-row sm:items-center sm:justify-between">
+                                {/* Controles de zoom (solo escritorio) */}
+                                <div className="mb-5 hidden gap-3 rounded-3xl border border-blue-100 bg-white p-3 shadow-lg shadow-blue-950/5 lg:flex lg:items-center lg:justify-between">
                                     <div>
                                         <p className="text-xs font-black uppercase tracking-[0.18em] text-red-600">Vista del organigrama</p>
                                         <p className="mt-1 text-sm font-semibold text-slate-600">
@@ -247,10 +249,10 @@ export default function OrganigramaPage() {
                                     </div>
                                 </div>
 
-                                <div className="max-h-[82vh] overflow-auto rounded-[2rem] bg-white/70 p-4 shadow-inner shadow-blue-950/5">
+                                <div className="rounded-[2rem] bg-white/70 p-4 shadow-inner shadow-blue-950/5 lg:max-h-[82vh] lg:overflow-auto">
                                     <div
-                                        className="relative mx-auto min-w-[980px] max-w-5xl transition-transform duration-300"
-                                        style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}
+                                        className="relative mx-auto w-full transition-transform duration-300 lg:min-w-[980px] lg:max-w-5xl"
+                                        style={isDesktop ? { transform: `scale(${zoom})`, transformOrigin: "top center" } : undefined}
                                     >
                                         <div
                                             className="absolute left-1/2 top-10 hidden h-[31rem] w-1 -translate-x-1/2 rounded-full bg-gradient-to-b from-red-600 via-blue-950 to-blue-950/20 md:block"
@@ -277,7 +279,7 @@ export default function OrganigramaPage() {
                                             </div>
                                         </div>
 
-                                        <div className="grid gap-5 lg:grid-cols-4">
+                                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                                             {chihuahuaTree.children?.map((branch, index) => (
                                                 <div key={branch.name} className="flex flex-col items-center">
                                                     <ChurchCard node={branch} step={String(index + 1).padStart(2, "0")} />
