@@ -26,9 +26,11 @@ type MenuItem = {
 const menuItems: MenuItem[] = [
   { label: "Inicio", href: "/#inicio" },
   { label: "Nuestra historia", href: "/nuestra-historia" },
+  { label: "Organigrama", href: "/organigrama" },
   { label: "Nuestra visión", href: "/#vision" },
   { label: "Galería", href: "/#galeria" },
   { label: "Servicios", href: "/#servicios" },
+  { label: "Eventos", href: "/#eventos" },
   { label: "Contacto", href: "/#contacto" },
 ];
 
@@ -72,8 +74,11 @@ export default function Navigation() {
             </DropdownTrigger>
           </NavbarItem>
           <DropdownMenu aria-label="Quiénes somos" className="w-[340px]" itemClasses={{ base: "gap-4" }}>
-            <DropdownItem key="historia" href="/nuestra-historia" description="Organigrama y descendencia">
+            <DropdownItem key="historia" href="/nuestra-historia" description="Cómo comenzó nuestro movimiento">
               Nuestra historia
+            </DropdownItem>
+            <DropdownItem key="organigrama" href="/organigrama" description="Árbol de iglesias y pastores">
+              Organigrama
             </DropdownItem>
             <DropdownItem key="vision" href="/#vision" description="Hacia dónde vamos como iglesia">
               Nuestra visión
@@ -89,6 +94,11 @@ export default function Navigation() {
         <NavbarItem>
           <Link href="/#servicios" className="font-semibold text-white/90 transition hover:text-white">
             Servicios
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link href="/#eventos" className="font-semibold text-white/90 transition hover:text-white">
+            Eventos
           </Link>
         </NavbarItem>
         <NavbarItem>

@@ -89,12 +89,20 @@ export default function NuestraRaizPage() {
             <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.16),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(220,38,38,0.28),transparent_32%)]" />
 
             <div className="mx-auto max-w-7xl">
-              <Link
-                  href="/"
-                  className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-red-100 backdrop-blur-md transition hover:bg-white hover:text-blue-950"
-              >
-                ← Volver al inicio
-              </Link>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                    href="/"
+                    className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-red-100 backdrop-blur-md transition hover:bg-white hover:text-blue-950"
+                >
+                  ← Volver al inicio
+                </Link>
+                <Link
+                    href="/organigrama"
+                    className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-red-100 backdrop-blur-md transition hover:bg-white hover:text-blue-950"
+                >
+                  Ver organigrama →
+                </Link>
+              </div>
 
               <div className="mt-10 max-w-5xl">
                 <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">
@@ -149,18 +157,75 @@ export default function NuestraRaizPage() {
                     </p>
 
                     <p className="mt-3 text-xl font-semibold text-white leading-8">
-                      Actualmente la Fraternidad cuenta con{" "}
+                      Actualmente el Compañerismo cuenta con{" "}
                       <span className="text-red-300">
-                      más de 3,000 iglesias
+                      más de 4,500 iglesias
                     </span>{" "}
                       establecidas en{" "}
                       <span className="text-red-300">
-                      más de 120 naciones
+                      más de 150 países
                     </span>
                       , manteniendo como base el evangelismo, el discipulado y la
                       plantación de iglesias.
                     </p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white px-6 py-20 lg:px-8">
+            <div className="mx-auto max-w-7xl">
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería histórica</p>
+              <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl">
+                Momentos que marcaron el inicio de esta historia.
+              </h2>
+              <div className="mt-10 grid gap-6 sm:grid-cols-2">
+                {[1, 2].map((slot) => (
+                  <div
+                    key={slot}
+                    className="flex aspect-[4/3] w-full flex-col items-center justify-center gap-2 rounded-[2rem] border-2 border-dashed border-blue-200 bg-slate-50 text-slate-400"
+                  >
+                    <span className="text-3xl">＋</span>
+                    <span className="text-xs font-black uppercase tracking-[0.16em]">Cargar foto histórica</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-slate-50 px-6 py-20 lg:px-8">
+            <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+              <div className="order-2 grid grid-cols-2 gap-5 lg:order-1">
+                <div className="flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-[1.6rem] border-2 border-dashed border-blue-200 bg-white text-slate-400">
+                  <span className="text-2xl">＋</span>
+                  <span className="text-center text-[0.65rem] font-black uppercase tracking-[0.14em]">Foto de<br />Wayman Mitchell</span>
+                </div>
+                <div className="flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-[1.6rem] border-2 border-dashed border-blue-200 bg-white text-slate-400">
+                  <span className="text-2xl">＋</span>
+                  <span className="text-center text-[0.65rem] font-black uppercase tracking-[0.14em]">Foto de<br />Nelda Mitchell</span>
+                </div>
+              </div>
+
+              <div className="order-1 lg:order-2">
+                <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Fundadores del movimiento</p>
+                <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
+                  Wayman y Nelda Mitchell.
+                </h2>
+                <div className="mt-6 space-y-5 text-lg leading-8 text-slate-600">
+                  <p>
+                    Wayman y Nelda Mitchell fueron los fundadores de este movimiento. Estuvieron casados
+                    por 63 años, hasta que Nelda partió con el Señor en 2016.
+                  </p>
+                  <p>
+                    Antes de llegar a Prescott, Arizona, en 1970, ambos ya habían experimentado una
+                    conversión poderosa a mediados de sus veintes y sirvieron pastoreando congregaciones
+                    en distintos estados de EUA y en Canadá.
+                  </p>
+                  <p>
+                    El pastor Mitchell continuó viajando por el mundo llevando la visión del compañerismo
+                    hasta principios de 2020. Partió con el Señor el 21 de septiembre de 2020.
+                  </p>
                 </div>
               </div>
             </div>

@@ -24,19 +24,19 @@ const rootPath: ChurchNode[] = [
         name: "Prescott",
         location: "Arizona, EUA",
         note: "Raíz del compañerismo y referencia de envío.",
-        pastor: { name: "Greg Y Lisa Mitchell", photoSrc: "/prescott.png" },
+        pastor: { name: "Greg Y Lisa Mitchell", photoSrc: "/prescott.jpg" },
     },
     {
         name: "Nogales",
         location: "Sonora, México",
         note: "Puente de la visión hacia México.",
-        pastor: { name: "Jose Luis y Lucy Gaxiola", photoSrc: "/nogales.png" },
+        pastor: { name: "Jose Luis y Lucy Gaxiola", photoSrc: "/nogales.jpg" },
     },
     {
         name: "Los Mochis",
         location: "Sinaloa, México",
         note: "Etapa de siembra y formación.",
-        pastor: { name: "Victor y Lupita Higuera", photoSrc: "/mochis.png" },
+        pastor: { name: "Victor y Lupita Higuera", photoSrc: "/mochis.jpg" },
     },
 ];
 
@@ -44,7 +44,7 @@ const chihuahuaTree: ChurchNode = {
     name: "La Casa del Alfarero Chihuahua",
     location: "Chihuahua, México",
     note: "Iglesia madre desde donde se desprenden nuevas obras y ciudades.",
-    pastor: { name: "Jorge y Abigail Covarrubias", photoSrc: "/pastors2.png" },
+    pastor: { name: "Jorge y Abigail Covarrubias", photoSrc: "/pastors2.jpg" },
     children: [
         {
             name: "Sol de Oriente",
@@ -176,12 +176,20 @@ export default function OrganigramaPage() {
                     <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.16),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(220,38,38,0.28),transparent_32%)]" />
 
                     <div className="mx-auto max-w-7xl">
-                        <Link
-                            href="/"
-                            className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-red-100 backdrop-blur-md transition hover:bg-white hover:text-blue-950"
-                        >
-                            ← Volver al inicio
-                        </Link>
+                        <div className="flex flex-wrap gap-3">
+                            <Link
+                                href="/"
+                                className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-red-100 backdrop-blur-md transition hover:bg-white hover:text-blue-950"
+                            >
+                                ← Volver al inicio
+                            </Link>
+                            <Link
+                                href="/nuestra-historia"
+                                className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-red-100 backdrop-blur-md transition hover:bg-white hover:text-blue-950"
+                            >
+                                Ver nuestra historia →
+                            </Link>
+                        </div>
 
                         <div className="mt-10 max-w-5xl">
                             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">

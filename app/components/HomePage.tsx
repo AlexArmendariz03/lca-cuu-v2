@@ -5,9 +5,7 @@ import React, { useEffect, useState } from "react";
 
 type HeroSlide = {
   image: string;
-  eyebrow: string;
   title: string;
-  description: string;
 };
 
 type GalleryPhoto = {
@@ -36,29 +34,16 @@ type ValueCard = {
   description: string;
 };
 
+type UpcomingEvent = {
+  name: string;
+  photo?: string;
+};
+
 
 const slides: HeroSlide[] = [
-  {
-    image: "/partyhouse.webp",
-    eyebrow: "Bienvenido a casa",
-    title: "La Casa del Alfarero Chihuahua",
-    description:
-      "Una iglesia de compañerismo cristiano donde familias, jóvenes y niños encuentran fe, comunidad y propósito en Jesús.",
-  },
-  {
-    image: "/igleisa.jpg",
-    eyebrow: "Donde Jesucristo está cambiando vidas",
-    title: "Un lugar para volver a empezar",
-    description:
-      "Ven tal como eres. Queremos caminar contigo, orar por tu familia y celebrar lo que Dios está haciendo en nuestra ciudad.",
-  },
-  {
-    image: "/avivaHumber.webp",
-    eyebrow: "Fe viva para Chihuahua",
-    title: "Adoración, palabra y esperanza",
-    description:
-      "Cada reunión es una oportunidad para acercarnos a Dios, fortalecer amistades y salir con una fe renovada.",
-  },
+  { image: "/partyhouse.webp", title: "La Casa del Alfarero Chihuahua" },
+  { image: "/igleisa.jpg", title: "Un lugar para volver a empezar" },
+  { image: "/avivaHumber.webp", title: "Adoración, palabra y esperanza" },
 ];
 
 
@@ -102,6 +87,11 @@ const scheduleItems: ScheduleItem[] = [
   { day: "Domingo", time: "6:00 PM", name: "Servicio de milagros", note: "Oración y fe" },
   { day: "Miércoles", time: "7:00 PM", name: "Reunión entre semana", note: "Recarga espiritual" },
   { day: "Sábado", time: "7:00 PM", name: "Conciertos", note: "Jóvenes y comunidad" },
+];
+
+const upcomingEvents: UpcomingEvent[] = [
+  { name: "Aviva Agosto", photo: "/aviva-agosto.jpg" },
+  { name: "Aviva Hombres", photo: "/aviva-hombres.jpg" },
 ];
 
 const valueCards: ValueCard[] = [
@@ -274,7 +264,7 @@ export default function HomePage() {
               </div>
               <div className="max-w-2xl lg:ml-auto lg:text-right">
                 <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-white/90 backdrop-blur-md">
-                  Iglesia de compañerismo cristiano
+                  Todas las semanas
                 </p>
                 <p className="mt-3 text-sm font-semibold leading-6 text-blue-100">
                   Un bloque claro, dinámico y horizontal para elegir rápido la reunión ideal para tu familia.
@@ -342,12 +332,49 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section id="eventos" className="px-6 py-24 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end" data-aos="fade-up">
+            <div>
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Agenda especial</p>
+              <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">Próximos eventos</h2>
+            </div>
+            <p className="max-w-xl text-slate-600">Conciertos, conferencias y actividades especiales fuera de la reunión semanal.</p>
+          </div>
+
+          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:mx-auto lg:max-w-4xl">
+            {upcomingEvents.map((event) => (
+              <article
+                key={event.name}
+                className="overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-xl shadow-blue-950/10"
+              >
+                {event.photo ? (
+                  <div className="relative aspect-[4/5] w-full bg-slate-100">
+                    <Image
+                      src={event.photo}
+                      alt={event.name}
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex aspect-[4/5] w-full items-center justify-center border-2 border-dashed border-blue-200 bg-slate-50 text-sm font-black uppercase tracking-[0.16em] text-slate-400">
+                    Cargar volante
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="conocenos" className="px-6 py-24 lg:px-8">
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div data-aos="fade-right">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Nuestra casa</p>
             <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
-              Una iglesia donde Jesucristo está cambiando vidas.
+              Una casa abierta para toda tu familia.
             </h2>
             <p className="mt-6 text-lg text-slate-600">
               Conservamos lo esencial: una comunidad cercana, adoración sincera y enseñanza bíblica. Renovamos la experiencia para que desde la primera visita se sienta claro, amigable y memorable.
