@@ -27,7 +27,7 @@ const menuItems: MenuItem[] = [
   { label: "Inicio", href: "/#inicio" },
   { label: "Nuestra historia", href: "/nuestra-historia" },
   { label: "Organigrama", href: "/organigrama" },
-  { label: "Nuestra visión", href: "/#vision" },
+  { label: "Lo que creemos", href: "/lo-que-creemos" },
   { label: "Galería", href: "/#galeria" },
   { label: "Servicios", href: "/#servicios" },
   { label: "Eventos", href: "/#eventos" },
@@ -80,8 +80,8 @@ export default function Navigation() {
             <DropdownItem key="organigrama" href="/organigrama" description="Árbol de iglesias y pastores">
               Organigrama
             </DropdownItem>
-            <DropdownItem key="vision" href="/#vision" description="Hacia dónde vamos como iglesia">
-              Nuestra visión
+            <DropdownItem key="creemos" href="/lo-que-creemos" description="Nuestra declaración de fe">
+              Lo que creemos
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
