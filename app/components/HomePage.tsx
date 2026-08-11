@@ -240,9 +240,6 @@ export default function HomePage() {
             <h1 className="text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
               Donde Jesucristo está cambiando vidas.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-blue-50 sm:text-xl">
-              Somos una comunidad para toda la familia: adoración, palabra, compañerismo y esperanza para nuestra ciudad.
-            </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <a href="#servicios" className="rounded-full bg-red-600 px-8 py-4 text-center font-bold text-white shadow-xl shadow-red-950/30 transition hover:-translate-y-1 hover:bg-red-500">
                 Ver horarios
