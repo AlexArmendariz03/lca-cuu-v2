@@ -5,10 +5,12 @@ declare module "react" {
 
   export function useState<S>(initialState: S | (() => S)): [S, (value: S | ((previous: S) => S)) => void];
   export function useEffect(effect: () => void | (() => void), deps?: unknown[]): void;
+  export function useRef<T>(initialValue: T): { current: T };
 
   const React: {
     useState: typeof useState;
     useEffect: typeof useEffect;
+    useRef: typeof useRef;
   };
 
   export default React;
