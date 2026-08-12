@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { GalleryAlbum, GalleryPhoto } from "@/lib/gallery";
 
 type HeroSlide = {
@@ -82,8 +82,6 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeGallery, setActiveGallery] = useState<GalleryAlbum | null>(null);
   const [expandedPhoto, setExpandedPhoto] = useState<GalleryPhoto | null>(null);
-  const galleryScrollRef = useRef<HTMLDivElement | null>(null);
-  const savedScrollTopRef = useRef(0);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -107,19 +105,11 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
   };
 
   const openPhoto = (photo: GalleryPhoto) => {
-    if (galleryScrollRef.current) {
-      savedScrollTopRef.current = galleryScrollRef.current.scrollTop;
-    }
     setExpandedPhoto(photo);
   };
 
   const closePhoto = () => {
     setExpandedPhoto(null);
-    requestAnimationFrame(() => {
-      if (galleryScrollRef.current) {
-        galleryScrollRef.current.scrollTop = savedScrollTopRef.current;
-      }
-    });
   };
 
   const goToAdjacentPhoto = (direction: "previous" | "next") => {
@@ -461,7 +451,6 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
       {activeGallery ? (
         <div
-          ref={galleryScrollRef}
           className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-blue-950/90 px-6 py-10 backdrop-blur-md"
           role="dialog"
           aria-modal="true"
