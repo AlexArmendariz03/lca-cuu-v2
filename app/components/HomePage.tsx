@@ -1,24 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import type { GalleryAlbum, GalleryPhoto } from "@/lib/gallery";
 
 type HeroSlide = {
   image: string;
   title: string;
-};
-
-type GalleryPhoto = {
-  src: string;
-  alt: string;
-  isPlaceholder?: boolean;
-  video?: string;
-};
-
-type GalleryAlbum = {
-  title: string;
-  cover: string | null;
-  photos: GalleryPhoto[];
 };
 
 type ScheduleItem = {
@@ -48,42 +36,6 @@ const slides: HeroSlide[] = [
 ];
 
 
-
-const galleryAlbums: GalleryAlbum[] = [
-  {
-    title: "Servicios",
-    cover: "/galeria/servicios/servicio-02.jpg",
-    photos: [
-      { src: "/galeria/servicios/servicio-01.jpg", alt: "Servicio dominical" },
-      { src: "/galeria/servicios/servicio-02.jpg", alt: "Servicio con el tema Que Dios edifique su casa" },
-      { src: "/galeria/servicios/servicio-03.jpg", alt: "Congregación en tiempo de adoración" },
-    ],
-  },
-  {
-    title: "Conciertos",
-    cover: "/galeria/conciertos/concierto-01.jpg",
-    photos: [
-      { src: "/galeria/conciertos/concierto-01.jpg", alt: "Concierto de alabanza", video: "/galeria/conciertos/concierto-01.mp4" },
-      { src: "/galeria/conciertos/concierto-02.jpg", alt: "Banda tocando en concierto", video: "/galeria/conciertos/concierto-02.mp4" },
-      { src: "placeholder-1", alt: "Foto de concierto por cargar", isPlaceholder: true },
-    ],
-  },
-  {
-    title: "Eventos especiales",
-    cover: "/galeria/eventos/evento-01.jpg",
-    photos: [
-      { src: "/galeria/eventos/evento-01.jpg", alt: "Evento comunitario al aire libre" },
-      { src: "/galeria/eventos/evento-02.jpg", alt: "Noche de adoración especial" },
-      { src: "/galeria/eventos/evento-03.jpg", alt: "Piñata en evento juvenil" },
-      { src: "/galeria/eventos/evento-04.jpg", alt: "Evento temático Luz y sal" },
-      { src: "/galeria/eventos/evento-05.jpg", alt: "Reunión especial de hombres" },
-      { src: "/galeria/eventos/evento-06.jpg", alt: "Evangelismo comunitario" },
-      { src: "/galeria/eventos/evento-07.jpg", alt: "Actividad recreativa al aire libre" },
-      { src: "/galeria/eventos/evento-08.jpg", alt: "Reunión especial de hombres en oración" },
-      { src: "/galeria/eventos/evento-09.jpg", alt: "Boda en la iglesia" },
-    ],
-  },
-];
 
 const scheduleItems: ScheduleItem[] = [
   { day: "Domingo", time: "9:45 AM", name: "Escuela dominical", note: "Formación bíblica" },
@@ -126,12 +78,10 @@ const valueCards: ValueCard[] = [
 ];
 
 
-export default function HomePage() {
+export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbum[] }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeGallery, setActiveGallery] = useState<GalleryAlbum | null>(null);
   const [expandedPhoto, setExpandedPhoto] = useState<GalleryPhoto | null>(null);
-  const galleryScrollRef = useRef<HTMLDivElement | null>(null);
-  const savedScrollTopRef = useRef(0);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -155,19 +105,11 @@ export default function HomePage() {
   };
 
   const openPhoto = (photo: GalleryPhoto) => {
-    if (galleryScrollRef.current) {
-      savedScrollTopRef.current = galleryScrollRef.current.scrollTop;
-    }
     setExpandedPhoto(photo);
   };
 
   const closePhoto = () => {
     setExpandedPhoto(null);
-    requestAnimationFrame(() => {
-      if (galleryScrollRef.current) {
-        galleryScrollRef.current.scrollTop = savedScrollTopRef.current;
-      }
-    });
   };
 
   const goToAdjacentPhoto = (direction: "previous" | "next") => {
@@ -175,11 +117,8 @@ export default function HomePage() {
 
     const { photos } = activeGallery;
     const step = direction === "next" ? 1 : -1;
-    let nextIndex = photos.findIndex((photo) => photo.src === expandedPhoto.src);
-
-    do {
-      nextIndex = (nextIndex + step + photos.length) % photos.length;
-    } while (photos[nextIndex].isPlaceholder);
+    const currentIndex = photos.findIndex((photo) => photo.src === expandedPhoto.src);
+    const nextIndex = (currentIndex + step + photos.length) % photos.length;
 
     setExpandedPhoto(photos[nextIndex]);
   };
@@ -512,7 +451,6 @@ export default function HomePage() {
 
       {activeGallery ? (
         <div
-          ref={galleryScrollRef}
           className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-blue-950/90 px-6 py-10 backdrop-blur-md"
           role="dialog"
           aria-modal="true"
@@ -533,38 +471,28 @@ export default function HomePage() {
               haz click en cualquier foto para ver la foto completa .
             </p>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {activeGallery.photos.map((photo) =>
-                photo.isPlaceholder ? (
-                  <div
-                    key={photo.src}
-                    className="flex h-80 flex-col items-center justify-center gap-2 rounded-3xl border-2 border-dashed border-blue-200 bg-slate-50 text-slate-400"
-                  >
-                    <span className="text-3xl">＋</span>
-                    <span className="px-4 text-center text-xs font-black uppercase tracking-[0.16em]">Cargar foto</span>
-                  </div>
-                ) : (
-                  <button
-                    key={photo.src}
-                    type="button"
-                    onClick={() => openPhoto(photo)}
-                    className="group relative h-80 overflow-hidden rounded-3xl bg-slate-100 text-left shadow-lg shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus-visible:ring-4"
-                  >
-                    <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
-                    <div className={`absolute inset-0 bg-gradient-to-t from-blue-950/70 via-transparent to-transparent transition ${photo.video ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`} />
-                    {photo.video ? (
-                      <span className="absolute inset-0 grid place-items-center">
-                        <span className="grid h-16 w-16 place-items-center rounded-full bg-white/90 text-2xl text-blue-950 shadow-xl transition group-hover:scale-110">
-                          ▶
-                        </span>
+              {activeGallery.photos.map((photo) => (
+                <button
+                  key={photo.src}
+                  type="button"
+                  onClick={() => openPhoto(photo)}
+                  className="group relative h-80 overflow-hidden rounded-3xl bg-slate-100 text-left shadow-lg shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus-visible:ring-4"
+                >
+                  <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
+                  <div className={`absolute inset-0 bg-gradient-to-t from-blue-950/70 via-transparent to-transparent transition ${photo.video ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`} />
+                  {photo.video ? (
+                    <span className="absolute inset-0 grid place-items-center">
+                      <span className="grid h-16 w-16 place-items-center rounded-full bg-white/90 text-2xl text-blue-950 shadow-xl transition group-hover:scale-110">
+                        ▶
                       </span>
-                    ) : (
-                      <span className="absolute bottom-4 left-4 rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-blue-950 opacity-0 shadow-lg transition group-hover:opacity-100">
-                        Expandir
-                      </span>
-                    )}
-                  </button>
-                )
-              )}
+                    </span>
+                  ) : (
+                    <span className="absolute bottom-4 left-4 rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-blue-950 opacity-0 shadow-lg transition group-hover:opacity-100">
+                      Expandir
+                    </span>
+                  )}
+                </button>
+              ))}
             </div>
           </div>
         </div>

@@ -45,7 +45,7 @@ export default function Navigation() {
       className="fixed top-0 z-50 border-b border-white/10 bg-blue-950/85 text-white backdrop-blur-xl"
       maxWidth="xl"
     >
-      <NavbarContent className="sm:hidden" justify="start">
+      <NavbarContent className="lg:hidden" justify="start">
         <NavbarMenuToggle aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"} className="text-white" />
       </NavbarContent>
 
@@ -54,11 +54,11 @@ export default function Navigation() {
           width={180}
           alt="Logo LCA"
           src="/logoLCA.png"
-          className="transition-transform duration-300 hover:scale-105"
+          className="max-w-[130px] transition-transform duration-300 hover:scale-105 sm:max-w-none"
         />
       </NavbarBrand>
 
-      <NavbarContent className="hidden gap-6 sm:flex" justify="center">
+      <NavbarContent className="hidden gap-6 lg:flex" justify="center">
         <NavbarItem>
           <Link href="/#inicio" className="font-semibold text-white/90 transition hover:text-white">
             Inicio
