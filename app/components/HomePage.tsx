@@ -48,6 +48,7 @@ const scheduleItems: ScheduleItem[] = [
 const upcomingEvents: UpcomingEvent[] = [
   { name: "Aviva Agosto", photo: "/aviva-agosto.jpg" },
   { name: "Aviva Hombres", photo: "/aviva-hombres.jpg" },
+  { name: "Cruzada de Milagros", photo: "/cruzada-milagros.jpg" },
 ];
 
 const valueCards: ValueCard[] = [
@@ -343,7 +344,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
             <p className="max-w-xl text-slate-600">Conciertos, conferencias y actividades especiales fuera de la reunión semanal.</p>
           </div>
 
-          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:mx-auto lg:max-w-4xl">
+          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {upcomingEvents.map((event) => (
               <article
                 key={event.name}
