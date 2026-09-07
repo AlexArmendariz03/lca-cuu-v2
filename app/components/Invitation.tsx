@@ -1,5 +1,9 @@
 import type { ComponentType, SVGProps } from "react";
 import React from "react";
+import Image from "next/image";
+
+const BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+";
 
 const FacebookIcon = () => (
   <svg
@@ -87,13 +91,13 @@ export default function Invitation() {
       className="relative overflow-hidden bg-slate-50 px-6 py-24 lg:px-8"
     >
       <div className="absolute inset-x-0 top-0 h-40 bg-blue-950" />
-      <div className="absolute left-10 top-20 h-44 w-44 rounded-full bg-red-600/20 blur-3xl" />
-      <div className="absolute bottom-10 right-10 h-56 w-56 rounded-full bg-blue-950/10 blur-3xl" />
+      <div className="animate-blob-float absolute left-10 top-20 h-44 w-44 rounded-full bg-red-600/20 blur-3xl" />
+      <div className="animate-blob-float absolute bottom-10 right-10 h-56 w-56 rounded-full bg-blue-950/10 blur-3xl" style={{ animationDelay: "-5s" }} />
 
       <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-blue-950 shadow-2xl shadow-blue-950/20">
         <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative isolate overflow-hidden p-8 text-white sm:p-10 lg:p-12">
-            <div className="absolute -right-20 -top-20 -z-10 h-64 w-64 rounded-full bg-red-600/30 blur-3xl" />
+            <div className="animate-blob-float absolute -right-20 -top-20 -z-10 h-64 w-64 rounded-full bg-red-600/30 blur-3xl" style={{ animationDelay: "-9s" }} />
             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">
               Conéctate
             </p>
@@ -104,37 +108,68 @@ export default function Invitation() {
               Mantente cerca de nuestra comunidad, mira próximos eventos y
               encuentra cómo llegar a La Casa del Alfarero Chihuahua.
             </p>
+
+            <div className="relative mt-8 aspect-[16/10] w-full overflow-hidden rounded-3xl shadow-xl shadow-blue-950/30">
+              <Image
+                src="/iglesiaGente2.jpg"
+                alt="Comunidad de La Casa del Alfarero reunida en un servicio"
+                fill
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
+                className="object-cover"
+              />
+            </div>
           </div>
 
           <div className="bg-white p-5 sm:p-8 lg:p-10">
             <div className="grid gap-4">
               {socialLinks.map((item) => {
                 const Icon = item.Icon;
+                const isLocation = item.label === "Ubicación";
 
                 return (
-                  <a
+                  <div
                     key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group flex flex-col gap-4 rounded-3xl border border-blue-100 bg-slate-50 p-5 transition hover:-translate-y-1 hover:border-red-200 hover:bg-white hover:shadow-xl hover:shadow-blue-950/10 sm:flex-row sm:items-center"
+                    className="overflow-hidden rounded-3xl border border-blue-100 bg-slate-50 transition hover:-translate-y-1 hover:border-red-200 hover:bg-white hover:shadow-xl hover:shadow-blue-950/10"
                   >
-                    <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-blue-950 text-white shadow-lg shadow-blue-950/20 transition group-hover:bg-red-600">
-                      <Icon />
-                      <span className="sr-only">{item.accent}</span>
-                    </span>
-                    <span className="flex-1">
-                      <span className="block text-2xl font-black text-blue-950">
-                        {item.label}
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group flex flex-col gap-4 p-5 sm:flex-row sm:items-center"
+                    >
+                      <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-blue-950 text-white shadow-lg shadow-blue-950/20 transition group-hover:bg-red-600">
+                        <Icon />
+                        <span className="sr-only">{item.accent}</span>
                       </span>
-                      <span className="mt-1 block text-sm font-semibold leading-6 text-slate-600">
-                        {item.description}
+                      <span className="flex-1">
+                        <span className="block text-2xl font-black text-blue-950">
+                          {item.label}
+                        </span>
+                        <span className="mt-1 block text-sm font-semibold leading-6 text-slate-600">
+                          {item.description}
+                        </span>
                       </span>
-                    </span>
-                    <span className="text-sm font-black uppercase tracking-[0.2em] text-red-600 transition group-hover:translate-x-1">
-                      Abrir
-                    </span>
-                  </a>
+                      <span className="text-sm font-black uppercase tracking-[0.2em] text-red-600 transition group-hover:translate-x-1">
+                        Abrir
+                      </span>
+                    </a>
+
+                    {isLocation ? (
+                      <div className="px-5 pb-5">
+                        <div className="overflow-hidden rounded-2xl border border-blue-100">
+                          <iframe
+                            title="Ubicación de La Casa del Alfarero Chihuahua en el mapa"
+                            src="https://www.google.com/maps?q=28.6391952,-106.090991&z=16&output=embed"
+                            className="h-40 w-full sm:h-48"
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                          />
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
                 );
               })}
             </div>

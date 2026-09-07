@@ -108,13 +108,11 @@ function ChurchCard({
                         step,
                         featured = false,
                         compact = false,
-                        key
                     }: {
     node: ChurchNode,
     step?: string,
     featured?: boolean,
     compact?: boolean,
-    key?: string
 }) {
     return (
         <article
@@ -172,7 +170,7 @@ export default function OrganigramaPage() {
         <div className="min-h-screen bg-slate-50 text-slate-950">
             <Navigation />
 
-            <main className="overflow-hidden">
+            <main id="main-content" className="overflow-hidden">
                 {/* Hero */}
                 <section className="relative isolate bg-blue-950 px-6 pb-8 pt-32 text-white lg:px-8">
                     <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.16),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(220,38,38,0.28),transparent_32%)]" />
@@ -193,7 +191,7 @@ export default function OrganigramaPage() {
                             </Link>
                         </div>
 
-                        <div className="mt-10 max-w-5xl">
+                        <div data-aos="fade-up" className="mt-10 max-w-5xl">
                             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">
                                 Organigrama
                             </p>
@@ -261,7 +259,7 @@ export default function OrganigramaPage() {
 
                                         <div className="relative z-10 grid gap-0">
                                             {rootPath.map((node, index) => (
-                                                <div key={node.name} className="flex flex-col items-center">
+                                                <div key={node.name} data-aos="zoom-in" className="flex flex-col items-center">
                                                     <ChurchCard node={node} step={String(index + 1).padStart(2, "0")} compact />
                                                     <div className="flex h-14 flex-col items-center justify-center" aria-hidden="true">
                                                         <span className="h-full w-1 bg-blue-950/20" />
@@ -272,7 +270,7 @@ export default function OrganigramaPage() {
                                                 </div>
                                             ))}
 
-                                            <div className="flex flex-col items-center">
+                                            <div data-aos="zoom-in" className="flex flex-col items-center">
                                                 <ChurchCard node={chihuahuaTree} step="04" featured />
                                                 <div className="h-12 w-1 bg-blue-950/20" aria-hidden="true" />
                                                 <div className="mb-8 h-1 w-full max-w-5xl rounded-full bg-blue-950/20" aria-hidden="true" />
@@ -281,7 +279,7 @@ export default function OrganigramaPage() {
 
                                         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                                             {chihuahuaTree.children?.map((branch, index) => (
-                                                <div key={branch.name} className="flex flex-col items-center">
+                                                <div key={branch.name} data-aos="zoom-in" className="flex flex-col items-center">
                                                     <ChurchCard node={branch} step={String(index + 1).padStart(2, "0")} />
 
                                                     {branch.children?.length ? (

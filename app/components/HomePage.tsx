@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { GalleryAlbum, GalleryPhoto } from "@/lib/gallery";
 
 type HeroSlide = {
@@ -26,8 +26,11 @@ type ValueCard = {
 type UpcomingEvent = {
   name: string;
   photo?: string;
+  date?: string;
 };
 
+const BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+";
 
 const slides: HeroSlide[] = [
   { image: "/partyhouse.webp", title: "La Casa del Alfarero Chihuahua" },
@@ -56,7 +59,7 @@ const valueCards: ValueCard[] = [
     number: "01",
     title: "Discipulado",
     description:
-      "Creemos que el futuro pastor debe estar preparado en todos los aspectos para enfrentar la vida de un pastor, principalmente siendo un buen predicador que alimenta a su congregación con la palabra de Dios. Es un proceso donde desafiamos a los creyentes a madurar y crecer como seguidores de Cristo.",
+      "Creemos que el futuro pastor debe prepararse en todos los aspectos de la vida pastoral, siendo ante todo un buen predicador que alimenta a su congregación con la palabra de Dios. Es un proceso que desafía a los creyentes a madurar como seguidores de Cristo.",
   },
   {
     number: "02",
@@ -81,16 +84,25 @@ const valueCards: ValueCard[] = [
 
 export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbum[] }) {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
   const [activeGallery, setActiveGallery] = useState<GalleryAlbum | null>(null);
   const [expandedPhoto, setExpandedPhoto] = useState<GalleryPhoto | null>(null);
+  const galleryTriggerRef = useRef<HTMLElement | null>(null);
+  const galleryCloseButtonRef = useRef<HTMLButtonElement>(null);
+  const photoCloseButtonRef = useRef<HTMLButtonElement>(null);
+
+  const isCarouselPaused = isHovering || isAutoplayPaused;
 
   useEffect(() => {
+    if (isCarouselPaused) return;
+
     const timer = window.setInterval(() => {
       setActiveSlide((currentSlide) => (currentSlide + 1) % slides.length);
     }, 5000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [isCarouselPaused]);
 
   const goToPreviousSlide = () => {
     setActiveSlide((currentSlide) => (currentSlide - 1 + slides.length) % slides.length);
@@ -100,9 +112,25 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
     setActiveSlide((currentSlide) => (currentSlide + 1) % slides.length);
   };
 
+  const handleCarouselKeyDown = (event: { key: string; preventDefault: () => void }) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      goToPreviousSlide();
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      goToNextSlide();
+    }
+  };
+
+  const openGallery = (album: GalleryAlbum, trigger: HTMLElement) => {
+    galleryTriggerRef.current = trigger;
+    setActiveGallery(album);
+  };
+
   const closeGallery = () => {
     setActiveGallery(null);
     setExpandedPhoto(null);
+    galleryTriggerRef.current?.focus();
   };
 
   const openPhoto = (photo: GalleryPhoto) => {
@@ -111,6 +139,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
   const closePhoto = () => {
     setExpandedPhoto(null);
+    galleryCloseButtonRef.current?.focus();
   };
 
   const goToAdjacentPhoto = (direction: "previous" | "next") => {
@@ -128,17 +157,40 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
     if (!activeGallery) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      if (expandedPhoto) {
-        closePhoto();
-      } else {
-        closeGallery();
+      if (event.key === "Escape") {
+        if (expandedPhoto) {
+          closePhoto();
+        } else {
+          closeGallery();
+        }
+        return;
+      }
+
+      if (!expandedPhoto) return;
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goToAdjacentPhoto("previous");
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goToAdjacentPhoto("next");
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeGallery, expandedPhoto]);
+
+  useEffect(() => {
+    if (activeGallery) {
+      galleryCloseButtonRef.current?.focus();
+    }
+  }, [activeGallery]);
+
+  useEffect(() => {
+    if (expandedPhoto) {
+      photoCloseButtonRef.current?.focus();
+    }
+  }, [expandedPhoto]);
 
   useEffect(() => {
     if (!activeGallery) return;
@@ -162,24 +214,55 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
   }, [activeGallery]);
 
   return (
-    <main className="overflow-hidden bg-slate-50 text-slate-950">
+    <main id="main-content" className="overflow-hidden bg-slate-50 text-slate-950">
       <section
         data-aos="zoom-in"
         id="inicio"
         className="relative isolate min-h-[720px] w-full overflow-hidden bg-blue-950"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        onFocus={() => setIsHovering(true)}
+        onBlur={() => setIsHovering(false)}
+        onKeyDown={handleCarouselKeyDown}
       >
+        <div aria-live="polite" className="sr-only">
+          {slides[activeSlide].title}
+        </div>
         <div id="carouselExampleCaptions" className="absolute inset-0">
-          <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 list-none justify-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md">
-            {slides.map((slide, index) => (
-              <button
-                key={slide.image}
-                type="button"
-                onClick={() => setActiveSlide(index)}
-                className={`h-2.5 rounded-full transition-all duration-300 hover:w-12 hover:bg-white ${activeSlide === index ? "w-12 bg-white" : "w-8 bg-white/75"}`}
-                aria-current={activeSlide === index ? "true" : undefined}
-                aria-label={`Slide ${index + 1}`}
-              />
-            ))}
+          <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md">
+            <div className="flex list-none items-center gap-2">
+              {slides.map((slide, index) => (
+                <button
+                  key={slide.image}
+                  type="button"
+                  onClick={() => setActiveSlide(index)}
+                  className="group flex h-8 w-10 items-center justify-center"
+                  aria-current={activeSlide === index ? "true" : undefined}
+                  aria-label={`Diapositiva ${index + 1}`}
+                >
+                  <span
+                    className={`block h-2.5 rounded-full transition-all duration-300 group-hover:w-12 group-hover:bg-white ${activeSlide === index ? "w-12 bg-white" : "w-8 bg-white/75"}`}
+                  />
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsAutoplayPaused((paused) => !paused)}
+              aria-pressed={isAutoplayPaused}
+              aria-label={isAutoplayPaused ? "Reanudar carrusel automático" : "Pausar carrusel automático"}
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-white/80 transition hover:bg-white/15 hover:text-white"
+            >
+              {isAutoplayPaused ? (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                  <path d="M8 5.14v13.72c0 .83.91 1.34 1.62.9l10.98-6.86a1.06 1.06 0 0 0 0-1.8L9.62 4.24A1.06 1.06 0 0 0 8 5.14Z" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                  <path d="M7 5.5A1.5 1.5 0 0 1 8.5 4h1A1.5 1.5 0 0 1 11 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-1A1.5 1.5 0 0 1 7 18.5v-13Zm7 0A1.5 1.5 0 0 1 15.5 4h1A1.5 1.5 0 0 1 18 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-13Z" />
+                </svg>
+              )}
+            </button>
           </div>
 
           <div className="relative h-full w-full overflow-hidden after:clear-both after:block after:content-['']">
@@ -196,6 +279,8 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                   fill
                   sizes="100vw"
                   priority={index === 0}
+                  placeholder="blur"
+                  blurDataURL={BLUR_DATA_URL}
                   className="object-cover"
                   alt={slide.title}
                 />
@@ -256,8 +341,8 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
       <section id="servicios" className="relative z-20 -mt-16 px-6 lg:px-8">
         <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/95 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl">
           <div className="relative isolate overflow-hidden rounded-[1.6rem] bg-white ring-1 ring-blue-100">
-            <div className="absolute -right-20 -top-20 -z-10 h-56 w-56 rounded-full bg-red-600/10 blur-3xl" />
-            <div className="absolute -bottom-24 left-12 -z-10 h-64 w-64 rounded-full bg-blue-900/10 blur-3xl" />
+            <div className="animate-blob-float absolute -right-20 -top-20 -z-10 h-56 w-56 rounded-full bg-red-600/10 blur-3xl" />
+            <div className="animate-blob-float absolute -bottom-24 left-12 -z-10 h-64 w-64 rounded-full bg-blue-900/10 blur-3xl" style={{ animationDelay: "-7s" }} />
 
             <div className="grid gap-6 bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 p-7 text-white lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:p-8">
               <div>
@@ -275,7 +360,15 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
             </div>
 
             <div className="p-4 sm:p-6">
-              <div className="rounded-[1.45rem] border border-blue-100 bg-gradient-to-r from-slate-50 via-white to-slate-50 p-3 shadow-inner shadow-blue-950/5 sm:p-4">
+              <div className="relative rounded-[1.45rem] border border-blue-100 bg-gradient-to-r from-slate-50 via-white to-slate-50 p-3 shadow-inner shadow-blue-950/5 sm:p-4">
+                <div
+                  className="pointer-events-none absolute inset-y-3 left-3 z-10 w-8 bg-gradient-to-r from-white to-transparent lg:hidden"
+                  aria-hidden="true"
+                />
+                <div
+                  className="pointer-events-none absolute inset-y-3 right-3 z-10 w-8 bg-gradient-to-l from-slate-50 to-transparent lg:hidden"
+                  aria-hidden="true"
+                />
                 <div className="flex items-stretch gap-3 overflow-x-auto pb-2 lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0">
                   {scheduleItems.map((service, index) => (
                     <article
@@ -357,12 +450,23 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                       alt={event.name}
                       fill
                       sizes="(min-width: 1024px) 50vw, 100vw"
+                      placeholder="blur"
+                      blurDataURL={BLUR_DATA_URL}
                       className="object-contain"
                     />
+                    {event.date ? (
+                      <span className="absolute left-4 top-4 rounded-full bg-blue-950/90 px-4 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-white shadow-lg backdrop-blur-md">
+                        {event.date}
+                      </span>
+                    ) : null}
                   </div>
                 ) : (
-                  <div className="flex aspect-[4/5] w-full items-center justify-center border-2 border-dashed border-blue-200 bg-slate-50 text-sm font-black uppercase tracking-[0.16em] text-slate-400">
-                    Cargar volante
+                  <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-10 w-10 text-red-300">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                    </svg>
+                    <p className="text-sm font-black uppercase tracking-[0.16em] text-red-200">{event.name}</p>
+                    <p className="text-xs font-semibold text-blue-100">Detalles próximamente</p>
                   </div>
                 )}
               </article>
@@ -409,7 +513,15 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
           </div>
 
           <div className="relative mx-auto mt-14 aspect-[21/9] w-full max-w-4xl overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10" data-aos="fade-up">
-            <Image src="/iglesiaGente2.jpg" alt="Congregación de La Casa del Alfarero en un servicio" fill sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" />
+            <Image
+              src="/iglesiaGente2.jpg"
+              alt="Congregación de La Casa del Alfarero en un servicio"
+              fill
+              sizes="(min-width: 1024px) 60vw, 100vw"
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
+              className="object-cover"
+            />
           </div>
         </div>
       </section>
@@ -418,7 +530,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end" data-aos="fade-up">
             <div>
-              <p className="text-md font-black uppercase tracking-[0.28em] text-red-600">Galería</p>
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería</p>
               <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">Elige una sección para abrir sus fotos.</h2>
             </div>
           </div>
@@ -427,12 +539,20 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
               <button
                 key={album.title}
                 type="button"
-                onClick={() => setActiveGallery(album)}
+                onClick={(event: { currentTarget: HTMLElement }) => openGallery(album, event.currentTarget)}
                 className="group relative h-96 overflow-hidden rounded-[2rem] text-left shadow-xl shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus-visible:ring-4"
                 data-aos="zoom-in"
               >
                 {album.cover ? (
-                  <Image src={album.cover} alt={album.title} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-700 group-hover:scale-110" />
+                  <Image
+                    src={album.cover}
+                    alt={album.title}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
+                    className="object-cover transition duration-700 group-hover:scale-110"
+                  />
                 ) : (
                   <div className="flex h-full w-full flex-col items-center justify-center gap-2 border-2 border-dashed border-blue-200 bg-slate-100 text-slate-400">
                     <span className="text-3xl">＋</span>
@@ -464,12 +584,12 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                 <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería</p>
                 <h3 className="mt-2 text-4xl font-black text-blue-950">{activeGallery.title}</h3>
               </div>
-              <button type="button" onClick={closeGallery} className="rounded-full bg-blue-950 px-5 py-3 text-sm font-black text-white transition hover:bg-red-600">
+              <button ref={galleryCloseButtonRef} type="button" onClick={closeGallery} className="rounded-full bg-blue-950 px-5 py-3 text-sm font-black text-white transition hover:bg-red-600">
                 Cerrar
               </button>
             </div>
             <p className="mt-6 rounded-2xl bg-slate-50 p-4 text-sm font-semibold text-slate-600">
-              haz click en cualquier foto para ver la foto completa .
+              Haz clic en cualquier foto para verla completa.
             </p>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {activeGallery.photos.map((photo) => (
@@ -479,7 +599,15 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                   onClick={() => openPhoto(photo)}
                   className="group relative h-80 overflow-hidden rounded-3xl bg-slate-100 text-left shadow-lg shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus-visible:ring-4"
                 >
-                  <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
+                    className="object-cover transition duration-500 group-hover:scale-105"
+                  />
                   <div className={`absolute inset-0 bg-gradient-to-t from-blue-950/70 via-transparent to-transparent transition ${photo.video ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`} />
                   {photo.video ? (
                     <span className="absolute inset-0 grid place-items-center">
@@ -520,10 +648,18 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                 className="h-full w-full object-contain"
               />
             ) : (
-              <Image src={expandedPhoto.src} alt={expandedPhoto.alt} fill sizes="100vw" className="object-contain" />
+              <Image
+                src={expandedPhoto.src}
+                alt={expandedPhoto.alt}
+                fill
+                sizes="100vw"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
+                className="object-contain"
+              />
             )}
             <div className="absolute inset-x-0 top-0 flex items-center justify-end gap-3 bg-gradient-to-b from-black/70 to-transparent p-4 text-white">
-              <button type="button" onClick={closePhoto} className="rounded-full bg-white px-4 py-2 text-sm font-black text-blue-950 transition hover:bg-red-600 hover:text-white">
+              <button ref={photoCloseButtonRef} type="button" onClick={closePhoto} className="rounded-full bg-white px-4 py-2 text-sm font-black text-blue-950 transition hover:bg-red-600 hover:text-white">
                 Cerrar foto
               </button>
             </div>
