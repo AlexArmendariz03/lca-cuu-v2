@@ -33,9 +33,11 @@ const BLUR_DATA_URL =
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+";
 
 const slides: HeroSlide[] = [
-  { image: "/partyhouse.webp", title: "La Casa del Alfarero Chihuahua" },
-  { image: "/igleisa.jpg", title: "Un lugar para volver a empezar" },
-  { image: "/avivaHumber.webp", title: "Adoración, palabra y esperanza" },
+  { image: "/banner-principal/1.webp", title: "La Casa del Alfarero Chihuahua" },
+  { image: "/banner-principal/2.jpg", title: "Un lugar para volver a empezar" },
+  { image: "/banner-principal/3.webp", title: "Adoración, palabra y esperanza" },
+  { image: "/banner-principal/4.jpg", title: "Una familia que crece en fe" },
+  { image: "/banner-principal/5.jpg", title: "Momentos de oración y avivamiento" },
 ];
 
 
@@ -49,9 +51,9 @@ const scheduleItems: ScheduleItem[] = [
 ];
 
 const upcomingEvents: UpcomingEvent[] = [
-  { name: "Aviva Agosto", photo: "/aviva-agosto.jpg" },
-  { name: "Aviva Hombres", photo: "/aviva-hombres.jpg" },
-  { name: "Cruzada de Milagros", photo: "/cruzada-milagros.jpg" },
+  { name: "Gran Noche Mexicana", photo: "/eventos/1.jpg", date: "16 Sep" },
+  { name: "Avivamiento: Jesucristo es el camino", photo: "/eventos/2.jpg", date: "18 Oct" },
+  { name: "Discipulado regional para hombres", photo: "/eventos/3.jpg", date: "19 Oct" },
 ];
 
 const valueCards: ValueCard[] = [
