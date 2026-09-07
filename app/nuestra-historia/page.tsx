@@ -4,90 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import Navigation from "@/app/components/Navigation";
 import Footer from "@/app/components/Footer";
+import AnimatedCounter from "@/app/components/AnimatedCounter";
 
 const historicalPhotos: string[] = ["/historia/historia-02.jpg", "/historia/historia-01.jpg"];
-
-type PastorInfo = {
-  name: string;
-  photoSrc: string;
-};
-
-type ChurchNode = {
-  name: string;
-  location: string;
-  note: string;
-  pastor: PastorInfo;
-  children?: ChurchNode[];
-};
-
-const rootPath: ChurchNode[] = [
-  {
-    name: "Prescott",
-    location: "Arizona, EUA",
-    note: "Raíz del compañerismo y referencia de envío.",
-    pastor: { name: "Nombre del pastor", photoSrc: "" },
-  },
-  {
-    name: "Nogales",
-    location: "Sonora, México",
-    note: "Puente de la visión hacia México.",
-    pastor: { name: "Nombre del pastor", photoSrc: "" },
-  },
-  {
-    name: "Los Mochis",
-    location: "Sinaloa, México",
-    note: "Etapa de siembra y formación.",
-    pastor: { name: "Nombre del pastor", photoSrc: "" },
-  },
-];
-
-const chihuahuaTree: ChurchNode = {
-  name: "La Casa del Alfarero Chihuahua",
-  location: "Chihuahua, México",
-  note: "Iglesia madre desde donde se desprenden nuevas obras y ciudades.",
-  pastor: { name: "Pastores de Chihuahua", photoSrc: "" },
-  children: [
-    {
-      name: "Sol de Oriente",
-      location: "Chihuahua",
-      note: "Obra desprendida de La Casa del Alfarero Chihuahua.",
-      pastor: { name: "Nombre del pastor", photoSrc: "" },
-    },
-    {
-      name: "Corredor",
-      location: "Chihuahua",
-      note: "Extensión para alcanzar nuevas familias y comunidades.",
-      pastor: { name: "Nombre del pastor", photoSrc: "" },
-    },
-    {
-      name: "Aldama",
-      location: "Chihuahua",
-      note: "Iglesia hija con enfoque local y evangelístico.",
-      pastor: { name: "Nombre del pastor", photoSrc: "" },
-    },
-    {
-      name: "Torreón",
-      location: "Coahuila",
-      note: "Obra enviada desde Chihuahua con una nueva rama de crecimiento.",
-      pastor: { name: "Nombre del pastor", photoSrc: "" },
-      children: [
-        {
-          name: "Jiménez",
-          location: "Chihuahua",
-          note: "Iglesia que se desprende de la obra en Torreón.",
-          pastor: { name: "Nombre del pastor", photoSrc: "" },
-        },
-      ],
-    },
-  ],
-};
 
 export default function NuestraRaizPage() {
   return (
       <div className="min-h-screen bg-slate-50 text-slate-950">
         <Navigation />
 
-        <main className="overflow-hidden">
+        <main id="main-content" className="overflow-hidden">
           <section className="relative isolate bg-blue-950 px-6 pb-20 pt-36 text-white lg:px-8">
             <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.16),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(220,38,38,0.28),transparent_32%)]" />
 
@@ -108,7 +34,7 @@ export default function NuestraRaizPage() {
               </div>
 
               <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
-                <div>
+                <div data-aos="fade-right">
                   <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">
                     Nuestra historia
                   </p>
@@ -125,7 +51,7 @@ export default function NuestraRaizPage() {
                   </p>
                 </div>
 
-                <div className="relative aspect-[780/506] w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-950/30">
+                <div data-aos="fade-left" className="relative aspect-[780/506] w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-950/30">
                   <Image src="/historia/historia-intro.jpg" alt="Pastor Wayman Mitchell predicando" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" priority />
                 </div>
               </div>
@@ -162,7 +88,7 @@ export default function NuestraRaizPage() {
                     Holanda y Alemania, y posteriormente a todo el mundo.
                   </p>
 
-                  <div className="rounded-2xl border border-red-400/20 bg-white/10 p-6 backdrop-blur">
+                  <div data-aos="fade-up" className="rounded-2xl border border-red-400/20 bg-white/10 p-6 backdrop-blur">
                     <p className="text-red-300 font-black uppercase tracking-widest text-sm">
                       Hoy
                     </p>
@@ -170,11 +96,11 @@ export default function NuestraRaizPage() {
                     <p className="mt-3 text-xl font-semibold text-white leading-8">
                       Actualmente el Compañerismo cuenta con{" "}
                       <span className="text-red-300">
-                      más de 4,500 iglesias
+                      más de <AnimatedCounter value={4500} suffix=" iglesias" />
                     </span>{" "}
                       establecidas en{" "}
                       <span className="text-red-300">
-                      más de 150 países
+                      más de <AnimatedCounter value={150} suffix=" países" />
                     </span>
                       , manteniendo como base el evangelismo, el discipulado y la
                       plantación de iglesias.
@@ -187,13 +113,15 @@ export default function NuestraRaizPage() {
 
           <section className="bg-white px-6 py-20 lg:px-8">
             <div className="mx-auto max-w-7xl">
-              <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería histórica</p>
-              <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl">
-                Momentos que marcaron el inicio de esta historia.
-              </h2>
+              <div data-aos="fade-up">
+                <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería histórica</p>
+                <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl">
+                  Momentos que marcaron el inicio de esta historia.
+                </h2>
+              </div>
               <div className="mt-10 grid gap-6 sm:grid-cols-2">
                 {historicalPhotos.map((photo) => (
-                  <div key={photo} className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10">
+                  <div key={photo} data-aos="zoom-in" className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10">
                     <Image src={photo} alt="Fotografía histórica de la fraternidad" fill sizes="(min-width: 640px) 50vw, 100vw" className="object-cover" />
                   </div>
                 ))}
@@ -203,13 +131,13 @@ export default function NuestraRaizPage() {
 
           <section className="bg-slate-50 px-6 py-20 lg:px-8">
             <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="order-2 mx-auto w-full max-w-sm lg:order-1">
+              <div data-aos="fade-right" className="order-2 mx-auto w-full max-w-sm lg:order-1">
                 <div className="relative aspect-square w-full overflow-hidden rounded-[1.6rem] shadow-xl shadow-blue-950/10">
                   <Image src="/historia/mitchell-fundadores.webp" alt="Wayman y Nelda Mitchell" fill sizes="(min-width: 1024px) 40vw, 90vw" className="object-cover" />
                 </div>
               </div>
 
-              <div className="order-1 lg:order-2">
+              <div data-aos="fade-left" className="order-1 lg:order-2">
                 <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Fundadores del movimiento</p>
                 <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
                   Wayman y Nelda Mitchell.
