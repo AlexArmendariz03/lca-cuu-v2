@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { usePathname } from "next/navigation";
 import {
   Button,
   Link,
@@ -34,15 +35,31 @@ const menuItems: MenuItem[] = [
   { label: "Contacto", href: "/#contacto" },
 ];
 
+const YOUTUBE_URL = "https://www.youtube.com/@LaCasadelAlfareroChihuahuaChih";
+const SUB_ROUTES = ["/nuestra-historia", "/organigrama", "/lo-que-creemos"];
+
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
+  const pathname = usePathname();
+  const isInicioActive = pathname === "/";
+  const isQuienesSomosActive = SUB_ROUTES.includes(pathname);
+
+  React.useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 24);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <Navbar
       isBlurred
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      className="fixed top-0 z-50 border-b border-white/10 bg-blue-950/85 text-white backdrop-blur-xl"
+      className={`fixed top-0 z-50 border-b text-white backdrop-blur-xl transition-all duration-300 ${
+        isScrolled ? "border-white/15 bg-blue-950/95 shadow-lg shadow-blue-950/30" : "border-white/10 bg-blue-950/85"
+      }`}
       maxWidth="xl"
     >
       <NavbarContent className="lg:hidden" justify="start">
@@ -60,27 +77,55 @@ export default function Navigation() {
 
       <NavbarContent className="hidden gap-6 lg:flex" justify="center">
         <NavbarItem>
-          <Link href="/#inicio" className="font-semibold text-white/90 transition hover:text-white">
+          <Link
+            href="/#inicio"
+            aria-current={isInicioActive ? "page" : undefined}
+            className={`font-semibold transition hover:text-white ${isInicioActive ? "text-white" : "text-white/90"}`}
+          >
             Inicio
           </Link>
         </NavbarItem>
 
-        <Dropdown>
+        <Dropdown classNames={{ content: "rounded-3xl border border-blue-100 bg-white p-2 shadow-2xl shadow-blue-950/10" }}>
           <NavbarItem>
             <DropdownTrigger>
-              <Button disableRipple className="p-0 font-semibold text-white/90 hover:bg-transparent hover:text-white" radius="sm" variant="light">
+              <Button
+                disableRipple
+                className={`p-0 font-semibold hover:bg-transparent hover:text-white ${isQuienesSomosActive ? "text-white" : "text-white/90"}`}
+                radius="sm"
+                variant="light"
+              >
                 Quiénes somos
               </Button>
             </DropdownTrigger>
           </NavbarItem>
-          <DropdownMenu aria-label="Quiénes somos" className="w-[340px]" itemClasses={{ base: "gap-4" }}>
-            <DropdownItem key="historia" href="/nuestra-historia" description="Cómo comenzó nuestro movimiento">
+          <DropdownMenu
+            aria-label="Quiénes somos"
+            className="w-[340px]"
+            itemClasses={{ base: "gap-4 rounded-2xl data-[hover=true]:bg-blue-50 data-[hover=true]:text-blue-950" }}
+          >
+            <DropdownItem
+              key="historia"
+              href="/nuestra-historia"
+              description="Cómo comenzó nuestro movimiento"
+              className={pathname === "/nuestra-historia" ? "bg-blue-50 text-blue-950" : ""}
+            >
               Nuestra historia
             </DropdownItem>
-            <DropdownItem key="organigrama" href="/organigrama" description="Árbol de iglesias y pastores">
+            <DropdownItem
+              key="organigrama"
+              href="/organigrama"
+              description="Árbol de iglesias y pastores"
+              className={pathname === "/organigrama" ? "bg-blue-50 text-blue-950" : ""}
+            >
               Organigrama
             </DropdownItem>
-            <DropdownItem key="creemos" href="/lo-que-creemos" description="Nuestra declaración de fe">
+            <DropdownItem
+              key="creemos"
+              href="/lo-que-creemos"
+              description="Nuestra declaración de fe"
+              className={pathname === "/lo-que-creemos" ? "bg-blue-50 text-blue-950" : ""}
+            >
               Lo que creemos
             </DropdownItem>
           </DropdownMenu>
@@ -108,11 +153,11 @@ export default function Navigation() {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end">
+      <NavbarContent className="hidden lg:flex" justify="end">
         <NavbarItem>
           <Button
             as={Link}
-            href="https://www.youtube.com/@LaCasadelAlfareroChihuahuaChih"
+            href={YOUTUBE_URL}
             className="bg-red-600 font-bold text-white shadow-lg shadow-red-950/30 transition hover:bg-red-500"
             radius="full"
           >
@@ -122,13 +167,36 @@ export default function Navigation() {
       </NavbarContent>
 
       <NavbarMenu className="bg-blue-950/95 pt-8 text-white backdrop-blur-xl">
-        {menuItems.map((item) => (
-          <NavbarMenuItem key={item.href}>
-            <Link className="w-full py-2 text-lg font-bold text-white" href={item.href} onPress={() => setIsMenuOpen(false)}>
-              {item.label}
-            </Link>
-          </NavbarMenuItem>
-        ))}
+        {menuItems.map((item) => {
+          const isCleanRouteActive = !item.href.includes("#") && pathname === item.href;
+          const isHomeActive = item.href === "/#inicio" && pathname === "/";
+          const active = isCleanRouteActive || isHomeActive;
+
+          return (
+            <NavbarMenuItem key={item.href}>
+              <Link
+                className={`flex w-full items-center gap-2 py-2 text-lg font-bold transition ${active ? "text-red-300" : "text-white"}`}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                onPress={() => setIsMenuOpen(false)}
+              >
+                {active ? <span className="h-2 w-2 rounded-full bg-red-400" aria-hidden="true" /> : null}
+                {item.label}
+              </Link>
+            </NavbarMenuItem>
+          );
+        })}
+        <NavbarMenuItem className="mt-4">
+          <Button
+            as={Link}
+            href={YOUTUBE_URL}
+            className="w-full bg-red-600 font-bold text-white shadow-lg shadow-red-950/30 transition hover:bg-red-500"
+            radius="full"
+            onPress={() => setIsMenuOpen(false)}
+          >
+            Ver en YouTube
+          </Button>
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );

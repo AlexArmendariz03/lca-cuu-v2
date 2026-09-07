@@ -66,7 +66,7 @@ export default function LoQueCreemosPage() {
     <div className="min-h-screen bg-slate-50 text-slate-950">
       <Navigation />
 
-      <main className="overflow-hidden">
+      <main id="main-content" className="overflow-hidden">
         <section className="relative isolate min-h-[480px] overflow-hidden bg-blue-950 px-6 pb-14 pt-32 text-white lg:px-8">
           <div className="absolute inset-0 -z-20">
             <Image
@@ -100,7 +100,7 @@ export default function LoQueCreemosPage() {
 
             <div className="mt-8 max-w-3xl">
               <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">Quiénes somos</p>
-              <h1 className="mt-3 text-4xl font-black leading-none tracking-tight sm:text-5xl">
+              <h1 className="mt-3 text-5xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
                 Lo que creemos.
               </h1>
               <p className="mt-5 max-w-2xl text-base leading-7 text-blue-100 sm:text-lg">
@@ -111,9 +111,9 @@ export default function LoQueCreemosPage() {
         </section>
 
         <section className="relative overflow-hidden bg-slate-50 px-6 py-20 lg:px-8">
-          <div className="absolute -left-24 top-20 h-72 w-72 rounded-full bg-blue-950/5 blur-3xl" />
-          <div className="absolute -right-24 top-1/2 h-96 w-96 rounded-full bg-red-600/10 blur-3xl" />
-          <div className="absolute -bottom-32 left-1/3 h-80 w-80 rounded-full bg-blue-950/5 blur-3xl" />
+          <div className="animate-blob-float absolute -left-24 top-20 h-72 w-72 rounded-full bg-blue-950/5 blur-3xl" />
+          <div className="animate-blob-float absolute -right-24 top-1/2 h-96 w-96 rounded-full bg-red-600/10 blur-3xl" style={{ animationDelay: "-6s" }} />
+          <div className="animate-blob-float absolute -bottom-32 left-1/3 h-80 w-80 rounded-full bg-blue-950/5 blur-3xl" style={{ animationDelay: "-11s" }} />
 
           <div className="relative mx-auto max-w-7xl">
             <div className="mx-auto max-w-3xl text-center" data-aos="fade-up">

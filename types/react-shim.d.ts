@@ -6,6 +6,7 @@ declare module "react" {
   export function useState<S>(initialState: S | (() => S)): [S, (value: S | ((previous: S) => S)) => void];
   export function useEffect(effect: () => void | (() => void), deps?: unknown[]): void;
   export function useRef<T>(initialValue: T): { current: T };
+  export function useRef<T>(initialValue: T | null): { current: T | null };
 
   const React: {
     useState: typeof useState;
@@ -26,6 +27,12 @@ declare namespace JSX {
 declare namespace JSX {
   interface ElementChildrenAttribute {
     children: Record<string, unknown>;
+  }
+}
+
+declare namespace JSX {
+  interface IntrinsicAttributes {
+    key?: string | number | null;
   }
 }
 

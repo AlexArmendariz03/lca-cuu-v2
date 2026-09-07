@@ -60,3 +60,26 @@ p {
     transition: none !important;
   }
 }
+
+@keyframes blob-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(14px, -18px) scale(1.06);
+  }
+  66% {
+    transform: translate(-16px, 14px) scale(0.95);
+  }
+}
+
+.animate-blob-float {
+  animation: blob-float 16s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob-float {
+    animation: none;
+  }
+}
