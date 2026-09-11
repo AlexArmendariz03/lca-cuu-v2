@@ -66,7 +66,7 @@ export default function Navigation() {
         <NavbarMenuToggle aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"} className="text-white" />
       </NavbarContent>
 
-      <NavbarBrand className="gap-3">
+      <NavbarBrand className="absolute inset-x-0 top-1/2 mx-auto w-fit -translate-y-1/2 justify-center gap-3 lg:static lg:inset-x-auto lg:top-auto lg:mx-0 lg:w-auto lg:translate-y-0 lg:basis-0 lg:flex-grow lg:justify-start">
         <Image
           width={180}
           alt="Logo LCA"

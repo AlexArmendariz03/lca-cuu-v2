@@ -220,7 +220,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
       <section
         data-aos="zoom-in"
         id="inicio"
-        className="relative isolate min-h-[720px] w-full overflow-hidden bg-blue-950"
+        className="relative isolate min-h-[600px] w-full overflow-hidden bg-blue-950 sm:min-h-[720px]"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         onFocus={() => setIsHovering(true)}
@@ -231,19 +231,19 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
           {slides[activeSlide].title}
         </div>
         <div id="carouselExampleCaptions" className="absolute inset-0">
-          <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md">
-            <div className="flex list-none items-center gap-2">
+          <div className="absolute bottom-24 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-2 backdrop-blur-md sm:gap-3 sm:px-4 sm:py-3">
+            <div className="flex list-none items-center gap-1 sm:gap-2">
               {slides.map((slide, index) => (
                 <button
                   key={slide.image}
                   type="button"
                   onClick={() => setActiveSlide(index)}
-                  className="group flex h-8 w-10 items-center justify-center"
+                  className="group flex h-8 w-7 items-center justify-center sm:w-10"
                   aria-current={activeSlide === index ? "true" : undefined}
                   aria-label={`Diapositiva ${index + 1}`}
                 >
                   <span
-                    className={`block h-2.5 rounded-full transition-all duration-300 group-hover:w-12 group-hover:bg-white ${activeSlide === index ? "w-12 bg-white" : "w-8 bg-white/75"}`}
+                    className={`block h-2.5 rounded-full transition-all duration-300 sm:group-hover:w-12 sm:group-hover:bg-white ${activeSlide === index ? "w-7 bg-white sm:w-12" : "w-5 bg-white/75 sm:w-8"}`}
                   />
                 </button>
               ))}
@@ -253,7 +253,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
               onClick={() => setIsAutoplayPaused((paused) => !paused)}
               aria-pressed={isAutoplayPaused}
               aria-label={isAutoplayPaused ? "Reanudar carrusel automático" : "Pausar carrusel automático"}
-              className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-white/80 transition hover:bg-white/15 hover:text-white"
+              className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-white/80 transition hover:bg-white/15 hover:text-white sm:h-8 sm:w-8"
             >
               {isAutoplayPaused ? (
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
@@ -319,20 +319,20 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
           </button>
         </div>
 
-        <div className="relative z-10 mx-auto flex min-h-[720px] max-w-7xl items-center px-6 pb-28 pt-32 lg:px-8">
+        <div className="relative z-10 mx-auto flex min-h-[600px] max-w-7xl items-center px-5 pb-40 pt-28 sm:min-h-[720px] sm:px-6 sm:pb-32 sm:pt-32 lg:px-8">
           <div className="max-w-3xl text-white" data-aos="fade-up">
-            <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-white/90 shadow-2xl backdrop-blur-md">
-              <span className="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_18px_rgba(239,68,68,0.9)]" />
+            <div className="mb-6 inline-flex max-w-full items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/90 shadow-2xl backdrop-blur-md sm:text-sm sm:tracking-[0.24em]">
+              <span className="h-2 w-2 shrink-0 rounded-full bg-red-500 shadow-[0_0_18px_rgba(239,68,68,0.9)]" />
               Iglesia cristiana en Chihuahua
             </div>
-            <h1 className="text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
+            <h1 className="text-[2.1rem] font-black leading-[1.05] tracking-tight [text-wrap:balance] sm:text-5xl sm:leading-[0.95] md:text-6xl lg:text-7xl">
               Donde Jesucristo está cambiando vidas.
             </h1>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <a href="#servicios" className="rounded-full bg-red-600 px-8 py-4 text-center font-bold text-white shadow-xl shadow-red-950/30 transition hover:-translate-y-1 hover:bg-red-500">
+            <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
+              <a href="#servicios" className="rounded-full bg-red-600 px-6 py-3.5 text-center font-bold text-white shadow-xl shadow-red-950/30 transition hover:-translate-y-1 hover:bg-red-500 sm:px-8 sm:py-4">
                 Ver horarios
               </a>
-              <a href="#conocenos" className="rounded-full border border-white/25 bg-white/10 px-8 py-4 text-center font-bold text-white backdrop-blur-md transition hover:-translate-y-1 hover:bg-white hover:text-blue-950">
+              <a href="#conocenos" className="rounded-full border border-white/25 bg-white/10 px-6 py-3.5 text-center font-bold text-white backdrop-blur-md transition hover:-translate-y-1 hover:bg-white hover:text-blue-950 sm:px-8 sm:py-4">
                 Conócenos
               </a>
             </div>
@@ -340,8 +340,8 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
         </div>
       </section>
 
-      <section id="servicios" className="relative z-20 -mt-16 px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/95 p-4 shadow-2xl shadow-blue-950/10 backdrop-blur-xl">
+      <section id="servicios" className="relative z-20 -mt-10 px-4 sm:-mt-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl rounded-[1.5rem] border border-white/70 bg-white/95 p-2.5 shadow-2xl shadow-blue-950/10 backdrop-blur-xl sm:rounded-[2rem] sm:p-4">
           <div className="relative isolate overflow-hidden rounded-[1.6rem] bg-white ring-1 ring-blue-100">
             <div className="animate-blob-float absolute -right-20 -top-20 -z-10 h-56 w-56 rounded-full bg-red-600/10 blur-3xl" />
             <div className="animate-blob-float absolute -bottom-24 left-12 -z-10 h-64 w-64 rounded-full bg-blue-900/10 blur-3xl" style={{ animationDelay: "-7s" }} />
@@ -434,7 +434,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end" data-aos="fade-up">
             <div>
               <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Agenda especial</p>
-              <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">Próximos eventos</h2>
+              <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl md:text-5xl">Próximos eventos</h2>
             </div>
             <p className="max-w-xl text-slate-600">Conciertos, conferencias y actividades especiales fuera de la reunión semanal.</p>
           </div>
@@ -481,7 +481,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-4xl text-center" data-aos="fade-up">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Nuestra misión</p>
-            <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
+            <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl md:text-5xl">
               Predicar el evangelio a toda criatura.
             </h2>
             <p className="mt-6 text-lg text-slate-600">
@@ -533,7 +533,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end" data-aos="fade-up">
             <div>
               <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería</p>
-              <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">Elige una sección para abrir sus fotos.</h2>
+              <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl md:text-5xl">Elige una sección para abrir sus fotos.</h2>
             </div>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -574,19 +574,19 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
       {activeGallery ? (
         <div
-          className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-blue-950/90 px-6 py-10 backdrop-blur-md"
+          className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-blue-950/90 px-4 py-6 backdrop-blur-md sm:px-6 sm:py-10"
           role="dialog"
           aria-modal="true"
           aria-label={`Galería ${activeGallery.title}`}
           onClick={closeGallery}
         >
-          <div className="mx-auto max-w-6xl rounded-[2rem] bg-white p-5 shadow-2xl sm:p-8" onClick={(event: { stopPropagation: () => void }) => event.stopPropagation()}>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="mx-auto max-w-6xl rounded-[1.5rem] bg-white p-4 shadow-2xl sm:rounded-[2rem] sm:p-8" onClick={(event: { stopPropagation: () => void }) => event.stopPropagation()}>
+            <div className="flex flex-row items-start justify-between gap-3">
               <div>
                 <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería</p>
-                <h3 className="mt-2 text-4xl font-black text-blue-950">{activeGallery.title}</h3>
+                <h3 className="mt-2 text-3xl font-black text-blue-950 sm:text-4xl">{activeGallery.title}</h3>
               </div>
-              <button ref={galleryCloseButtonRef} type="button" onClick={closeGallery} className="rounded-full bg-blue-950 px-5 py-3 text-sm font-black text-white transition hover:bg-red-600">
+              <button ref={galleryCloseButtonRef} type="button" onClick={closeGallery} className="shrink-0 rounded-full bg-blue-950 px-4 py-2.5 text-sm font-black text-white transition hover:bg-red-600 sm:px-5 sm:py-3">
                 Cerrar
               </button>
             </div>
@@ -599,7 +599,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                   key={photo.src}
                   type="button"
                   onClick={() => openPhoto(photo)}
-                  className="group relative h-80 overflow-hidden rounded-3xl bg-slate-100 text-left shadow-lg shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus-visible:ring-4"
+                  className="group relative h-60 overflow-hidden rounded-3xl bg-slate-100 text-left shadow-lg shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus-visible:ring-4 sm:h-80"
                 >
                   <Image
                     src={photo.src}
@@ -638,7 +638,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
           onClick={closePhoto}
         >
           <div
-            className="relative h-[82vh] w-full max-w-6xl overflow-hidden rounded-[2rem] bg-slate-950 shadow-2xl shadow-black/40"
+            className="relative h-[72svh] w-full max-w-6xl overflow-hidden rounded-[1.5rem] bg-slate-950 shadow-2xl shadow-black/40 sm:h-[82vh] sm:rounded-[2rem]"
             onClick={(event: { stopPropagation: () => void }) => event.stopPropagation()}
           >
             {expandedPhoto.video ? (
@@ -668,7 +668,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
             <button
               type="button"
               onClick={() => goToAdjacentPhoto("previous")}
-              className="absolute left-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-black text-blue-950 shadow-xl transition hover:bg-red-600 hover:text-white"
+              className="absolute left-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-black text-blue-950 shadow-xl transition hover:bg-red-600 hover:text-white sm:left-4 sm:h-12 sm:w-12"
               aria-label="Foto anterior"
             >
               ‹
@@ -676,7 +676,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
             <button
               type="button"
               onClick={() => goToAdjacentPhoto("next")}
-              className="absolute right-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-black text-blue-950 shadow-xl transition hover:bg-red-600 hover:text-white"
+              className="absolute right-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-black text-blue-950 shadow-xl transition hover:bg-red-600 hover:text-white sm:right-4 sm:h-12 sm:w-12"
               aria-label="Foto siguiente"
             >
               ›
