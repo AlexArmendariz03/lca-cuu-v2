@@ -195,7 +195,7 @@ export default function OrganigramaPage() {
                             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">
                                 Organigrama
                             </p>
-                            <h1 className="mt-4 text-5xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
+                            <h1 className="mt-4 text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl sm:leading-none lg:text-7xl">
                                 De la raíz al fruto de Chihuahua.
                             </h1>
                             <p className="mt-8 max-w-3xl text-lg leading-8 text-blue-100">
