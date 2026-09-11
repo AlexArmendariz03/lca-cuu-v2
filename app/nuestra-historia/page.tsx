@@ -39,7 +39,7 @@ export default function NuestraRaizPage() {
                     Nuestra historia
                   </p>
 
-                  <h1 className="mt-4 text-5xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
+                  <h1 className="mt-4 text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl sm:leading-none lg:text-7xl">
                     Historia de nuestro compañerismo
                   </h1>
 
