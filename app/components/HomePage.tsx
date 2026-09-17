@@ -132,7 +132,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
   const closeGallery = () => {
     setActiveGallery(null);
     setExpandedPhoto(null);
-    galleryTriggerRef.current?.focus();
+    galleryTriggerRef.current?.focus({ preventScroll: true });
   };
 
   const openPhoto = (photo: GalleryPhoto) => {
@@ -141,7 +141,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
   const closePhoto = () => {
     setExpandedPhoto(null);
-    galleryCloseButtonRef.current?.focus();
+    galleryCloseButtonRef.current?.focus({ preventScroll: true });
   };
 
   const goToAdjacentPhoto = (direction: "previous" | "next") => {
@@ -149,7 +149,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
     const { photos } = activeGallery;
     const step = direction === "next" ? 1 : -1;
-    const currentIndex = photos.findIndex((photo) => photo.src === expandedPhoto.src);
+    const currentIndex = photos.findIndex((photo) => photo.id === expandedPhoto.id);
     const nextIndex = (currentIndex + step + photos.length) % photos.length;
 
     setExpandedPhoto(photos[nextIndex]);
@@ -184,34 +184,25 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
   useEffect(() => {
     if (activeGallery) {
-      galleryCloseButtonRef.current?.focus();
+      galleryCloseButtonRef.current?.focus({ preventScroll: true });
     }
   }, [activeGallery]);
 
   useEffect(() => {
     if (expandedPhoto) {
-      photoCloseButtonRef.current?.focus();
+      photoCloseButtonRef.current?.focus({ preventScroll: true });
     }
   }, [expandedPhoto]);
 
   useEffect(() => {
     if (!activeGallery) return;
 
-    const scrollY = window.scrollY;
-    const { body } = document;
-    const previousPosition = body.style.position;
-    const previousTop = body.style.top;
-    const previousWidth = body.style.width;
-
-    body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
-    body.style.width = "100%";
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = "hidden";
 
     return () => {
-      body.style.position = previousPosition;
-      body.style.top = previousTop;
-      body.style.width = previousWidth;
-      window.scrollTo(0, scrollY);
+      root.style.overflow = previousOverflow;
     };
   }, [activeGallery]);
 
@@ -546,15 +537,25 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                 data-aos="zoom-in"
               >
                 {album.cover ? (
-                  <Image
-                    src={album.cover}
-                    alt={album.title}
-                    fill
-                    sizes="(min-width: 768px) 33vw, 100vw"
-                    placeholder="blur"
-                    blurDataURL={BLUR_DATA_URL}
-                    className="object-cover transition duration-700 group-hover:scale-110"
-                  />
+                  album.cover.isVideo ? (
+                    <video
+                      src={`${album.cover.src}#t=0.5`}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <Image
+                      src={album.cover.src}
+                      alt={album.title}
+                      fill
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                      placeholder="blur"
+                      blurDataURL={BLUR_DATA_URL}
+                      className="object-cover transition duration-700 group-hover:scale-110"
+                    />
+                  )
                 ) : (
                   <div className="flex h-full w-full flex-col items-center justify-center gap-2 border-2 border-dashed border-blue-200 bg-slate-100 text-slate-400">
                     <span className="text-3xl">＋</span>
@@ -596,20 +597,30 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {activeGallery.photos.map((photo) => (
                 <button
-                  key={photo.src}
+                  key={photo.id}
                   type="button"
                   onClick={() => openPhoto(photo)}
                   className="group relative h-60 overflow-hidden rounded-3xl bg-slate-100 text-left shadow-lg shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus-visible:ring-4 sm:h-80"
                 >
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    sizes="(min-width: 768px) 33vw, 100vw"
-                    placeholder="blur"
-                    blurDataURL={BLUR_DATA_URL}
-                    className="object-cover transition duration-500 group-hover:scale-105"
-                  />
+                  {photo.src ? (
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                      placeholder="blur"
+                      blurDataURL={BLUR_DATA_URL}
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  ) : photo.video ? (
+                    <video
+                      src={`${photo.video}#t=0.5`}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  ) : null}
                   <div className={`absolute inset-0 bg-gradient-to-t from-blue-950/70 via-transparent to-transparent transition ${photo.video ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`} />
                   {photo.video ? (
                     <span className="absolute inset-0 grid place-items-center">
@@ -649,7 +660,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                 autoPlay
                 className="h-full w-full object-contain"
               />
-            ) : (
+            ) : expandedPhoto.src ? (
               <Image
                 src={expandedPhoto.src}
                 alt={expandedPhoto.alt}
@@ -659,8 +670,13 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                 blurDataURL={BLUR_DATA_URL}
                 className="object-contain"
               />
-            )}
-            <div className="absolute inset-x-0 top-0 flex items-center justify-end gap-3 bg-gradient-to-b from-black/70 to-transparent p-4 text-white">
+            ) : null}
+            <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 bg-gradient-to-b from-black/70 to-transparent p-4 text-white">
+              {activeGallery ? (
+                <span className="rounded-full bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-white backdrop-blur-md">
+                  {activeGallery.photos.findIndex((photo) => photo.id === expandedPhoto.id) + 1} / {activeGallery.photos.length}
+                </span>
+              ) : <span />}
               <button ref={photoCloseButtonRef} type="button" onClick={closePhoto} className="rounded-full bg-white px-4 py-2 text-sm font-black text-blue-950 transition hover:bg-red-600 hover:text-white">
                 Cerrar foto
               </button>
