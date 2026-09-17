@@ -2,14 +2,15 @@ import fs from "fs";
 import path from "path";
 
 export type GalleryPhoto = {
-  src: string;
+  id: string;
+  src?: string;
   alt: string;
   video?: string;
 };
 
 export type GalleryAlbum = {
   title: string;
-  cover: string | null;
+  cover: { src: string; isVideo: boolean } | null;
   photos: GalleryPhoto[];
 };
 
@@ -39,13 +40,19 @@ function readAlbumPhotos(folder: string, albumTitle: string): GalleryPhoto[] {
   }
 
   return Array.from(filesByBaseName.entries())
-    .filter(([, files]) => files.image)
+    .filter(([, files]) => files.image || files.video)
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([, files]) => ({
-      src: `/galeria/${folder}/${files.image}`,
-      alt: `Foto de ${albumTitle}`,
-      video: files.video ? `/galeria/${folder}/${files.video}` : undefined,
-    }));
+    .map(([baseName, files], index) => {
+      const src = files.image ? `/galeria/${folder}/${files.image}` : undefined;
+      const video = files.video ? `/galeria/${folder}/${files.video}` : undefined;
+
+      return {
+        id: baseName,
+        src,
+        video,
+        alt: video && !src ? `Video de ${albumTitle} (${index + 1})` : `Foto de ${albumTitle} (${index + 1})`,
+      };
+    });
 }
 
 const ALBUM_FOLDERS: { title: string; folder: string }[] = [
@@ -57,9 +64,14 @@ const ALBUM_FOLDERS: { title: string; folder: string }[] = [
 export function getGalleryAlbums(): GalleryAlbum[] {
   return ALBUM_FOLDERS.map(({ title, folder }) => {
     const photos = readAlbumPhotos(folder, title);
+    const firstPhoto = photos[0];
+    const cover = firstPhoto
+      ? { src: (firstPhoto.src ?? firstPhoto.video) as string, isVideo: !firstPhoto.src }
+      : null;
+
     return {
       title,
-      cover: photos[0]?.src ?? null,
+      cover,
       photos,
     };
   });
