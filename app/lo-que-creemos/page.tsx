@@ -1,9 +1,18 @@
 "use client";
 
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import Navigation from "@/app/components/Navigation";
 import Footer from "@/app/components/Footer";
+
+function handleSpotlight(event: { currentTarget: HTMLElement; clientX: number; clientY: number }) {
+  const target = event.currentTarget;
+  const rect = target.getBoundingClientRect();
+  target.style.setProperty("--spot-x", `${event.clientX - rect.left}px`);
+  target.style.setProperty("--spot-y", `${event.clientY - rect.top}px`);
+}
 
 type Belief = {
   title: string;
@@ -116,7 +125,7 @@ export default function LoQueCreemosPage() {
           <div className="animate-blob-float absolute -bottom-32 left-1/3 h-80 w-80 rounded-full bg-blue-950/5 blur-3xl" style={{ animationDelay: "-11s" }} />
 
           <div className="relative mx-auto max-w-7xl">
-            <div className="mx-auto max-w-3xl text-center" data-aos="fade-up">
+            <div className="mx-auto max-w-3xl text-center" data-aos="fade-up-blur">
               <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Declaración de fe</p>
               <h2 className="mt-4 text-4xl font-black tracking-tight text-blue-950 sm:text-5xl">
                 Los fundamentos de nuestra fe.
@@ -130,7 +139,10 @@ export default function LoQueCreemosPage() {
               {beliefs.slice(0, 6).map((belief, index) => (
                 <article
                   key={belief.title}
-                  className="group relative overflow-hidden rounded-[2rem] border border-blue-100 bg-white p-7 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10"
+                  data-aos="fade-up-blur"
+                  data-aos-delay={(index % 2) * 90}
+                  onMouseMove={handleSpotlight}
+                  className="spotlight-card group relative overflow-hidden rounded-[2rem] border border-blue-100 bg-white p-7 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10"
                 >
                   <span className="absolute -right-3 -top-3 text-7xl font-black text-blue-950/[0.05] transition group-hover:text-red-600/10">
                     {String(index + 1).padStart(2, "0")}
@@ -144,7 +156,7 @@ export default function LoQueCreemosPage() {
               ))}
             </div>
 
-            <div className="relative my-14 aspect-[21/9] w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-950/20" data-aos="fade-up">
+            <div className="relative my-14 aspect-[21/9] w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-950/20" data-aos="fade-up-blur">
               <Image src="/santaCena.jpeg" alt="Servicio de La Casa del Alfarero" fill sizes="100vw" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-950/30 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
@@ -160,7 +172,10 @@ export default function LoQueCreemosPage() {
               {beliefs.slice(6).map((belief, index) => (
                 <article
                   key={belief.title}
-                  className="group relative overflow-hidden rounded-[2rem] border border-blue-100 bg-white p-7 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10"
+                  data-aos="fade-up-blur"
+                  data-aos-delay={(index % 2) * 90}
+                  onMouseMove={handleSpotlight}
+                  className="spotlight-card group relative overflow-hidden rounded-[2rem] border border-blue-100 bg-white p-7 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10"
                 >
                   <span className="absolute -right-3 -top-3 text-7xl font-black text-blue-950/[0.05] transition group-hover:text-red-600/10">
                     {String(index + 7).padStart(2, "0")}

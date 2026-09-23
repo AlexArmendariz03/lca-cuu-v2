@@ -191,7 +191,7 @@ export default function OrganigramaPage() {
                             </Link>
                         </div>
 
-                        <div data-aos="fade-up" className="mt-10 max-w-5xl">
+                        <div data-aos="fade-up-blur" className="mt-10 max-w-5xl">
                             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-300">
                                 Organigrama
                             </p>
@@ -259,7 +259,7 @@ export default function OrganigramaPage() {
 
                                         <div className="relative z-10 grid gap-0">
                                             {rootPath.map((node, index) => (
-                                                <div key={node.name} data-aos="zoom-in" className="flex flex-col items-center">
+                                                <div key={node.name} data-aos="zoom-in" data-aos-delay={index * 100} className="flex flex-col items-center">
                                                     <ChurchCard node={node} step={String(index + 1).padStart(2, "0")} compact />
                                                     <div className="flex h-14 flex-col items-center justify-center" aria-hidden="true">
                                                         <span className="h-full w-1 bg-blue-950/20" />
@@ -279,7 +279,7 @@ export default function OrganigramaPage() {
 
                                         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                                             {chihuahuaTree.children?.map((branch, index) => (
-                                                <div key={branch.name} data-aos="zoom-in" className="flex flex-col items-center">
+                                                <div key={branch.name} data-aos="zoom-in" data-aos-delay={index * 90} className="flex flex-col items-center">
                                                     <ChurchCard node={branch} step={String(index + 1).padStart(2, "0")} />
 
                                                     {branch.children?.length ? (

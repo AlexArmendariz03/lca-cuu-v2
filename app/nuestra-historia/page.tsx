@@ -88,7 +88,7 @@ export default function NuestraRaizPage() {
                     Holanda y Alemania, y posteriormente a todo el mundo.
                   </p>
 
-                  <div data-aos="fade-up" className="rounded-2xl border border-red-400/20 bg-white/10 p-6 backdrop-blur">
+                  <div data-aos="fade-up-blur" className="rounded-2xl border border-red-400/20 bg-white/10 p-6 backdrop-blur">
                     <p className="text-red-300 font-black uppercase tracking-widest text-sm">
                       Hoy
                     </p>
@@ -113,15 +113,15 @@ export default function NuestraRaizPage() {
 
           <section className="bg-white px-6 py-20 lg:px-8">
             <div className="mx-auto max-w-7xl">
-              <div data-aos="fade-up">
+              <div data-aos="fade-up-blur">
                 <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería histórica</p>
                 <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl">
                   Momentos que marcaron el inicio de esta historia.
                 </h2>
               </div>
               <div className="mt-10 grid gap-6 sm:grid-cols-2">
-                {historicalPhotos.map((photo) => (
-                  <div key={photo} data-aos="zoom-in" className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10">
+                {historicalPhotos.map((photo, index) => (
+                  <div key={photo} data-aos="scale-in-blur" data-aos-delay={index * 120} className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10">
                     <Image src={photo} alt="Fotografía histórica de la fraternidad" fill sizes="(min-width: 640px) 50vw, 100vw" className="object-cover" />
                   </div>
                 ))}
