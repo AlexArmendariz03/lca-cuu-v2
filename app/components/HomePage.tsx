@@ -7,6 +7,8 @@ import type { GalleryAlbum, GalleryPhoto } from "@/lib/gallery";
 type HeroSlide = {
   image: string;
   title: string;
+  /** Optional looping background video; `image` is used as its poster and as the fallback. */
+  video?: string;
 };
 
 type ScheduleItem = {
@@ -38,6 +40,8 @@ const slides: HeroSlide[] = [
   { image: "/banner-principal/3.webp", title: "Adoración, palabra y esperanza" },
   { image: "/banner-principal/4.jpg", title: "Una familia que crece en fe" },
   { image: "/banner-principal/5.jpg", title: "Momentos de oración y avivamiento" },
+  { image: "/banner-principal/6-poster.jpg", video: "/banner-principal/6.mp4", title: "Vive la experiencia en La Casa del Alfarero" },
+  { image: "/banner-principal/7-poster.jpg", video: "/banner-principal/7.mp4", title: "Comunidad y fe en cada encuentro" },
 ];
 
 
@@ -102,8 +106,22 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
   const photoCloseButtonRef = useRef<HTMLButtonElement>(null);
   const heroSectionRef = useRef<HTMLElement>(null);
   const heroLayerRef = useRef<HTMLDivElement>(null);
+  const heroVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const isCarouselPaused = isHovering || isAutoplayPaused;
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    heroVideoRefs.current.forEach((video, index) => {
+      if (!video) return;
+      if (index === activeSlide && !prefersReducedMotion) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }, [activeSlide]);
 
   useEffect(() => {
     const section = heroSectionRef.current;
@@ -301,16 +319,34 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                 }`}
                 aria-hidden={activeSlide !== index}
               >
-                <Image
-                  src={slide.image}
-                  fill
-                  sizes="100vw"
-                  priority={index === 0}
-                  placeholder="blur"
-                  blurDataURL={BLUR_DATA_URL}
-                  className={`object-cover ${activeSlide === index ? "animate-ken-burns" : ""}`}
-                  alt={slide.title}
-                />
+                {slide.video ? (
+                  <video
+                    ref={(node: HTMLVideoElement | null) => {
+                      heroVideoRefs.current[index] = node;
+                      if (node) node.muted = true;
+                    }}
+                    src={slide.video}
+                    poster={slide.image}
+                    autoPlay={index === activeSlide}
+                    muted
+                    loop
+                    playsInline
+                    preload={index === 0 || index === activeSlide ? "auto" : "metadata"}
+                    className="h-full w-full object-cover"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <Image
+                    src={slide.image}
+                    fill
+                    sizes="100vw"
+                    priority={index === 0}
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
+                    className={`object-cover ${activeSlide === index ? "animate-ken-burns" : ""}`}
+                    alt={slide.title}
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-950/70 to-blue-950/20" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_15%,rgba(255,255,255,0.18),transparent_28%),radial-gradient(circle_at_20%_80%,rgba(220,38,38,0.25),transparent_30%)]" />
               </div>
