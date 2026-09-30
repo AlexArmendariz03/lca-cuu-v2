@@ -57,9 +57,10 @@ export default function Navigation() {
       isBlurred
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      className={`fixed top-0 z-50 border-b text-white backdrop-blur-xl transition-all duration-300 ${
+      className={`fixed top-0 z-50 border-b text-white backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
         isScrolled ? "border-white/15 bg-blue-950/95 shadow-lg shadow-blue-950/30" : "border-white/10 bg-blue-950/85"
       }`}
+      height={isScrolled ? "3.75rem" : "4.75rem"}
       maxWidth="xl"
     >
       <NavbarContent className="lg:hidden" justify="start">
@@ -71,7 +72,9 @@ export default function Navigation() {
           width={180}
           alt="Logo LCA"
           src="/logoLCA.png"
-          className="max-w-[130px] transition-transform duration-300 hover:scale-105 sm:max-w-none"
+          className={`max-w-[130px] origin-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105 sm:max-w-none ${
+            isScrolled ? "scale-90" : "scale-100"
+          }`}
         />
       </NavbarBrand>
 
@@ -158,7 +161,7 @@ export default function Navigation() {
           <Button
             as={Link}
             href={YOUTUBE_URL}
-            className="bg-red-600 font-bold text-white shadow-lg shadow-red-950/30 transition hover:bg-red-500"
+            className="magnetic-btn bg-red-600 font-bold text-white shadow-lg shadow-red-950/30 hover:bg-red-500"
             radius="full"
           >
             YouTube

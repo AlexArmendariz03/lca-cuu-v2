@@ -7,6 +7,8 @@ import type { GalleryAlbum, GalleryPhoto } from "@/lib/gallery";
 type HeroSlide = {
   image: string;
   title: string;
+  /** Optional looping background video; `image` is used as its poster and as the fallback. */
+  video?: string;
 };
 
 type ScheduleItem = {
@@ -38,6 +40,8 @@ const slides: HeroSlide[] = [
   { image: "/banner-principal/3.webp", title: "Adoración, palabra y esperanza" },
   { image: "/banner-principal/4.jpg", title: "Una familia que crece en fe" },
   { image: "/banner-principal/5.jpg", title: "Momentos de oración y avivamiento" },
+  { image: "/banner-principal/6-poster.jpg", video: "/banner-principal/6.mp4", title: "Vive la experiencia en La Casa del Alfarero" },
+  { image: "/banner-principal/7-poster.jpg", video: "/banner-principal/7.mp4", title: "Comunidad y fe en cada encuentro" },
 ];
 
 
@@ -84,6 +88,13 @@ const valueCards: ValueCard[] = [
 ];
 
 
+function handleSpotlight(event: { currentTarget: HTMLElement; clientX: number; clientY: number }) {
+  const target = event.currentTarget;
+  const rect = target.getBoundingClientRect();
+  target.style.setProperty("--spot-x", `${event.clientX - rect.left}px`);
+  target.style.setProperty("--spot-y", `${event.clientY - rect.top}px`);
+}
+
 export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbum[] }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
@@ -93,8 +104,49 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
   const galleryTriggerRef = useRef<HTMLElement | null>(null);
   const galleryCloseButtonRef = useRef<HTMLButtonElement>(null);
   const photoCloseButtonRef = useRef<HTMLButtonElement>(null);
+  const heroSectionRef = useRef<HTMLElement>(null);
+  const heroLayerRef = useRef<HTMLDivElement>(null);
+  const heroVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const isCarouselPaused = isHovering || isAutoplayPaused;
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    heroVideoRefs.current.forEach((video, index) => {
+      if (!video) return;
+      if (index === activeSlide && !prefersReducedMotion) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }, [activeSlide]);
+
+  useEffect(() => {
+    const section = heroSectionRef.current;
+    const layer = heroLayerRef.current;
+    if (!section || !layer) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const progress = Math.min(Math.max(-section.getBoundingClientRect().top, 0), section.offsetHeight);
+        layer.style.transform = `translateY(${progress * 0.25}px) scale(${1 + progress * 0.00015})`;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   useEffect(() => {
     if (isCarouselPaused) return;
@@ -209,7 +261,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
   return (
     <main id="main-content" className="overflow-hidden bg-slate-50 text-slate-950">
       <section
-        data-aos="zoom-in"
+        ref={heroSectionRef}
         id="inicio"
         className="relative isolate min-h-[600px] w-full overflow-hidden bg-blue-950 sm:min-h-[720px]"
         onMouseEnter={() => setIsHovering(true)}
@@ -258,7 +310,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
             </button>
           </div>
 
-          <div className="relative h-full w-full overflow-hidden after:clear-both after:block after:content-['']">
+          <div ref={heroLayerRef} className="relative h-full w-full overflow-hidden after:clear-both after:block after:content-['']">
             {slides.map((slide, index) => (
               <div
                 key={slide.image}
@@ -267,16 +319,34 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                 }`}
                 aria-hidden={activeSlide !== index}
               >
-                <Image
-                  src={slide.image}
-                  fill
-                  sizes="100vw"
-                  priority={index === 0}
-                  placeholder="blur"
-                  blurDataURL={BLUR_DATA_URL}
-                  className="object-cover"
-                  alt={slide.title}
-                />
+                {slide.video ? (
+                  <video
+                    ref={(node: HTMLVideoElement | null) => {
+                      heroVideoRefs.current[index] = node;
+                      if (node) node.muted = true;
+                    }}
+                    src={slide.video}
+                    poster={slide.image}
+                    autoPlay={index === activeSlide}
+                    muted
+                    loop
+                    playsInline
+                    preload={index === 0 || index === activeSlide ? "auto" : "metadata"}
+                    className="h-full w-full object-cover"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <Image
+                    src={slide.image}
+                    fill
+                    sizes="100vw"
+                    priority={index === 0}
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
+                    className={`object-cover ${activeSlide === index ? "animate-ken-burns" : ""}`}
+                    alt={slide.title}
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-950/70 to-blue-950/20" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_15%,rgba(255,255,255,0.18),transparent_28%),radial-gradient(circle_at_20%_80%,rgba(220,38,38,0.25),transparent_30%)]" />
               </div>
@@ -311,7 +381,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
         </div>
 
         <div className="relative z-10 mx-auto flex min-h-[600px] max-w-7xl items-center px-5 pb-40 pt-28 sm:min-h-[720px] sm:px-6 sm:pb-32 sm:pt-32 lg:px-8">
-          <div className="max-w-3xl text-white" data-aos="fade-up">
+          <div className="animate-hero-in max-w-3xl text-white">
             <div className="mb-6 inline-flex max-w-full items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/90 shadow-2xl backdrop-blur-md sm:text-sm sm:tracking-[0.24em]">
               <span className="h-2 w-2 shrink-0 rounded-full bg-red-500 shadow-[0_0_18px_rgba(239,68,68,0.9)]" />
               Iglesia cristiana en Chihuahua
@@ -320,10 +390,10 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
               Donde Jesucristo está cambiando vidas.
             </h1>
             <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-              <a href="#servicios" className="rounded-full bg-red-600 px-6 py-3.5 text-center font-bold text-white shadow-xl shadow-red-950/30 transition hover:-translate-y-1 hover:bg-red-500 sm:px-8 sm:py-4">
+              <a href="#servicios" className="magnetic-btn rounded-full bg-red-600 px-6 py-3.5 text-center font-bold text-white shadow-xl shadow-red-950/30 hover:bg-red-500 sm:px-8 sm:py-4">
                 Ver horarios
               </a>
-              <a href="#conocenos" className="rounded-full border border-white/25 bg-white/10 px-6 py-3.5 text-center font-bold text-white backdrop-blur-md transition hover:-translate-y-1 hover:bg-white hover:text-blue-950 sm:px-8 sm:py-4">
+              <a href="#conocenos" className="magnetic-btn rounded-full border border-white/25 bg-white/10 px-6 py-3.5 text-center font-bold text-white backdrop-blur-md hover:bg-white hover:text-blue-950 sm:px-8 sm:py-4">
                 Conócenos
               </a>
             </div>
@@ -366,7 +436,10 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                   {scheduleItems.map((service, index) => (
                     <article
                       key={`${service.day}-${service.time}`}
-                      className={`group relative flex min-w-[235px] flex-col overflow-hidden rounded-3xl border p-5 transition duration-300 hover:-translate-y-1 hover:shadow-xl lg:min-w-0 ${
+                      data-aos="fade-up-blur"
+                      data-aos-delay={index * 80}
+                      onMouseMove={handleSpotlight}
+                      className={`spotlight-card group relative flex min-w-[235px] flex-col overflow-hidden rounded-3xl border p-5 transition duration-300 hover:-translate-y-1 hover:shadow-xl lg:min-w-0 ${
                         service.featured
                           ? "border-red-200 bg-blue-950 text-white shadow-xl shadow-blue-950/20"
                           : "border-blue-100 bg-white text-slate-950 shadow-lg shadow-blue-950/5 hover:border-red-200"
@@ -410,7 +483,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                   <p className="text-xs font-black uppercase tracking-[0.18em] text-red-600">Primera visita</p>
                   <p className="mt-2 text-sm font-semibold text-slate-600">Llega unos minutos antes y nuestro equipo te orienta.</p>
                 </div>
-                <a href="#contacto" className="rounded-2xl bg-red-600 p-4 text-white shadow-lg shadow-red-950/20 transition hover:-translate-y-1 hover:bg-red-500">
+                <a href="#contacto" className="magnetic-btn rounded-2xl bg-red-600 p-4 text-white shadow-lg shadow-red-950/20 hover:bg-red-500">
                   <p className="text-xs font-black uppercase tracking-[0.18em] text-red-100">¿Dudas?</p>
                   <p className="mt-2 text-sm font-black">Contáctanos y planea tu visita →</p>
                 </a>
@@ -422,7 +495,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
       <section id="eventos" className="px-6 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end" data-aos="fade-up">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end" data-aos="fade-up-blur">
             <div>
               <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Agenda especial</p>
               <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl md:text-5xl">Próximos eventos</h2>
@@ -431,10 +504,13 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
           </div>
 
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {upcomingEvents.map((event) => (
+            {upcomingEvents.map((event, index) => (
               <article
                 key={event.name}
-                className="overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-xl shadow-blue-950/10"
+                data-aos="fade-up-blur"
+                data-aos-delay={index * 100}
+                onMouseMove={handleSpotlight}
+                className="spotlight-card overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-xl shadow-blue-950/10 transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
               >
                 {event.photo ? (
                   <div className="relative aspect-[4/5] w-full bg-slate-100">
@@ -470,7 +546,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
       <section id="conocenos" className="px-6 pb-10 pt-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-4xl text-center" data-aos="fade-up">
+          <div className="mx-auto max-w-4xl text-center" data-aos="fade-up-blur">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Nuestra misión</p>
             <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl md:text-5xl">
               Predicar el evangelio a toda criatura.
@@ -496,8 +572,14 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
           </div>
 
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {valueCards.map((value) => (
-              <div key={value.number} className="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10">
+            {valueCards.map((value, index) => (
+              <div
+                key={value.number}
+                data-aos="fade-up-blur"
+                data-aos-delay={index * 90}
+                onMouseMove={handleSpotlight}
+                className="spotlight-card rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-950/5 transition hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-blue-950/10"
+              >
                 <span className="text-3xl font-black text-red-600">{value.number}</span>
                 <h3 className="mt-3 font-black text-blue-950">{value.title}</h3>
                 <p className="mt-2 text-sm text-slate-600">{value.description}</p>
@@ -505,7 +587,7 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
             ))}
           </div>
 
-          <div className="relative mx-auto mt-14 aspect-[21/9] w-full max-w-4xl overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10" data-aos="fade-up">
+          <div className="relative mx-auto mt-14 aspect-[21/9] w-full max-w-4xl overflow-hidden rounded-[2rem] shadow-xl shadow-blue-950/10" data-aos="fade-up-blur">
             <Image
               src="/iglesiaGente2.jpg"
               alt="Congregación de La Casa del Alfarero en un servicio"
@@ -521,20 +603,22 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
       <section id="galeria" className="px-6 pb-24 pt-10 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end" data-aos="fade-up">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end" data-aos="fade-up-blur">
             <div>
               <p className="text-sm font-black uppercase tracking-[0.28em] text-red-600">Galería</p>
               <h2 className="mt-4 text-3xl font-black tracking-tight text-blue-950 sm:text-4xl md:text-5xl">Elige una sección para abrir sus fotos.</h2>
             </div>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {galleryAlbums.map((album) => (
+            {galleryAlbums.map((album, index) => (
               <button
                 key={album.title}
                 type="button"
                 onClick={(event: { currentTarget: HTMLElement }) => openGallery(album, event.currentTarget)}
-                className="group relative h-96 overflow-hidden rounded-[2rem] text-left shadow-xl shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 focus-visible:ring-4"
-                data-aos="zoom-in"
+                onMouseMove={handleSpotlight}
+                className="spotlight-card group relative h-96 overflow-hidden rounded-[2rem] text-left shadow-xl shadow-blue-950/10 outline-none ring-red-500 transition hover:-translate-y-1 hover:shadow-2xl focus-visible:ring-4"
+                data-aos="scale-in-blur"
+                data-aos-delay={index * 110}
               >
                 {album.cover ? (
                   album.cover.isVideo ? (
