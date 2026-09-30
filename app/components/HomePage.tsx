@@ -55,9 +55,9 @@ const scheduleItems: ScheduleItem[] = [
 ];
 
 const upcomingEvents: UpcomingEvent[] = [
-  { name: "Gran Noche Mexicana", photo: "/eventos/1.jpg", date: "16 Sep" },
-  { name: "Avivamiento: Jesucristo es el camino", photo: "/eventos/2.jpg", date: "18 Oct" },
-  { name: "Discipulado regional para hombres", photo: "/eventos/3.jpg", date: "19 Oct" },
+  { name: "Avivamiento: Jesucristo es el camino", photo: "/eventos/1.jpg", date: "18 Oct" },
+  { name: "Discipulado regional para hombres", photo: "/eventos/2.jpg", date: "19 Oct" },
+  { name: "Rally de jóvenes: Sin titubear", photo: "/eventos/3.jpg", date: "13 Nov" },
 ];
 
 const valueCards: ValueCard[] = [
@@ -512,6 +512,14 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                 onMouseMove={handleSpotlight}
                 className="spotlight-card overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-xl shadow-blue-950/10 transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
               >
+                {event.date ? (
+                  <div className="flex items-center gap-3 border-b border-blue-100 px-5 py-3">
+                    <span className="rounded-full bg-blue-950 px-4 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-white">
+                      {event.date}
+                    </span>
+                    <span className="truncate text-sm font-bold text-slate-600">{event.name}</span>
+                  </div>
+                ) : null}
                 {event.photo ? (
                   <div className="relative aspect-[4/5] w-full bg-slate-100">
                     <Image
@@ -523,11 +531,6 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
                       blurDataURL={BLUR_DATA_URL}
                       className="object-contain"
                     />
-                    {event.date ? (
-                      <span className="absolute left-4 top-4 rounded-full bg-blue-950/90 px-4 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-white shadow-lg backdrop-blur-md">
-                        {event.date}
-                      </span>
-                    ) : null}
                   </div>
                 ) : (
                   <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 text-white">
