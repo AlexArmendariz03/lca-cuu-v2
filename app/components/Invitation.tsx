@@ -1,6 +1,15 @@
+"use client";
+
 import type { ComponentType, SVGProps } from "react";
 import React from "react";
 import Image from "next/image";
+
+function handleSpotlight(event: { currentTarget: HTMLElement; clientX: number; clientY: number }) {
+  const target = event.currentTarget;
+  const rect = target.getBoundingClientRect();
+  target.style.setProperty("--spot-x", `${event.clientX - rect.left}px`);
+  target.style.setProperty("--spot-y", `${event.clientY - rect.top}px`);
+}
 
 const BLUR_DATA_URL =
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+";
@@ -94,7 +103,7 @@ export default function Invitation() {
       <div className="animate-blob-float absolute left-10 top-20 h-44 w-44 rounded-full bg-red-600/20 blur-3xl" />
       <div className="animate-blob-float absolute bottom-10 right-10 h-56 w-56 rounded-full bg-blue-950/10 blur-3xl" style={{ animationDelay: "-5s" }} />
 
-      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-blue-950 shadow-2xl shadow-blue-950/20">
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-blue-950 shadow-2xl shadow-blue-950/20" data-aos="scale-in-blur">
         <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative isolate overflow-hidden p-8 text-white sm:p-10 lg:p-12">
             <div className="animate-blob-float absolute -right-20 -top-20 -z-10 h-64 w-64 rounded-full bg-red-600/30 blur-3xl" style={{ animationDelay: "-9s" }} />
@@ -124,14 +133,17 @@ export default function Invitation() {
 
           <div className="bg-white p-5 sm:p-8 lg:p-10">
             <div className="grid gap-4">
-              {socialLinks.map((item) => {
+              {socialLinks.map((item, index) => {
                 const Icon = item.Icon;
                 const isLocation = item.label === "Ubicación";
 
                 return (
                   <div
                     key={item.label}
-                    className="overflow-hidden rounded-3xl border border-blue-100 bg-slate-50 transition hover:-translate-y-1 hover:border-red-200 hover:bg-white hover:shadow-xl hover:shadow-blue-950/10"
+                    data-aos="fade-up-blur"
+                    data-aos-delay={index * 100}
+                    onMouseMove={handleSpotlight}
+                    className="spotlight-card overflow-hidden rounded-3xl border border-blue-100 bg-slate-50 transition hover:-translate-y-1 hover:border-red-200 hover:bg-white hover:shadow-xl hover:shadow-blue-950/10"
                   >
                     <a
                       href={item.href}
