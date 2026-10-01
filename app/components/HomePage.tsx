@@ -505,43 +505,39 @@ export default function HomePage({ galleryAlbums }: { galleryAlbums: GalleryAlbu
 
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {upcomingEvents.map((event, index) => (
-              <article
-                key={event.name}
-                data-aos="fade-up-blur"
-                data-aos-delay={index * 100}
-                onMouseMove={handleSpotlight}
-                className="spotlight-card overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-xl shadow-blue-950/10 transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
-              >
+              <div key={event.name} data-aos="fade-up-blur" data-aos-delay={index * 100}>
                 {event.date ? (
-                  <div className="flex items-center gap-3 border-b border-blue-100 px-5 py-3">
-                    <span className="rounded-full bg-blue-950 px-4 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-white">
-                      {event.date}
-                    </span>
-                    <span className="truncate text-sm font-bold text-slate-600">{event.name}</span>
-                  </div>
+                  <span className="mb-3 inline-flex rounded-full bg-blue-950 px-4 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-white shadow-lg">
+                    {event.date}
+                  </span>
                 ) : null}
-                {event.photo ? (
-                  <div className="relative aspect-[4/5] w-full bg-slate-100">
-                    <Image
-                      src={event.photo}
-                      alt={event.name}
-                      fill
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                      placeholder="blur"
-                      blurDataURL={BLUR_DATA_URL}
-                      className="object-contain"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-10 w-10 text-red-300">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-                    </svg>
-                    <p className="text-sm font-black uppercase tracking-[0.16em] text-red-200">{event.name}</p>
-                    <p className="text-xs font-semibold text-blue-100">Detalles próximamente</p>
-                  </div>
-                )}
-              </article>
+                <article
+                  onMouseMove={handleSpotlight}
+                  className="spotlight-card overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-xl shadow-blue-950/10 transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                >
+                  {event.photo ? (
+                    <div className="relative aspect-[4/5] w-full bg-slate-100">
+                      <Image
+                        src={event.photo}
+                        alt={event.name}
+                        fill
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                        placeholder="blur"
+                        blurDataURL={BLUR_DATA_URL}
+                        className="object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 text-white">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-10 w-10 text-red-300">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                      </svg>
+                      <p className="text-sm font-black uppercase tracking-[0.16em] text-red-200">{event.name}</p>
+                      <p className="text-xs font-semibold text-blue-100">Detalles próximamente</p>
+                    </div>
+                  )}
+                </article>
+              </div>
             ))}
           </div>
         </div>
