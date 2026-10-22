@@ -57,7 +57,7 @@ const scheduleItems: ScheduleItem[] = [
 const upcomingEvents: UpcomingEvent[] = [
   { name: "Rally de jóvenes: Sin titubear", photo: "/eventos/evento-1.jpg", date: "13 Nov" },
   { name: "Día de avivamiento: Un cambio es posible", photo: "/eventos/evento-2.png", date: "15 Nov" },
-  { name: "Discipulado regional para hombres", photo: "/eventos/evento-3.png", date: "16 Nov" },
+  { name: "Discipulado regional para hombres", photo: "/eventos/evento-3-v2.png", date: "16 Nov" },
 ];
 
 const valueCards: ValueCard[] = [
