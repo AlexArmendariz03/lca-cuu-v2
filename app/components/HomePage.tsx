@@ -55,9 +55,9 @@ const scheduleItems: ScheduleItem[] = [
 ];
 
 const upcomingEvents: UpcomingEvent[] = [
-  { name: "Avivamiento: Jesucristo es el camino", photo: "/eventos/1.jpg", date: "18 Oct" },
-  { name: "Discipulado regional para hombres", photo: "/eventos/2.jpg", date: "19 Oct" },
-  { name: "Rally de jóvenes: Sin titubear", photo: "/eventos/3.jpg", date: "13 Nov" },
+  { name: "Rally de jóvenes: Sin titubear", photo: "/eventos/evento-1.jpg", date: "13 Nov" },
+  { name: "Día de avivamiento: Un cambio es posible", photo: "/eventos/evento-2.png", date: "15 Nov" },
+  { name: "Discipulado regional para hombres", photo: "/eventos/evento-3.png", date: "16 Nov" },
 ];
 
 const valueCards: ValueCard[] = [
